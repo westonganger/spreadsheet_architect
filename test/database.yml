@@ -1,0 +1,3 @@
+sqlite3:
+  adapter: sqlite3
+  database: test/spreadsheet_architect.sqlite3.db
