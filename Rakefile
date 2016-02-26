@@ -10,8 +10,4 @@ task :test do
   end
 end
 
-task release: :build do
-  system "gem push spreadsheet_architect-#{SpreadsheetArchitect::VERSION}.gem"
-end
-
 task default: :test
