@@ -1,5 +1,7 @@
 CHANGELOG
 ---------
 
-- **February.29.2016**: 0.9.0
-  - Gem First Release!
+- **February.26.2016**: 1.0.1
+  - Fix Bug in ActionController Renderers
+- **February.26.2016**: 1.0.0
+  - Gem Initial Release
