@@ -22,7 +22,7 @@ module SpreadsheetArchitect
     def sa_get_options(options={})
       if self.ancestors.include?(ActiveRecord::Base) && !self.respond_to?(:spreadsheet_columns) && !options[:spreadsheet_columns]
         the_column_names = (self.column_names - ["id","created_at","updated_at","deleted_at"])
-        headers = the_column_names.map{|x| x.humanize}
+        headers = the_column_names.map{|x| sa_str_humanize(x)}
         columns = the_column_names.map{|x| x.to_s}
       elsif options[:spreadsheet_columns] || self.respond_to?(:spreadsheet_columns)
         headers = []
@@ -51,8 +51,6 @@ module SpreadsheetArchitect
         header_style.merge!(options[:header_style])
       elsif options[:header_style] == false
         header_style = false
-      elsif options[:row_style]
-        header_style = options[:row_style]
       end
 
       row_style = {background_color: nil, color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
@@ -110,7 +108,7 @@ module SpreadsheetArchitect
 
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
-          unless opts[:row_style] && opts[:row_style][:bold] == false #uses opts, temporary
+          unless opts[:header_style] && opts[:header_style][:bold] == false #uses opts, temporary
             property :text, 'font-weight': :bold
           end
           if options[:header_style][:align]
@@ -170,13 +168,14 @@ module SpreadsheetArchitect
       header_style[:bg_color] = options[:header_style].delete(:background_color)
       if header_style[:align]
         header_style[:alignment] = {}
-        header_style[:alignment][:horizontal] = options[:header_style][:align]
+        header_style[:alignment][:horizontal] = options[:header_style].delete(:align)
       end
       header_style[:b] = options[:header_style].delete(:bold)
       header_style[:sz] = options[:header_style].delete(:font_size)
       header_style[:i] = options[:header_style].delete(:italic)
       header_style[:u] = options[:header_style].delete(:underline)
-      
+      header_style.delete_if{|x| x.nil?}
+
       row_style = {}
       row_style[:fg_color] = options[:row_style].delete(:color)
       row_style[:bg_color] = options[:row_style].delete(:background_color)
@@ -188,6 +187,7 @@ module SpreadsheetArchitect
       row_style[:sz] = options[:row_style].delete(:font_size)
       row_style[:i] = options[:row_style].delete(:italic)
       row_style[:u] = options[:row_style].delete(:underline)
+      row_style.delete_if{|x| x.nil?}
       
       package = Axlsx::Package.new
 
