@@ -54,7 +54,7 @@ module SpreadsheetArchitect
         header_style = options[:row_style]
       end
 
-      row_style = {background_color: "FFFFFF", color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+      row_style = {background_color: nil, color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
       if options[:row_style]
         row_style.merge!(options[:row_style])
       end
@@ -85,7 +85,7 @@ module SpreadsheetArchitect
             col = col.instance_eval(x)
           end
         end
-        row_data.push col
+        row_data.push col.to_s
       end
       return row_data
     end
