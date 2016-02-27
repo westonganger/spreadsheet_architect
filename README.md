@@ -107,7 +107,7 @@ end
 
 **header_style** - *Hash* - Default: `{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
   
-**row_style** - Hash - Default: `{background_color: "FFFFFF", color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
+**row_style** - Hash - Default: `{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
 
 ### to_ods
 **sheet_name** - *String*

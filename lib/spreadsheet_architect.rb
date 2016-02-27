@@ -12,7 +12,7 @@ module SpreadsheetArchitect
 
   module ClassMethods
     def sa_str_humanize(str, capitalize = true)
-      str = str.sub(/\A_+/, '').sub(/_id\z/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
+      str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
       if capitalize
         str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
       end
@@ -21,8 +21,9 @@ module SpreadsheetArchitect
 
     def sa_get_options(options={})
       if self.ancestors.include?(ActiveRecord::Base) && !self.respond_to?(:spreadsheet_columns) && !options[:spreadsheet_columns]
-        headers = self.column_names.map{|x| x.humanize}
-        columns = self.column_names.map{|x| x.to_s}
+        the_column_names = (self.column_names - ["id","created_at","updated_at","deleted_at"])
+        headers = the_column_names.map{|x| x.humanize}
+        columns = the_column_names.map{|x| x.to_s}
       elsif options[:spreadsheet_columns] || self.respond_to?(:spreadsheet_columns)
         headers = []
         columns = []
