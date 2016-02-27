@@ -44,17 +44,20 @@ module SpreadsheetArchitect
 
       headers = (options[:headers] == false ? false : headers)
 
+      header_style = {background_color: "AAAAAA", color: "FFFFFF", align: :center, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+      
       if options[:header_style]
-        header_style = options[:header_style]
+        header_style.merge!(options[:header_style])
       elsif options[:header_style] == false
         header_style = false
       elsif options[:row_style]
         header_style = options[:row_style]
-      else
-        header_style = {bg_color: "AAAAAA", fg_color: "FFFFFF", alignment: { horizontal: :center }, bold: true}
       end
 
-      row_style = options[:row_style]
+      row_style = {background_color: "FFFFFF", color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+      if options[:row_style]
+        row_style.merge!(options[:row_style])
+      end
 
       sheet_name = options[:sheet_name] || self.name
       
@@ -106,12 +109,17 @@ module SpreadsheetArchitect
 
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
-          if options[:header_style][:bold]
+          unless opts[:row_style] && opts[:row_style][:bold] == false #uses opts, temporary
             property :text, 'font-weight': :bold
-            property :text, 'align': :center
           end
-          if options[:header_style][:fg_color] && opts[:header_style] && opts[:header_style][:fg_color] #temporary
-            property :text, 'color': "##{options[:header_style][:fg_color]}"
+          if options[:header_style][:align]
+            property :text, 'align': options[:header_style][:align]
+          end
+          if options[:header_style][:size]
+            property :text, 'font-size': options[:header_style][:size]
+          end
+          if options[:header_style][:color] && opts[:header_style] && opts[:header_style][:color] #temporary
+            property :text, 'color': "##{options[:header_style][:color]}"
           end
         end
       end
@@ -120,8 +128,14 @@ module SpreadsheetArchitect
           if options[:row_style][:bold]
             property :text, 'font-weight': :bold
           end
-          if options[:row_style][:fg_color]
-            property :text, 'color': "##{options[:header_style][:fg_color]}"
+          if options[:row_style][:align]
+            property :text, 'align': options[:row_style][:align]
+          end
+          if options[:row_style][:size]
+            property :text, 'font-size': options[:row_style][:size]
+          end
+          if opts[:row_style] && opts[:row_style][:color] #uses opts, temporary
+            property :text, 'color': "##{options[:row_style][:color]}"
           end
         end
       end
@@ -131,14 +145,14 @@ module SpreadsheetArchitect
         if options[:headers]
           row do
             options[:headers].each do |header|
-              cell header, style: (:header_style if options[:header_style])
+              cell header, style: :header_style
             end
           end
         end
         options[:data].each do |x|
           row do 
             this_class.sa_get_row_data(options[:columns], x).each do |y|
-              cell y, style: (:row_style if options[:row_style])
+              cell y, style: :row_style
             end
           end
         end
@@ -149,18 +163,42 @@ module SpreadsheetArchitect
 
     def to_xlsx(opts={})
       options = sa_get_options(opts)
+    
+      header_style = {}
+      header_style[:fg_color] = options[:header_style].delete(:color)
+      header_style[:bg_color] = options[:header_style].delete(:background_color)
+      if header_style[:align]
+        header_style[:alignment] = {}
+        header_style[:alignment][:horizontal] = options[:header_style][:align]
+      end
+      header_style[:b] = options[:header_style].delete(:bold)
+      header_style[:sz] = options[:header_style].delete(:font_size)
+      header_style[:i] = options[:header_style].delete(:italic)
+      header_style[:u] = options[:header_style].delete(:underline)
       
-      package = opts[:package] || Axlsx::Package.new
+      row_style = {}
+      row_style[:fg_color] = options[:row_style].delete(:color)
+      row_style[:bg_color] = options[:row_style].delete(:background_color)
+      if row_style[:align]
+        row_style[:alignment] = {}
+        row_style[:alignment][:horizontal] = options[:row_style][:align]
+      end
+      row_style[:b] = options[:row_style].delete(:bold)
+      row_style[:sz] = options[:row_style].delete(:font_size)
+      row_style[:i] = options[:row_style].delete(:italic)
+      row_style[:u] = options[:row_style].delete(:underline)
+      
+      package = Axlsx::Package.new
 
       return package if options[:data].empty?
 
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         if options[:headers]
-          sheet.add_row options[:headers], style: (package.workbook.styles.add_style(options[:header_style]) if options[:header_style])
+          sheet.add_row options[:headers], style: package.workbook.styles.add_style(header_style)
         end
         
         options[:data].each do |x|
-          sheet.add_row sa_get_row_data(options[:columns], x), style: (package.workbook.styles.add_style(options[:row_style]) if options[:row_style]), types: options[:types]
+          sheet.add_row sa_get_row_data(options[:columns], x), style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
       end
 

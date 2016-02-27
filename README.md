@@ -105,29 +105,19 @@ end
 ### to_xlsx
 **sheet_name** - *String*
 
-**header_style** - *Hash* - Default: `{bg_color: "AAAAAA", fg_color: "FFFFFF", alignment: { horizontal: :center }, bold: true}`
+**header_style** - *Hash* - Default: `{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
   
-**row_style** - Hash
+**row_style** - Hash - Default: `{background_color: "FFFFFF", color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
 
 ### to_ods
 **sheet_name** - *String*
 
-**header_style** - *Hash* - Default: {bold: true} - Note: Currently only supports bold & fg_color style options
+**header_style** - *Hash* - Default: {color: "000000", align: :center, font_size: 10, bold: true} - Note: Currently only supports these options
 
-**row_style** - *Hash*
+**row_style** - *Hash* - Default: {color: "000000", align: :left, font_size: 10, bold: false} - Note: Currently only supports these options
 
 ### to_csv
 Only the generic options
-
-
-# Style Options
-**bg_color** - *6 Digit Hex Color without the # Symbol* - Ex. "AAAAAAA" 
-
-**fg_color** - *Text Color - 6 Digit Hex Color without the # Symbol* - Ex. "0000000" 
-
-**alignment** - *Hash* - Ex. {horizontal: :right, vertical: :top}
-
-**bold** - *Boolean*
 
 
 # Credits
