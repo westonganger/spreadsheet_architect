@@ -47,39 +47,57 @@ end
 
 # Usage
 
-### Method 1: Controller for a Rails Model
+### Method 1: Controller (for Rails)
 ```ruby
+
 class PostsController < ActionController::Base
+  respond_to :html, :xlsx, :ods, :csv
+
+  # Using respond_with
   def index
     @posts = Post.order(published_at: :asc)
-  
-    respond_to do |format|
-      format.html
-      format.xlsx { render xlsx: @posts.to_xlsx, filename: "posts.xlsx" }
-      format.ods { render ods: @posts.to_ods, filename: "posts.ods" }
-      format.csv { render csv: @posts.to_csv, filename: "posts.csv" }
-    end
-  end
-end
-```
 
-### Method 2: Controller for a Plain Ruby Model
-```ruby
-class PostsController < ActionController::Base
+    respond_with @posts
+  end
+
+  # Using respond_with with custom options
   def index
-    posts_array = [Post.new, Post.new, Post.new]
+    @posts = Post.order(published_at: :asc)
+
+    if ['xlsx','ods','csv'].include?(request.format)
+      respond_with @posts.to_xlsx(row_style: {bold: true}), filename: 'Posts'
+    else
+      respond_with @posts
+    end
+  end
+
+  # Using responders
+  def index
+    @posts = Post.order(published_at: :asc)
 
     respond_to do |format|
       format.html
-      format.xlsx { render xlsx: Post.to_xlsx(data: posts_array), filename: "posts.xlsx" }
-      format.ods { render ods: Post.to_ods(data: posts_array), filename: "posts.ods" }
-      format.csv { render csv: Post.to_csv(data: posts_array), filename: "posts.csv" }
+      format.xlsx { render xlsx: @posts }
+      format.ods { render ods: @posts }
+      format.csv{ render csv: @posts }
+    end
+  end
+
+  # Using responders with custom options
+  def index
+    @posts = Post.order(published_at: :asc)
+
+    respond_to do |format|
+      format.html
+      format.xlsx { render xlsx: @posts.to_xlsx(headers: false) }
+      format.ods { render ods: Post.to_odf(data: @posts) }
+      format.csv{ render csv: @posts.to_csv(headers: false), file_name: 'articles' }
     end
   end
 end
 ```
 
-### Method 3: Save to a file manually
+### Method 2: Save to a file manually
 ```ruby
 File.open('path/to/file.xlsx') do |f|
   f.write{ Post.order(published_at: :asc).to_xlsx }
@@ -89,6 +107,11 @@ File.open('path/to/file.ods') do |f|
 end
 File.open('path/to/file.csv') do |f|
   f.write{ Post.order(published_at: :asc).to_csv }
+end
+
+# Ex. with plain ruby class
+File.open('path/to/file.xlsx') do |f|
+  f.write{ Post.to_xlsx(data: posts_array) }
 end
 ```
 

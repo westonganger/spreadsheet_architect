@@ -10,8 +10,8 @@ module SpreadsheetArchitect
     base.send :extend, ClassMethods
   end
 
-  module ClassMethods
-    def sa_str_humanize(str, capitalize = true)
+  module Helpers
+    def self.str_humanize(str, capitalize = true)
       str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
       if capitalize
         str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
@@ -19,22 +19,22 @@ module SpreadsheetArchitect
       str
     end
 
-    def sa_get_options(options={})
-      if self.ancestors.include?(ActiveRecord::Base) && !self.respond_to?(:spreadsheet_columns) && !options[:spreadsheet_columns]
-        the_column_names = (self.column_names - ["id","created_at","updated_at","deleted_at"])
-        headers = the_column_names.map{|x| sa_str_humanize(x)}
+    def self.get_options(options={}, klass)
+      if klass.ancestors.include?(ActiveRecord::Base) && !klass.respond_to?(:spreadsheet_columns) && !options[:spreadsheet_columns]
+        the_column_names = (klass.column_names - ["id","created_at","updated_at","deleted_at"])
+        headers = the_column_names.map{|x| str_humanize(x)}
         columns = the_column_names.map{|x| x.to_s}
-      elsif options[:spreadsheet_columns] || self.respond_to?(:spreadsheet_columns)
+      elsif options[:spreadsheet_columns] || klass.respond_to?(:spreadsheet_columns)
         headers = []
         columns = []
 
-        array = options[:spreadsheet_columns] || self.spreadsheet_columns || []
+        array = options[:spreadsheet_columns] || klass.spreadsheet_columns || []
         array.each do |x|
           if x.is_a?(Array)
             headers.push x[0].to_s
             columns.push x[1].to_s
           else
-            headers.push sa_str_humanize(x.to_s)
+            headers.push str_humanize(x.to_s)
             columns.push x.to_s
           end
         end
@@ -58,51 +58,38 @@ module SpreadsheetArchitect
         row_style.merge!(options[:row_style])
       end
 
-      sheet_name = options[:sheet_name] || self.name
+      sheet_name = options[:sheet_name] || klass.name
       
       if options[:data]
         data = options[:data].to_a
-      elsif self.ancestors.include?(ActiveRecord::Base)
-        data = where(options[:where]).order(options[:order]).to_a
+      elsif klass.ancestors.include?(ActiveRecord::Base)
+        data = klass.where(options[:where]).order(options[:order]).to_a
       else
         # object must have a to_a method 
-        data = self.to_a
+        data = klass.to_a
       end
 
       types = (options[:types] || []).flatten
 
       return {headers: headers, columns: columns, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
     end
+  end
 
-    def sa_get_row_data(the_columns=[], instance)
-      row_data = []
-      the_columns.each do |col|
-        col.split('.').each_with_index do |x,i| 
-          if i == 0
-            col = instance.instance_eval(x)
-          else
-            col = col.instance_eval(x)
-          end
-        end
-        row_data.push col.to_s
-      end
-      return row_data
-    end
-
+  module ClassMethods
     def to_csv(opts={})
-      options = sa_get_options(opts)
+      options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 
       CSV.generate do |csv|
         csv << options[:headers] if options[:headers]
         
-        options[:data].each do |x|
-          csv << sa_get_row_data(options[:columns], x)
+        options[:data].each do |instance|
+          csv << options[:columns].map{|col| instance.instance_eval(col)}
         end
       end
     end
 
     def to_ods(opts={})
-      options = sa_get_options(opts)
+      options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 
       spreadsheet = ODF::Spreadsheet.new
 
@@ -139,7 +126,6 @@ module SpreadsheetArchitect
         end
       end
 
-      this_class = self
       spreadsheet.table options[:sheet_name] do 
         if options[:headers]
           row do
@@ -148,9 +134,9 @@ module SpreadsheetArchitect
             end
           end
         end
-        options[:data].each do |x|
+        options[:data].each do |instance|
           row do 
-            this_class.sa_get_row_data(options[:columns], x).each do |y|
+            options[:columns].map{|col| instance.instance_eval(col)}.each do |y|
               cell y, style: :row_style
             end
           end
@@ -161,7 +147,7 @@ module SpreadsheetArchitect
     end
 
     def to_xlsx(opts={})
-      options = sa_get_options(opts)
+      options = SpreadsheetArchitect::Helpers.get_options(opts, self)
     
       header_style = {}
       header_style[:fg_color] = options[:header_style].delete(:color)
@@ -198,8 +184,8 @@ module SpreadsheetArchitect
           sheet.add_row options[:headers], style: package.workbook.styles.add_style(header_style)
         end
         
-        options[:data].each do |x|
-          sheet.add_row sa_get_row_data(options[:columns], x), style: package.workbook.styles.add_style(row_style), types: options[:types]
+        options[:data].each do |instance|
+          sheet.add_row options[:columns].map{|col| instance.instance_eval(col)}, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
       end
 
