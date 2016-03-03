@@ -20,27 +20,38 @@ module SpreadsheetArchitect
     end
 
     def self.get_options(options={}, klass)
-      if klass.ancestors.include?(ActiveRecord::Base) && !klass.respond_to?(:spreadsheet_columns) && !options[:spreadsheet_columns]
+      has_custom_columns = klass.instance_methods.include?(:spreadsheet_columns)
+
+      if !options[:data] && klass.ancestors.include?(ActiveRecord::Base)
+        options[:data] = klass.where(options[:where]).order(options[:order]).to_a
+      else
+        raise 'No data option was defined. This is required for plain ruby objects.'
+      end
+
+      if !has_custom_columns && klass.ancestors.include?(ActiveRecord::Base)
         the_column_names = (klass.column_names - ["id","created_at","updated_at","deleted_at"])
         headers = the_column_names.map{|x| str_humanize(x)}
-        columns = the_column_names.map{|x| x.to_s}
-      elsif options[:spreadsheet_columns] || klass.respond_to?(:spreadsheet_columns)
+        columns = the_column_names.map{|x| x.to_sym}
+      elsif has_custom_columns
         headers = []
         columns = []
-
-        array = options[:spreadsheet_columns] || klass.spreadsheet_columns || []
+        array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
         array.each do |x|
           if x.is_a?(Array)
             headers.push x[0].to_s
-            columns.push x[1].to_s
+            columns.push x[1]
           else
             headers.push str_humanize(x.to_s)
-            columns.push x.to_s
+            columns.push x
           end
         end
       else
-        headers = []
-        columns = []
+        raise 'No instance method `spreadsheet_columns` found on this plain ruby object'
+      end
+
+      data = []
+      options[:data].each do |instance|
+        data.push columns.map{|col| col.is_a?(String) ? col : instance.instance_eval(col)}
       end
 
       headers = (options[:headers] == false ? false : headers)
@@ -59,19 +70,10 @@ module SpreadsheetArchitect
       end
 
       sheet_name = options[:sheet_name] || klass.name
-      
-      if options[:data]
-        data = options[:data].to_a
-      elsif klass.ancestors.include?(ActiveRecord::Base)
-        data = klass.where(options[:where]).order(options[:order]).to_a
-      else
-        # object must have a to_a method 
-        data = klass.to_a
-      end
 
       types = (options[:types] || []).flatten
 
-      return {headers: headers, columns: columns, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
+      return {headers: headers, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
     end
   end
 
@@ -82,8 +84,8 @@ module SpreadsheetArchitect
       CSV.generate do |csv|
         csv << options[:headers] if options[:headers]
         
-        options[:data].each do |instance|
-          csv << options[:columns].map{|col| instance.instance_eval(col)}
+        options[:data].each do |row_data|
+          csv << row_data
         end
       end
     end
@@ -134,9 +136,9 @@ module SpreadsheetArchitect
             end
           end
         end
-        options[:data].each do |instance|
+        options[:data].each do |row_data|
           row do 
-            options[:columns].map{|col| instance.instance_eval(col)}.each do |y|
+            row_data.each do |y|
               cell y, style: :row_style
             end
           end
@@ -159,7 +161,9 @@ module SpreadsheetArchitect
       header_style[:b] = options[:header_style].delete(:bold)
       header_style[:sz] = options[:header_style].delete(:font_size)
       header_style[:i] = options[:header_style].delete(:italic)
-      header_style[:u] = options[:header_style].delete(:underline)
+      if options[:header_style][:underline]
+        header_style[:u] = options[:header_style].delete(:underline)
+      end
       header_style.delete_if{|x| x.nil?}
 
       row_style = {}
@@ -172,7 +176,9 @@ module SpreadsheetArchitect
       row_style[:b] = options[:row_style].delete(:bold)
       row_style[:sz] = options[:row_style].delete(:font_size)
       row_style[:i] = options[:row_style].delete(:italic)
-      row_style[:u] = options[:row_style].delete(:underline)
+      if options[:row_style][:underline]
+        row_style[:u] = options[:row_style].delete(:underline)
+      end
       row_style.delete_if{|x| x.nil?}
       
       package = Axlsx::Package.new
@@ -184,8 +190,8 @@ module SpreadsheetArchitect
           sheet.add_row options[:headers], style: package.workbook.styles.add_style(header_style)
         end
         
-        options[:data].each do |instance|
-          sheet.add_row options[:columns].map{|col| instance.instance_eval(col)}, style: package.workbook.styles.add_style(row_style), types: options[:types]
+        options[:data].each do |row_data|
+          sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
       end
 

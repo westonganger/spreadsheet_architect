@@ -1,4 +1,5 @@
 # Spreadsheet Architect
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"/></a>
 
 Spreadsheet Architect lets you turn any activerecord relation or plain ruby class object into a XLSX, ODS, or CSV spreadsheets. Generates columns from model activerecord column_names or from an array of ruby methods.
 
@@ -15,6 +16,9 @@ Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 ```
 
+## Note: Breaking Changes in 1.0.5
+The `spreadseheet_columns` method has been moved from the class to the instance. So now you can use string interpolation in your values. Please re-read the Model section below to see the changes. The side effect of this is if you are using the spreadsheet_columns option directly on the .to_* methods.
+
 
 # Install
 ```ruby
@@ -30,17 +34,25 @@ class Post < ActiveRecord::Base #activerecord not required
   include SpreadsheetArchitect
 
   belongs_to :author
+  belongs_to :category
+  has_many :tags
 
   #optional for activerecord classes, defaults to the models column_names
-  def self.spreadsheet_columns
+  def spreadsheet_columns
     #[[Label, Method/Statement to Call on each Instance]....]
-    [['Title', :title],['Content', 'content'],['Author','author.name rescue nil',['Published?', "(published ? 'Yes' : 'No')"]]]
+    [
+      ['Title', :title],
+      ['Content', content],
+      ['Author', (author.name rescue nil)],
+      ['Published?', (published ? 'Yes' : 'No')],
+      ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
+    ]
 
     # OR just humanize the method to use as the label ex. "Title", "Content", "Author Name", "Published"
-    [:title, 'content', 'author.name rescue nil', :published]
+    [:title, content, (author.name rescue nil), :published]
 
     # OR a Combination of Both
-    [:title, :content, ['Author','author.name rescue nil'], :published]
+    [:title, :content, ['Author',(author.name rescue nil)], :published, ]
   end
 end
 ```
@@ -119,11 +131,11 @@ end
 # Method Options
 
 ### to_xlsx, to_ods, to_csv
-**data** - *Array* - Mainly for Plain Ruby objects pass in an array of instances. Optional for ActiveRecord relations, you can just chain the method to the end of your relation.
+**data** - *Array* - Mainly for Plain Ruby objects pass in an array of instances. Optional for ActiveRecord relations, you can just chain the method to the end of your relation. If Plain Ruby object it defaults to the instances `to_a` method.
 
 **headers** - *Boolean* - Default: true - Pass in false if you do not want a header row.
 
-**spreadsheet_columns** - *Array* - A string array of attributes, methods, or ruby statements to be executed on each instance. Use this to override the models spreadsheet_columns/column_names method for one time.
+**spreadsheet_columns** - *Array* - Use this to override the models spreadsheet_columns/column_names method for one time. Must use symbols that correspond to instance methods of the object. Ex: `[:name, :title, :address]` or `[['Name',:name],['Post Title', :title],['Address', :address]]`
 
 ### to_xlsx
 **sheet_name** - *String*
