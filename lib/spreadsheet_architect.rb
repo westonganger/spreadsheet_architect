@@ -51,7 +51,7 @@ module SpreadsheetArchitect
 
       data = []
       options[:data].each do |instance|
-        data.push columns.map{|col| col.is_a?(String) ? col : instance.instance_eval(col)}
+        data.push columns.map{|col| col.is_a?(String) ? col : instance.instance_eval(col.to_s)}
       end
 
       headers = (options[:headers] == false ? false : headers)
