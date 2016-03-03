@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **March.3.2016**: 1.0.5 - Breaking Changes
+- **March.3.2016**: 1.1.0 - Breaking Changes
   - Move spreadsheet_columns method from the class to the instance
   - Fix Bug: remove default underline on cells
 - **March.1.2016**: 1.0.4
