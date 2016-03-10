@@ -51,7 +51,19 @@ module SpreadsheetArchitect
 
       data = []
       options[:data].each do |instance|
-        data.push columns.map{|col| col.is_a?(String) ? col : instance.instance_eval(col.to_s)}
+        if has_custom_columns && !options[:spreadsheet_columns]
+          row_data = []
+          instance.spreadsheet_columns.each do |x|
+            if x.is_a?(Array)
+              row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
+            else
+              row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
+            end
+          end
+          data.push row_data
+        else
+          data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+        end
       end
 
       headers = (options[:headers] == false ? false : headers)
