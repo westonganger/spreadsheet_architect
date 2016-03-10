@@ -16,6 +16,9 @@ Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 ```
 
+## Note: Major bug fix in 1.2.0
+v.1.1.0 had a major bug in it where it would use only the first records data for non-symbol methods. Please update to 1.2.0 from 1.1.0 as soon as possible.
+
 ## Note: Breaking Changes in 1.1.0
 The `spreadsheet_columns` method has been moved from the class to the instance. So now you can use string interpolation in your values. Please re-read the Model section below to see the changes. The side effect of this is if you are using the spreadsheet_columns option directly on the .to_* methods.
 
