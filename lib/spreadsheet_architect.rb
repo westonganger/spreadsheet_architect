@@ -10,6 +10,18 @@ module SpreadsheetArchitect
     base.send :extend, ClassMethods
   end
 
+  class NoDataError < StandardError
+    def initialize
+      super("Missing data option or relation is empty.")
+    end
+  end
+  
+  class SpreadsheetColumnsNotDefined < StandardError
+    def initialize(klass=nil)
+      super("The spreadsheet_columns option is not defined on #{klass.name}")
+    end
+  end
+
   module Helpers
     def self.str_humanize(str, capitalize = true)
       str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
@@ -22,13 +34,15 @@ module SpreadsheetArchitect
     def self.get_options(options={}, klass)
       has_custom_columns = klass.instance_methods.include?(:spreadsheet_columns)
 
-      if !options[:data] && klass.ancestors.include?(ActiveRecord::Base)
+      if !options[:data] && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
         options[:data] = klass.where(options[:where]).order(options[:order]).to_a
-      else
-        raise 'No data option was defined. This is required for plain ruby objects.'
       end
 
-      if !has_custom_columns && klass.ancestors.include?(ActiveRecord::Base)
+      if !options[:data] || options[:data].empty?
+        raise SpreadsheetArchitect::NoDataError
+      end
+
+      if !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
         the_column_names = (klass.column_names - ["id","created_at","updated_at","deleted_at"])
         headers = the_column_names.map{|x| str_humanize(x)}
         columns = the_column_names.map{|x| x.to_sym}
@@ -46,7 +60,7 @@ module SpreadsheetArchitect
           end
         end
       else
-        raise 'No instance method `spreadsheet_columns` found on this plain ruby object'
+        raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
       end
 
       data = []
