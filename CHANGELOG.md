@@ -1,6 +1,13 @@
 CHANGELOG
 ---------
 
+- **March.3.2016**: 1.2.2
+  - Make cell type numeric if value is numeric
+- **March.3.2016**: 1.2.1
+  - Better error reporting
+  - Fix for Plain ruby models
+- **March.3.2016**: 1.2.0
+  - Fix Bug: first row data repeated for all records on custom values
 - **March.3.2016**: 1.1.0 - Breaking Changes
   - Move spreadsheet_columns method from the class to the instance
   - Fix Bug: remove default underline on cells

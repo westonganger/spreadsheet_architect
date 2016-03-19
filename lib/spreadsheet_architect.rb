@@ -28,7 +28,18 @@ module SpreadsheetArchitect
       if capitalize
         str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
       end
-      str
+      return str
+    end
+
+    def self.get_type(value, type=nil)
+      #return type.to_sym if !type.blank?
+      return :string if value.blank?
+      if value.is_a?(Numeric)
+        type = :float
+      else
+        type = :string
+      end
+      return type
     end
 
     def self.get_options(options={}, klass)
@@ -43,20 +54,26 @@ module SpreadsheetArchitect
       end
 
       if !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
-        the_column_names = (klass.column_names - ["id","created_at","updated_at","deleted_at"])
+        ignored_columns = ["id","created_at","updated_at","deleted_at"] 
+        the_column_names = (klass.column_names - ignored_columns)
         headers = the_column_names.map{|x| str_humanize(x)}
         columns = the_column_names.map{|x| x.to_sym}
+        types = klass.columns.keep_if{|x| !ignored_columns.include?(x.name)}.collect(&:type)
+        types.map!{|type| self.get_type(nil, type)}
       elsif has_custom_columns
         headers = []
         columns = []
+        types = []
         array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
         array.each do |x|
           if x.is_a?(Array)
             headers.push x[0].to_s
             columns.push x[1]
+            types.push self.get_type(x[1], x[2])
           else
             headers.push str_humanize(x.to_s)
             columns.push x
+            types.push self.get_type(x, nil)
           end
         end
       else
@@ -96,8 +113,6 @@ module SpreadsheetArchitect
       end
 
       sheet_name = options[:sheet_name] || klass.name
-
-      types = (options[:types] || []).flatten
 
       return {headers: headers, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
     end
@@ -164,8 +179,8 @@ module SpreadsheetArchitect
         end
         options[:data].each do |row_data|
           row do 
-            row_data.each do |y|
-              cell y, style: :row_style
+            row_data.each_with_index do |y,i|
+              cell y, style: :row_style, type: options[:types][i]
             end
           end
         end
