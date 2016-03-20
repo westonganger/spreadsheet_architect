@@ -40,12 +40,15 @@ class Post < ActiveRecord::Base #activerecord not required
   #optional for activerecord classes, defaults to the models column_names
   def spreadsheet_columns
 
-    #[[Label, Method/Statement to Call on each Instance]....]
+    #[[Label, Method/Statement to Call on each Instance, Cell Type(optional)]....]
     [
       ['Title', :title],
       ['Content', content],
       ['Author', (author.name rescue nil)],
       ['Published?', (published ? 'Yes' : 'No')],
+      ['Published At', :published_at, :date],
+      ['# of Views', :number_of_views, :integer],
+      ['Rating', :rating, :float],
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
 

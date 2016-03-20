@@ -32,7 +32,7 @@ module SpreadsheetArchitect
     end
 
     def self.get_type(value, type=nil)
-      #return type if !type.blank?
+      return type if !type.blank?
       if value.is_a?(Numeric) || [:integer, :float, :decimal].include?(type)
         type = :float
       else
