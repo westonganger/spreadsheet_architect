@@ -31,10 +31,16 @@ module SpreadsheetArchitect
       return str
     end
 
-    def self.get_type(value, type=nil)
+    def self.get_type(value, type=nil, last_run=false)
       return type if !type.blank?
-      if value.is_a?(Numeric) || [:integer, :float, :decimal].include?(type)
-        type = :float
+      if value.is_a?(Numeric)
+        if [:float, :decimal].include?(type)
+          type = :float
+        else
+          type = :integer
+        end
+      elsif !last_run && value.is_a?(Symbol)
+        type = :symbol
       else
         type = :string
       end
@@ -64,7 +70,7 @@ module SpreadsheetArchitect
         columns = []
         types = []
         array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
-        array.each do |x|
+        array.each_with_index do |x,i|
           if x.is_a?(Array)
             headers.push x[0].to_s
             columns.push x[1]
@@ -93,6 +99,15 @@ module SpreadsheetArchitect
           data.push row_data
         else
           data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+        end
+      end
+      
+      # Fixes missing types from symbol methods
+      if has_custom_columns || options[:spreadsheet_columns]
+        options[:data].first.each_with_index do |x,i|
+          if types[i] == :symbol
+            types[i] = self.get_type(x, nil, true)
+          end
         end
       end
 
