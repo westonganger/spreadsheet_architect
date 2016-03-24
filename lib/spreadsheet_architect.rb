@@ -74,7 +74,8 @@ module SpreadsheetArchitect
           if x.is_a?(Array)
             headers.push x[0].to_s
             columns.push x[1]
-            types.push self.get_type(x[1], x[2])
+            #types.push self.get_type(x[1], x[2])
+            types.push self.get_type(x[1], nil)
           else
             headers.push str_humanize(x.to_s)
             columns.push x

@@ -46,9 +46,9 @@ class Post < ActiveRecord::Base #activerecord not required
       ['Content', content],
       ['Author', (author.name rescue nil)],
       ['Published?', (published ? 'Yes' : 'No')],
-      ['Published At', :published_at, :date],
-      ['# of Views', :number_of_views, :integer],
-      ['Rating', :rating, :float],
+      ['Published At', :published_at],
+      ['# of Views', :number_of_views],
+      ['Rating', :rating],
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
 
