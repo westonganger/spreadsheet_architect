@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+- **March.25.2016**: 1.2.5
+  - Fix each_with_index bug
+- **March.24.2016**: 1.2.4
+  - Fix cell type logic for symbol methods
 - **March.20.2016**: 1.2.3
   - Fix cell type logic
 - **March.19.2016**: 1.2.2

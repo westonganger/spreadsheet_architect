@@ -70,7 +70,7 @@ module SpreadsheetArchitect
         columns = []
         types = []
         array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
-        array.each_with_index do |x,i|
+        array.each do |x|
           if x.is_a?(Array)
             headers.push x[0].to_s
             columns.push x[1]
@@ -105,7 +105,7 @@ module SpreadsheetArchitect
       
       # Fixes missing types from symbol methods
       if has_custom_columns || options[:spreadsheet_columns]
-        options[:data].first.each_with_index do |x,i|
+        data.first.each_with_index do |x,i|
           if types[i] == :symbol
             types[i] = self.get_type(x, nil, true)
           end
