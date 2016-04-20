@@ -52,11 +52,11 @@ class Post < ActiveRecord::Base #activerecord not required
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
 
-    # OR just humanize the method to use as the label ex. "Title", "Content", "Author Name", "Published"
-    [:title, content, (author.name rescue nil), :published]
+    # OR if you want to use the method or attribute name as a label it must be a symbol ex. "Title", "Content", "Published"
+    [:title, :content, :published]
 
-    # OR a Combination of Both
-    [:title, :content, ['Author',(author.name rescue nil)], :published]
+    # OR a Combination of Both ex. "Title", "Content", "Author Name", "Published"
+    [:title, :content, ['Author Name',(author.name rescue nil)], :published]
   end
 end
 ```
@@ -163,3 +163,6 @@ Only the generic options
 Created by Weston Ganger - @westonganger
 
 Heavily influenced by the dead gem `acts_as_xlsx` by @randym but adapted to work for more spreadsheet types and plain ruby models.
+
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"/></a>
