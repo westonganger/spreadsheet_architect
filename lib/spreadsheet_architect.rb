@@ -112,9 +112,15 @@ module SpreadsheetArchitect
         end
       end
 
-      headers = (options[:headers] == false ? false : headers)
+      if options[:headers] == false || klass::SPREADSHEET_OPTIONS[:headers] == false
+        headers = false
+      end
 
-      header_style = {background_color: "AAAAAA", color: "FFFFFF", align: :center, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+      if defined?(klass::SPREADSHEET_OPTIONS)
+        header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style].merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
+      else
+        header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style]
+      end
       
       if options[:header_style]
         header_style.merge!(options[:header_style])
@@ -122,12 +128,21 @@ module SpreadsheetArchitect
         header_style = false
       end
 
-      row_style = {background_color: nil, color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+      if defined?(klass::SPREADSHEET_OPTIONS)
+        row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style].merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
+      else
+        row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style]
+      end
+
       if options[:row_style]
         row_style.merge!(options[:row_style])
       end
 
-      sheet_name = options[:sheet_name] || klass.name
+      if defined?(klass::SPREADSHEET_OPTIONS)
+        sheet_name = options[:sheet_name] || klass::SPREADSHEET_OPTIONS[:sheet_name] || SpreadsheetArchitect::SPREADSHEET_OPTIONS[:sheet_name] || klass.name
+      else
+        sheet_name = options[:sheet_name] || SpreadsheetArchitect::SPREADSHEET_OPTIONS[:sheet_name] || klass.name
+      end
 
       return {headers: headers, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
     end
@@ -254,4 +269,11 @@ module SpreadsheetArchitect
       return package.to_stream.read
     end
   end
+
+  SPREADSHEET_OPTIONS = {
+    headers: true,
+    #sheet_name: self.name,
+    header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false},
+    row_style: {background_color: nil, color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false}
+  }
 end

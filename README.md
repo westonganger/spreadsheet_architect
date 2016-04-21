@@ -131,7 +131,6 @@ File.open('path/to/file.xlsx') do |f|
 end
 ```
 
-
 # Method Options
 
 ### to_xlsx, to_ods, to_csv
@@ -151,12 +150,45 @@ end
 ### to_ods
 **sheet_name** - *String*
 
-**header_style** - *Hash* - Default: {color: "000000", align: :center, font_size: 10, bold: true} - Note: Currently only supports these options
+**header_style** - *Hash* - Default: `{color: "000000", align: :center, font_size: 10, bold: true}` - Note: Currently only supports these options
 
-**row_style** - *Hash* - Default: {color: "000000", align: :left, font_size: 10, bold: false} - Note: Currently only supports these options
+**row_style** - *Hash* - Default: `{color: "000000", align: :left, font_size: 10, bold: false}` - Note: Currently only supports these options
 
 ### to_csv
 Only the generic options
+
+
+# Change model default method options
+```ruby
+class Post
+  include SpreadsheetArchitect
+
+  def spreadsheet_columns
+    [:name, :content]
+  end
+
+  SPREADSHEET_OPTIONS = {
+    headers: true,
+    header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    row_style: {background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    sheet_name: self.name
+  }
+end
+```
+
+# Change project wide default method options
+```ruby
+# config/initializers/spreadsheet_architect.rb
+
+SpreadsheetArchitect.module_eval do
+  set_const('SPREADSHEET_OPTIONS, {
+    headers: true,
+    header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    row_style: {background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    sheet_name: 'My Project Export'
+  })
+end
+```
 
 
 # Credits
