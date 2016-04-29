@@ -16,10 +16,6 @@ Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 ```
 
-## Note: Breaking Changes in 1.1.0
-The `spreadsheet_columns` method has been moved from the class to the instance. So now you can use string interpolation in your values. Please re-read the Model section below to see the changes. The side effect of this is if you are using the spreadsheet_columns option directly on the .to_* methods.
-
-
 # Install
 ```ruby
 gem install spreadsheet_architect
