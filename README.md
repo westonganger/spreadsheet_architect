@@ -11,7 +11,7 @@ Key Features:
 - Plain Ruby support
 - Plain from ActiveRecord relations or Ruby Objects from models ActiveRecord, or 2d Array Data
 - Easily style headers and rows
-- Model/Class or Prohect specific defaults
+- Model/Class or Project specific defaults
 - Simple to use ActionController renderers
 
 Spreadsheet Architect adds the following methods to your class:
@@ -22,16 +22,16 @@ Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 
 # Plain Ruby Class
-Post.to_xlsx(data: posts_array)
-Post.to_ods(data: posts_array)
-Post.to_csv(data: posts_array)
+Post.to_xlsx(instances: posts_array)
+Post.to_ods(instances: posts_array)
+Post.to_csv(instances: posts_array)
 
 # One Time Usage
 headers = ['Col 1','Col 2','Col 3']
 data = [[1,2,3], [4,5,6], [7,8,9]]
-SpreadsheetArchitect::to_xlsx(data: data, headers: headers)
-SpreadsheetArchitect::to_ods(data: data, headers: headers)
-SpreadsheetArchitect::to_csv(data: data, header: false)
+SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
+SpreadsheetArchitect.to_ods(data: data, headers: headers)
+SpreadsheetArchitect.to_csv(data: data, header: false)
 ```
 
 # Install
@@ -120,7 +120,7 @@ class PostsController < ActionController::Base
     respond_to do |format|
       format.html
       format.xlsx { render xlsx: @posts.to_xlsx(headers: false) }
-      format.ods { render ods: Post.to_odf(data: @posts) }
+      format.ods { render ods: Post.to_odf(instances: @posts) }
       format.csv{ render csv: @posts.to_csv(headers: false), file_name: 'articles' }
     end
   end
@@ -142,7 +142,7 @@ end
 
 # Ex. with plain ruby class
 File.open('path/to/file.xlsx') do |f|
-  f.write{ Post.to_xlsx(data: posts_array) }
+  f.write{ Post.to_xlsx(instances: posts_array) }
 end
 
 # Ex. One time Usage
@@ -153,9 +153,10 @@ File.open('path/to/file.xlsx') do |f|
 end
 ```
 
-# Method Options
+# Method & Options
 
-### .to_xlsx - (on custom class/model)
+<br>
+#### `.to_xlsx` - (on custom class/model)
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
@@ -165,7 +166,8 @@ end
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
   
-### .to_ods - (on custom class/model)
+<br>
+#### `.to_ods` - (on custom class/model)
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
@@ -175,14 +177,16 @@ end
 |**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
 |**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
   
-### .to_csv - (on custom class/model)
+<br>
+#### `.to_csv` - (on custom class/model)
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
 |**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
 |**headers**|Boolean|`true`|Pass false to skip the header row.|
 
-### SpreadsheetArchitect.to_xlsx
+<br>
+#### `SpreadsheetArchitect.to_xlsx`
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells. |
@@ -191,7 +195,8 @@ end
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
   
-### SpreadsheetArchitect.to_ods
+<br> 
+#### `SpreadsheetArchitect.to_ods`
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
@@ -200,7 +205,8 @@ end
 |**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
 |**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
   
-### SpreadsheetArchitect.to_csv
+<br>
+#### `SpreadsheetArchitect.to_csv`
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells.|

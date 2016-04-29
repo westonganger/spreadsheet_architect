@@ -59,15 +59,15 @@ module SpreadsheetArchitect
           raise SpreadsheetArchitect::NoDataError
         end
 
-        if !options[:headers] || options[:headers].empty?
-          options[:headers] = false
+        if options[:headers] && !options[:headers].empty?
+          headers = options[:headers]
+        else
+          headers = false
         end
         
-        data = []
-        options[:data].each do |x|
-          data.push x
-        end
+        data = options[:data]
 
+        types = []
         data.first.each do |x|
           types.push self.get_type(x, nil)
         end
@@ -86,7 +86,7 @@ module SpreadsheetArchitect
           headers = []
           columns = []
           types = []
-          array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
+          array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
           array.each do |x|
             if x.is_a?(Array)
               headers.push x[0].to_s
@@ -108,6 +108,14 @@ module SpreadsheetArchitect
           types.map!{|type| self.get_type(nil, type)}
         else
           raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
+        end
+
+        if options[:headers].nil?
+          options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
+          options[:headers] = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:headers] if options[:headers].nil?
+        end
+        if options[:headers].nil? || options[:headers] == false
+          headers = false
         end
 
         data = []
@@ -137,36 +145,38 @@ module SpreadsheetArchitect
         end
       end
 
-      return options.merge(data: data, headers: headers, types: types)
+      return options.merge(headers: headers, data: data, types: types)
     end
 
     def self.get_options(options={}, klass)
-      options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if options[:headers].nil? && defined?(klass::SPREADSHEET_OPTIONS)
-      options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if options[:headers].nil?
-      if options[:headers] == false
-        headers = false
-      end
-
-      if defined?(klass::SPREADSHEET_OPTIONS)
-        header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style].merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
+      if options[:headers]
+        if defined?(klass::SPREADSHEET_OPTIONS)
+          header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style].merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
+        else
+          header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style]
+        end
+        
+        if options[:header_style]
+          header_style.merge!(options[:header_style])
+        elsif options[:header_style] == false
+          header_style = false
+        end
       else
-        header_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:header_style]
-      end
-      
-      if options[:header_style]
-        header_style.merge!(options[:header_style])
-      elsif options[:header_style] == false
         header_style = false
       end
 
-      if defined?(klass::SPREADSHEET_OPTIONS)
-        row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style].merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
+      if options[:row_style] == false
+        row_style = false
       else
-        row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style]
-      end
+        if defined?(klass::SPREADSHEET_OPTIONS)
+          row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style].merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
+        else
+          row_style = SpreadsheetArchitect::SPREADSHEET_OPTIONS[:row_style]
+        end
 
-      if options[:row_style]
-        row_style.merge!(options[:row_style])
+        if options[:row_style]
+          row_style.merge!(options[:row_style])
+        end
       end
 
       if defined?(klass::SPREADSHEET_OPTIONS)
@@ -175,7 +185,7 @@ module SpreadsheetArchitect
         sheet_name = options[:sheet_name] || SpreadsheetArchitect::SPREADSHEET_OPTIONS[:sheet_name] || klass.name
       end
 
-      return {headers: headers, header_style: header_style, row_style: row_style, types: types, sheet_name: sheet_name, data: data}
+      return {headers: options[:headers], header_style: header_style, row_style: row_style, types: options[:types], sheet_name: sheet_name, data: options[:data]}
     end
   end
 
@@ -257,34 +267,38 @@ module SpreadsheetArchitect
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
     
       header_style = {}
-      header_style[:fg_color] = options[:header_style].delete(:color)
-      header_style[:bg_color] = options[:header_style].delete(:background_color)
-      if header_style[:align]
-        header_style[:alignment] = {}
-        header_style[:alignment][:horizontal] = options[:header_style].delete(:align)
+      if options[:header_style]
+        header_style[:fg_color] = options[:header_style].delete(:color)
+        header_style[:bg_color] = options[:header_style].delete(:background_color)
+        if header_style[:align]
+          header_style[:alignment] = {}
+          header_style[:alignment][:horizontal] = options[:header_style].delete(:align)
+        end
+        header_style[:b] = options[:header_style].delete(:bold)
+        header_style[:sz] = options[:header_style].delete(:font_size)
+        header_style[:i] = options[:header_style].delete(:italic)
+        if options[:header_style][:underline]
+          header_style[:u] = options[:header_style].delete(:underline)
+        end
+        header_style.delete_if{|x| x.nil?}
       end
-      header_style[:b] = options[:header_style].delete(:bold)
-      header_style[:sz] = options[:header_style].delete(:font_size)
-      header_style[:i] = options[:header_style].delete(:italic)
-      if options[:header_style][:underline]
-        header_style[:u] = options[:header_style].delete(:underline)
-      end
-      header_style.delete_if{|x| x.nil?}
 
       row_style = {}
-      row_style[:fg_color] = options[:row_style].delete(:color)
-      row_style[:bg_color] = options[:row_style].delete(:background_color)
-      if row_style[:align]
-        row_style[:alignment] = {}
-        row_style[:alignment][:horizontal] = options[:row_style][:align]
+      if options[:row_style]
+        row_style[:fg_color] = options[:row_style].delete(:color)
+        row_style[:bg_color] = options[:row_style].delete(:background_color)
+        if row_style[:align]
+          row_style[:alignment] = {}
+          row_style[:alignment][:horizontal] = options[:row_style][:align]
+        end
+        row_style[:b] = options[:row_style].delete(:bold)
+        row_style[:sz] = options[:row_style].delete(:font_size)
+        row_style[:i] = options[:row_style].delete(:italic)
+        if options[:row_style][:underline]
+          row_style[:u] = options[:row_style].delete(:underline)
+        end
+        row_style.delete_if{|x| x.nil?}
       end
-      row_style[:b] = options[:row_style].delete(:bold)
-      row_style[:sz] = options[:row_style].delete(:font_size)
-      row_style[:i] = options[:row_style].delete(:italic)
-      if options[:row_style][:underline]
-        row_style[:u] = options[:row_style].delete(:underline)
-      end
-      row_style.delete_if{|x| x.nil?}
       
       package = Axlsx::Package.new
 
@@ -304,7 +318,7 @@ module SpreadsheetArchitect
     end
   end
 
-  include SpreadsheetArchitect::ClassMethods
+  extend SpreadsheetArchitect::ClassMethods
 
   SPREADSHEET_OPTIONS = {
     headers: true,
