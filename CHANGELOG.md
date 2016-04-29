@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+- **April.29.2016**: 1.4.0
+  - Add to_xlsx, to_ods, & to_csv to SpreadsheetArchitect model for direct calling by passing in cell data
+- **April.21.2016**: 1.3.0
+  - Add ability to create class/model and project option defaults
 - **March.25.2016**: 1.2.5
   - Fix each_with_index bug
 - **March.24.2016**: 1.2.4

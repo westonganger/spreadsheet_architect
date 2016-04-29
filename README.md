@@ -1,24 +1,38 @@
 # Spreadsheet Architect
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"/></a>
 
-Spreadsheet Architect lets you turn any activerecord relation or plain ruby class object into a XLSX, ODS, or CSV spreadsheets. Generates columns from model activerecord column_names or from an array of ruby methods.
+Spreas
+
+Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
+
+Key Features:
+
+- Can generate headers & columns from ActiveRecord column_names, or a Class/Model's spreadsheet_columns method, or one creation with 2D array of data
+- Plain Ruby support
+- Plain from ActiveRecord relations or Ruby Objects from models ActiveRecord, or 2d Array Data
+- Easily style headers and rows
+- Model/Class or Prohect specific defaults
+- Simple to use ActionController renderers
 
 Spreadsheet Architect adds the following methods to your class:
 ```ruby
-# Plain Ruby
+# Rails ActiveRecord Model
+Post.order(name: :asc).where(published: true).to_xlsx
+Post.order(name: :asc).where(published: true).to_ods
+Post.order(name: :asc).where(published: true).to_csv
+
+# Plain Ruby Class
 Post.to_xlsx(data: posts_array)
 Post.to_ods(data: posts_array)
 Post.to_csv(data: posts_array)
 
-# Rails
-Post.order(name: :asc).where(published: true).to_xlsx
-Post.order(name: :asc).where(published: true).to_ods
-Post.order(name: :asc).where(published: true).to_csv
+# One Time Usage
+headers = ['Col 1','Col 2','Col 3']
+data = [[1,2,3], [4,5,6], [7,8,9]]
+SpreadsheetArchitect::to_xlsx(data: data, headers: headers)
+SpreadsheetArchitect::to_ods(data: data, headers: headers)
+SpreadsheetArchitect::to_csv(data: data, header: false)
 ```
-
-## Note: Breaking Changes in 1.1.0
-The `spreadsheet_columns` method has been moved from the class to the instance. So now you can use string interpolation in your values. Please re-read the Model section below to see the changes. The side effect of this is if you are using the spreadsheet_columns option directly on the .to_* methods.
-
 
 # Install
 ```ruby
@@ -26,7 +40,7 @@ gem install spreadsheet_architect
 ```
 
 
-# Setup
+# Class/Model Setup
 
 ### Model
 ```ruby
@@ -115,6 +129,7 @@ end
 
 ### Method 2: Save to a file manually
 ```ruby
+# Ex. with ActiveRecord realtion
 File.open('path/to/file.xlsx') do |f|
   f.write{ Post.order(published_at: :asc).to_xlsx }
 end
@@ -129,33 +144,68 @@ end
 File.open('path/to/file.xlsx') do |f|
   f.write{ Post.to_xlsx(data: posts_array) }
 end
+
+# Ex. One time Usage
+File.open('path/to/file.xlsx') do |f|
+  headers = ['Col 1','Col 2','Col 3']
+  data = [[1,2,3], [4,5,6], [7,8,9]]
+  f.write{ SpreadsheetArchitect::to_xlsx(data: data, headers: headers) }
+end
 ```
 
 # Method Options
 
-### to_xlsx, to_ods, to_csv
-**data** - *Array* - Mainly for Plain Ruby objects pass in an array of instances. Optional for ActiveRecord relations, you can just chain the method to the end of your relation. If Plain Ruby object it defaults to the instances `to_a` method.
-
-**headers** - *Boolean* - Default: true - Pass in false if you do not want a header row.
-
-**spreadsheet_columns** - *Array* - Use this to override the models spreadsheet_columns/column_names method for one time. Must use symbols that correspond to instance methods of the object. Ex: `[:name, :title, :address]` or `[['Name',:name],['Post Title', :title],['Address', :address]]`
-
-### to_xlsx
-**sheet_name** - *String*
-
-**header_style** - *Hash* - Default: `{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
+### .to_xlsx - (on custom class/model)
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
+|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**|Boolean|`true`|Pass false to skip the header row.|
+|**sheet_name**|String|Class name||
+|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
   
-**row_style** - Hash - Default: `{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`
+### .to_ods - (on custom class/model)
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
+|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**|Boolean|`true`|Pass false to skip the header row.|
+|**sheet_name**|String|Class name||
+|**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
+|**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
+  
+### .to_csv - (on custom class/model)
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
+|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**|Boolean|`true`|Pass false to skip the header row.|
 
-### to_ods
-**sheet_name** - *String*
+### SpreadsheetArchitect.to_xlsx
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**data**|Array| |**Required** 2D Array of data for the non-header row cells. |
+|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
+|**sheet_name**|String|`SpreadsheetArchitect`||
+|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
+  
+### SpreadsheetArchitect.to_ods
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
+|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
+|**sheet_name**|String|`SpreadsheetArchitect`||
+|**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
+|**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
+  
+### SpreadsheetArchitect.to_csv
+|Option|Type|Default|Notes|
+|---|---|---|---|
+|**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
+|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
 
-**header_style** - *Hash* - Default: `{color: "000000", align: :center, font_size: 10, bold: true}` - Note: Currently only supports these options
-
-**row_style** - *Hash* - Default: `{color: "000000", align: :left, font_size: 10, bold: false}` - Note: Currently only supports these options
-
-### to_csv
-Only the generic options
 
 
 # Change model default method options

@@ -12,7 +12,13 @@ module SpreadsheetArchitect
 
   class NoDataError < StandardError
     def initialize
-      super("Missing data option or relation is empty.")
+      super("Missing data option or data is empty")
+    end
+  end
+
+  class NoInstancesError < StandardError
+    def initialize
+      super("Missing instances option or relation is empty.")
     end
   end
   
@@ -47,72 +53,97 @@ module SpreadsheetArchitect
       return type
     end
 
-    def self.get_options(options={}, klass)
-      has_custom_columns = klass.instance_methods.include?(:spreadsheet_columns)
+    def self.get_cell_data(options={}, klass)
+      if klass.name == 'SpreadsheetArchitect'
+        if !options[:data] || options[:data].empty?
+          raise SpreadsheetArchitect::NoDataError
+        end
 
-      if !options[:data] && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
-        options[:data] = klass.where(options[:where]).order(options[:order]).to_a
-      end
+        if !options[:headers] || options[:headers].empty?
+          options[:headers] = false
+        end
+        
+        data = []
+        options[:data].each do |x|
+          data.push x
+        end
 
-      if !options[:data] || options[:data].empty?
-        raise SpreadsheetArchitect::NoDataError
-      end
-
-      if !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
-        ignored_columns = ["id","created_at","updated_at","deleted_at"] 
-        the_column_names = (klass.column_names - ignored_columns)
-        headers = the_column_names.map{|x| str_humanize(x)}
-        columns = the_column_names.map{|x| x.to_sym}
-        types = klass.columns.keep_if{|x| !ignored_columns.include?(x.name)}.collect(&:type)
-        types.map!{|type| self.get_type(nil, type)}
-      elsif has_custom_columns
-        headers = []
-        columns = []
-        types = []
-        array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
-        array.each do |x|
-          if x.is_a?(Array)
-            headers.push x[0].to_s
-            columns.push x[1]
-            #types.push self.get_type(x[1], x[2])
-            types.push self.get_type(x[1], nil)
-          else
-            headers.push str_humanize(x.to_s)
-            columns.push x
-            types.push self.get_type(x, nil)
-          end
+        data.first.each do |x|
+          types.push self.get_type(x, nil)
         end
       else
-        raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
-      end
+        has_custom_columns = options[:spreadsheet_columns] || klass.instance_methods.include?(:spreadsheet_columns)
 
-      data = []
-      options[:data].each do |instance|
-        if has_custom_columns && !options[:spreadsheet_columns]
-          row_data = []
-          instance.spreadsheet_columns.each do |x|
+        if !options[:instances] && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
+          options[:instances] = klass.where(options[:where]).order(options[:order]).to_a
+        end
+
+        if !options[:instances] || options[:instances].empty?
+          raise SpreadsheetArchitect::NoInstancesError
+        end
+
+        if has_custom_columns 
+          headers = []
+          columns = []
+          types = []
+          array = options[:spreadsheet_columns] || options[:data].first.spreadsheet_columns
+          array.each do |x|
             if x.is_a?(Array)
-              row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
+              headers.push x[0].to_s
+              columns.push x[1]
+              #types.push self.get_type(x[1], x[2])
+              types.push self.get_type(x[1], nil)
             else
-              row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
+              headers.push str_humanize(x.to_s)
+              columns.push x
+              types.push self.get_type(x, nil)
             end
           end
-          data.push row_data
+        elsif !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
+          ignored_columns = ["id","created_at","updated_at","deleted_at"] 
+          the_column_names = (klass.column_names - ignored_columns)
+          headers = the_column_names.map{|x| str_humanize(x)}
+          columns = the_column_names.map{|x| x.to_sym}
+          types = klass.columns.keep_if{|x| !ignored_columns.include?(x.name)}.collect(&:type)
+          types.map!{|type| self.get_type(nil, type)}
         else
-          data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+          raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
         end
-      end
+
+        data = []
+        options[:instances].each do |instance|
+          if has_custom_columns && !options[:spreadsheet_columns]
+            row_data = []
+            instance.spreadsheet_columns.each do |x|
+              if x.is_a?(Array)
+                row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
+              else
+                row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
+              end
+            end
+            data.push row_data
+          else
+            data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+          end
+        end
       
-      # Fixes missing types from symbol methods
-      if has_custom_columns || options[:spreadsheet_columns]
-        data.first.each_with_index do |x,i|
-          if types[i] == :symbol
-            types[i] = self.get_type(x, nil, true)
+        # Fixes missing types from symbol methods
+        if has_custom_columns || options[:spreadsheet_columns]
+          data.first.each_with_index do |x,i|
+            if types[i] == :symbol
+              types[i] = self.get_type(x, nil, true)
+            end
           end
         end
       end
 
-      if options[:headers] == false || klass::SPREADSHEET_OPTIONS[:headers] == false
+      return options.merge(data: data, headers: headers, types: types)
+    end
+
+    def self.get_options(options={}, klass)
+      options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if options[:headers].nil? && defined?(klass::SPREADSHEET_OPTIONS)
+      options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if options[:headers].nil?
+      if options[:headers] == false
         headers = false
       end
 
@@ -150,6 +181,7 @@ module SpreadsheetArchitect
 
   module ClassMethods
     def to_csv(opts={})
+      opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 
       CSV.generate do |csv|
@@ -162,6 +194,7 @@ module SpreadsheetArchitect
     end
 
     def to_ods(opts={})
+      opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 
       spreadsheet = ODF::Spreadsheet.new
@@ -220,6 +253,7 @@ module SpreadsheetArchitect
     end
 
     def to_xlsx(opts={})
+      opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
     
       header_style = {}
@@ -269,6 +303,8 @@ module SpreadsheetArchitect
       return package.to_stream.read
     end
   end
+
+  include SpreadsheetArchitect::ClassMethods
 
   SPREADSHEET_OPTIONS = {
     headers: true,
