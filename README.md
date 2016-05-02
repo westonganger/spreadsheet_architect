@@ -223,8 +223,8 @@ class Post
 
   SPREADSHEET_OPTIONS = {
     headers: true,
-    header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    row_style: {background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     sheet_name: self.name
   }
 end
@@ -235,10 +235,10 @@ end
 # config/initializers/spreadsheet_architect.rb
 
 SpreadsheetArchitect.module_eval do
-  set_const('SPREADSHEET_OPTIONS, {
+  const_set('SPREADSHEET_OPTIONS', {
     headers: true,
-    header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    row_style: {background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     sheet_name: 'My Project Export'
   })
 end
