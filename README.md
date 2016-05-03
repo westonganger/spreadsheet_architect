@@ -1,5 +1,5 @@
 # Spreadsheet Architect
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"/></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Buy Me A Coffee"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Buy Me A Coffee"/></a>
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
 
@@ -12,7 +12,7 @@ Key Features:
 - Model/Class or Project specific defaults
 - Simple to use ActionController renderers
 
-Spreadsheet Architect adds the following methods to your class:
+Spreadsheet Architect adds the following methods:
 ```ruby
 # Rails ActiveRecord Model
 Post.order(name: :asc).where(published: true).to_xlsx
@@ -30,13 +30,18 @@ data = [[1,2,3], [4,5,6], [7,8,9]]
 SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
 SpreadsheetArchitect.to_ods(data: data, headers: headers)
 SpreadsheetArchitect.to_csv(data: data, header: false)
+
+# These return a ruby object that can be further manipulated
+# These methods may also be used on models/classes
+SpreadsheetArchitect.to_axlsx('package', {data: data, headers: headers})
+SpreadsheetArchitect.to_axlsx('sheet', {data: data, headers: headers})
+SpreadsheetArchitect.to_rodf_spreadsheet(data: data, headers: headers)
 ```
 
 # Install
 ```ruby
 gem install spreadsheet_architect
 ```
-
 
 # Class/Model Setup
 
@@ -162,7 +167,7 @@ end
 |**headers**|Boolean|`true`|Pass false to skip the header row.|
 |**sheet_name**|String|Class name||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows.|
   
 <br>
 #### `.to_ods` - (on custom class/model)
@@ -191,7 +196,7 @@ end
 |**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
 |**sheet_name**|String|`SpreadsheetArchitect`||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|Styles for non-header rows.|
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows.|
   
 <br> 
 #### `SpreadsheetArchitect.to_ods`
@@ -209,7 +214,6 @@ end
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
 |**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
-
 
 
 # Change model default method options
@@ -244,6 +248,23 @@ SpreadsheetArchitect.module_eval do
 end
 ```
 
+# Format all numbers, money, or currency in xlsx only
+
+Unfortunately so far I have only been successful in applying the format_code to all numbers in the entire spreadsheet.
+
+```
+# Ex. dollar sign, comma's, and minumum two decimal places
+Product.to_xlsx(headers: headers, data: data, number_format_code: "$#,##0.00")
+```
+
+# TODO
+
+Would love for any help with new features for this projects. Some desired features are:
+
+- More ODS style options
+- Apply format codes to only certain columns (xlsx)
+- Add Columns styles (xlsx & ods)
+- Create multiple sheets (xlsx & ods)
 
 # Credits
 Created by Weston Ganger - @westonganger
@@ -251,4 +272,4 @@ Created by Weston Ganger - @westonganger
 Heavily influenced by the dead gem `acts_as_xlsx` by @randym but adapted to work for more spreadsheet types and plain ruby models.
 
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Donate"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate"/></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Buy Me A Coffee"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Buy Me A Coffee"/></a>

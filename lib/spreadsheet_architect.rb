@@ -203,7 +203,7 @@ module SpreadsheetArchitect
       end
     end
 
-    def to_ods(opts={})
+    def to_rodf_spreadsheet
       opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 
@@ -259,10 +259,14 @@ module SpreadsheetArchitect
         end
       end
 
-      return spreadsheet.bytes
+      return spreadsheet
+    end
+    
+    def to_ods(opts={})
+      return to_rodf_spreadsheet(opts).bytes
     end
 
-    def to_xlsx(opts={})
+    def to_axlsx(which='sheet', opts={})
       opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
     
@@ -304,18 +308,28 @@ module SpreadsheetArchitect
 
       return package if options[:data].empty?
 
-      package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
+      the_sheet = package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         if options[:headers]
           sheet.add_row options[:headers], style: package.workbook.styles.add_style(header_style)
         end
         
         options[:data].each do |row_data|
+          row_style.merge!(number_format_code) if opts[:row_style][:number_format_code]
           sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
       end
 
-      return package.to_stream.read
+      if which.to_sym == :sheet
+        return the_sheet
+      else
+        return package
+      end
     end
+
+    def to_xlsx(opts={})
+      return to_axlsx('package', opts).to_stream.read
+    end
+
   end
 
   extend SpreadsheetArchitect::ClassMethods

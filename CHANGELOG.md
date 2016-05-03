@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+- **May.3.2016**: 1.5.0
+  - Add to_axlsx_package, to_rodf_spreadsheet methods for the item to be further manipulated. Ex. axlsx_styler
+- **May.2.2016**: 1.4.1
+  - Add rails generator for project defaults initializer
 - **April.29.2016**: 1.4.0
   - Add to_xlsx, to_ods, & to_csv to SpreadsheetArchitect model for direct calling by passing in cell data
 - **April.21.2016**: 1.3.0
