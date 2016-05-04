@@ -314,7 +314,7 @@ module SpreadsheetArchitect
         end
         
         options[:data].each do |row_data|
-          row_style.merge!(number_format_code: opts[:row_style][:number_format_code]) if opts[:row_style][:number_format_code]
+          row_style.merge!(format_code: opts[:row_style][:number_format_code]) if opts[:row_style][:number_format_code]
           sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
       end
