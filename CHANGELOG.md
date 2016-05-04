@@ -1,7 +1,13 @@
 CHANGELOG
 ---------
 
-- **May.3.2016**: 1.5.0
+- **May.4.2016**: 1.4.5
+  - Bug fixes
+- **May.3.2016**: 1.4.4
+  - Add Ability to add format_code to all numbers body rows
+- **May.3.2016**: 1.4.3
+  - Bug fixes
+- **May.3.2016**: 1.4.2
   - Add to_axlsx_package, to_rodf_spreadsheet methods for the item to be further manipulated. Ex. axlsx_styler
 - **May.2.2016**: 1.4.1
   - Add rails generator for project defaults initializer
