@@ -75,7 +75,7 @@ module SpreadsheetArchitect
         has_custom_columns = options[:spreadsheet_columns] || klass.instance_methods.include?(:spreadsheet_columns)
 
         if !options[:instances] && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
-          options[:instances] = klass.where(options[:where]).order(options[:order]).to_a
+          options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
         end
 
         if !options[:instances] || options[:instances].empty?
@@ -212,32 +212,32 @@ module SpreadsheetArchitect
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
           unless opts[:header_style] && opts[:header_style][:bold] == false #uses opts, temporary
-            property :text, 'font-weight': :bold
+            property :text, 'font-weight' => :bold
           end
           if options[:header_style][:align]
-            property :text, 'align': options[:header_style][:align]
+            property :text, align: options[:header_style][:align]
           end
           if options[:header_style][:size]
-            property :text, 'font-size': options[:header_style][:size]
+            property :text, 'font-size' => options[:header_style][:size]
           end
           if options[:header_style][:color] && opts[:header_style] && opts[:header_style][:color] #temporary
-            property :text, 'color': "##{options[:header_style][:color]}"
+            property :text, color: "##{options[:header_style][:color]}"
           end
         end
       end
       spreadsheet.office_style :row_style, family: :cell do
         if options[:row_style]
           if options[:row_style][:bold]
-            property :text, 'font-weight': :bold
+            property :text, 'font-weight' => :bold
           end
           if options[:row_style][:align]
-            property :text, 'align': options[:row_style][:align]
+            property :text, align: options[:row_style][:align]
           end
           if options[:row_style][:size]
-            property :text, 'font-size': options[:row_style][:size]
+            property :text, 'font-size' => options[:row_style][:size]
           end
           if opts[:row_style] && opts[:row_style][:color] #uses opts, temporary
-            property :text, 'color': "##{options[:row_style][:color]}"
+            property :text, color: "##{options[:row_style][:color]}"
           end
         end
       end

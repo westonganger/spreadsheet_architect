@@ -262,7 +262,7 @@ Product.to_xlsx(headers: headers, data: data, number_format_code: "$#,##0.00")
 Would love for any help with new features for this projects. Some desired features are:
 
 - More ODS style options
-- Apply format codes to only certain columns (xlsx)
+- Apply format codes to only certain columns (xlsx) - this is supposed to be possible with axlsx_styler
 - Add Columns styles (xlsx & ods)
 - Create multiple sheets (xlsx & ods)
 
