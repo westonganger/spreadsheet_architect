@@ -169,6 +169,9 @@ end
 |**sheet_name**|String|Class name||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
+|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`
+All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'AC' or 'B'..Infinity. [See here for more xlsx styles]()|
+|**range_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
   
 <br>
 #### `.to_ods` - (on custom class/model)
@@ -200,7 +203,7 @@ end
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
 |**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`
 All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'AC' or 'B'..Infinity. [See here for more xlsx styles]()|
-|**custom_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
+|**range_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
   
 <br> 
 #### `SpreadsheetArchitect.to_ods`
@@ -260,11 +263,12 @@ There is a list of all available style options for `axlsx` in the [readme of the
 
 # Number Format Codes
 
-Here is the format for your number_format_code strings. For example this will output a dollar sign, comma's every three values, and minumum two decimal places:
+Here is the format for your number_format_code strings. 
 
-```
-"$#,##0.00"
-```
+This will output a dollar sign, comma's every three values, and minumum two decimal places: `$#,##0.00`
+
+This will output a nicely formatted date/time: `m/d/yyyy h:mm:ss AM/PM`
+
 
 # TODO
 

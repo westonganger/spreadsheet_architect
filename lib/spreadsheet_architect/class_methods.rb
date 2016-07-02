@@ -141,6 +141,20 @@ module SpreadsheetArchitect
           sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
 
+        cols = Array("A".."ZZZ")
+        options[:types].each_with_index do |type, i|
+          if [:date, :time].include?(type)
+            h = {columns: cols[i], include_header: true}
+            if type == :date
+              h[:styles] = {format_code: "m/d/yyyy"}
+            else
+              h[:styles] = {format_code: "m/d/yyyy h:mm AM/PM" }
+            end
+
+            options[:column_styles].push(h)
+          end
+        end
+
         if options[:column_styles]
           header_count = (options[:headers] ? options[:headers].count : 0)
           row_count = options[:data].count + header_count
@@ -149,16 +163,16 @@ module SpreadsheetArchitect
             start_row = (x[:include_header] ? header_count+1 : 1)
             if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
               x[:columns].each do |col|
-                sheet.add_style ["#{col}#{start_row}:#{col}#{row_count}", styles]
+                sheet.add_style "#{col}#{start_row}:#{col}#{row_count}", styles
               end
             else
-              sheet.add_style ["#{x[:columns]}1:#{x[:columns]}#{row_count}", styles]
+              sheet.add_style "#{x[:columns]}1:#{x[:columns]}#{row_count}", styles
             end
           end
         end
 
-        if options[:custom_styles]
-          options[:custom_styles].each do |range, styles|
+        if options[:range_styles]
+          options[:range_styles].each do |range, styles|
             sheet.add_style range, styles
           end
         end

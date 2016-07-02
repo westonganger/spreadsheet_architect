@@ -16,6 +16,10 @@ module SpreadsheetArchitect
         else
           type = :integer
         end
+      elsif value.is_a?(Date)
+        type = :date
+      elsif value.is_a?(DateTime) || value.is_a?(Time)
+        type = :time
       elsif !last_run && value.is_a?(Symbol)
         type = :symbol
       else
