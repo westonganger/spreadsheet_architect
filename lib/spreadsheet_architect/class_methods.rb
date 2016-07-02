@@ -131,20 +131,30 @@ module SpreadsheetArchitect
       return package if options[:data].empty?
 
       the_sheet = package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
+        max_length = 0
+
         if options[:headers]
           (options[:headers][0].is_a?(Array) ? options[:headers] : [options[:headers]]).each do |header_row|
+            if !max_length < header_row.length
+              max_length = header_row.length
+            end
+
             sheet.add_row options[:header_row], style: package.workbook.styles.add_style(header_style)
           end
         end
         
         options[:data].each do |row_data|
+          if !max_length < row_data.length
+            max_length = row_data.length
+          end
+
           sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
         end
 
-        cols = Array("A".."ZZZ")
+        cols = Array("A".."ZZ")
         options[:types].each_with_index do |type, i|
           if [:date, :time].include?(type)
-            h = {columns: cols[i], include_header: true}
+            h = {columns: cols[i], include_header: false}
             if type == :date
               h[:styles] = {format_code: "m/d/yyyy"}
             else
@@ -162,7 +172,11 @@ module SpreadsheetArchitect
           options[:column_styles].each do |x|
             start_row = (x[:include_header] ? header_count+1 : 1)
             if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
-              x[:columns].each do |col|
+              x[:columns].each_with_index do |col,i|
+                if max_length > i
+                  break
+                end
+
                 sheet.add_style "#{col}#{start_row}:#{col}#{row_count}", styles
               end
             else
@@ -173,6 +187,9 @@ module SpreadsheetArchitect
 
         if options[:range_styles]
           options[:range_styles].each do |range, styles|
+            if styles.keys.include?(:border)
+              sheet.add_border range, styles.delete(:border)
+            end
             sheet.add_style range, styles
           end
         end
