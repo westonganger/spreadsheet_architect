@@ -57,19 +57,29 @@ module SpreadsheetArchitect
           raise SpreadsheetArchitect::NoInstancesError
         end
 
+        if options[:headers].nil?
+          headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
+          headers ||= SpreadsheetArchitect.default_options[:headers]
+        else
+          headers = options[:headers]
+        end
+
+        unless headers == false || headers.is_a?(Array)
+          headers = klass.spreadsheet_headers if klass.respond_to?(:spreadsheet_headers)
+        end
+
         if has_custom_columns 
-          headers = []
+          headers = [] if headers.nil?
           columns = []
           types = []
           array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
           array.each do |x|
             if x.is_a?(Array)
-              headers.push x[0].to_s
+              headers.push(x[0].to_s) if headers.nil?
               columns.push x[1]
-              #types.push self.get_type(x[1], x[2])
               types.push self.get_type(x[1], nil)
             else
-              headers.push str_humanize(x.to_s)
+              headers.push(str_humanize(x.to_s)) if headers.nil?
               columns.push x
               types.push self.get_type(x, nil)
             end
@@ -77,21 +87,12 @@ module SpreadsheetArchitect
         elsif !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
           ignored_columns = ["id","created_at","updated_at","deleted_at"] 
           the_column_names = (klass.column_names - ignored_columns)
-          headers = the_column_names.map{|x| str_humanize(x)}
+          headers = the_column_names.map{|x| str_humanize(x)} if headers.nil?
           columns = the_column_names.map{|x| x.to_sym}
           types = klass.columns.keep_if{|x| !ignored_columns.include?(x.name)}.collect(&:type)
           types.map!{|type| self.get_type(nil, type)}
         else
           raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
-        end
-
-        if options[:headers].nil?
-          options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
-          options[:headers] ||= SpreadsheetArchitect.default_options[:headers]
-        end
-
-        if options[:headers].nil? || options[:headers] == false
-          headers = false
         end
 
         data = []

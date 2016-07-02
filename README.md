@@ -165,7 +165,7 @@ end
 |---|---|---|---|
 |**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
 |**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**|Boolean|`true`|Pass false to skip the header row.|
+|**headers**|Array/2D Array/Bool|`true`|Defaults to models `spreadsheet_headers` or `column_names` method. Pass false to skip the header row.|
 |**sheet_name**|String|Class name||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
@@ -197,7 +197,7 @@ All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells. |
-|**headers**|Array/2D Array|`false`|Array or 2D Array of data for the header rows cells. Pass false to skip the header row.|
+|**headers**|Array/2D Array/Bool|`false`|Defaults to models `spreadsheet_headers` or `column_names` method. Pass false to skip the header row.|
 |**sheet_name**|String|`SpreadsheetArchitect`||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
