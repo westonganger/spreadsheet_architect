@@ -1,6 +1,13 @@
 CHANGELOG
 ---------
 
+- **July.1.2016**: 1.5.0
+  - Added multi-row header capability
+  - Added ability to style columns and ranges in xlsx using the `column_styles` and `custom_styles` options
+  - Adds `axlsx_styler` gem dependency
+  - Refractor into smaller files
+- **May.16.2016**: 1.4.6
+  - Fix hash syntax for support of ruby v2.1 and below
 - **May.4.2016**: 1.4.5
   - Bug fixes
 - **May.3.2016**: 1.4.4

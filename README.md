@@ -1,16 +1,17 @@
 # Spreadsheet Architect
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Buy Me A Coffee"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Buy Me A Coffee"/></a>
+<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
 
 Key Features:
 
-- Can generate headers & columns from ActiveRecord column_names, or a Class/Model's spreadsheet_columns method, or one creation with 2D array of data
+- Can generate headers & columns from ActiveRecord column_names or a Class/Model's spreadsheet_columns method
+- Dead simple custom spreadsheets with array data
 - Plain Ruby support
-- Plain from ActiveRecord relations or Ruby Objects from models ActiveRecord, or 2d Array Data
-- Easily style headers and rows
-- Model/Class or Project specific defaults
-- Simple to use ActionController renderers
+- Data Support: ActiveRecord relations, array of Ruby Objects, or 2D Array Data
+- Easily style headers, rows, columns, and ranges
+- Setting Model/Class or Project specific defaults
+- Simple to use ActionController renderers for rails
 
 Spreadsheet Architect adds the following methods:
 ```ruby
@@ -166,8 +167,8 @@ end
 |**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
 |**headers**|Boolean|`true`|Pass false to skip the header row.|
 |**sheet_name**|String|Class name||
-|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows.|
+|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
   
 <br>
 #### `.to_ods` - (on custom class/model)
@@ -193,10 +194,13 @@ end
 |Option|Type|Default|Notes|
 |---|---|---|---|
 |**data**|Array| |**Required** 2D Array of data for the non-header row cells. |
-|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
+|**headers**|Array/2D Array|`false`|Array or 2D Array of data for the header rows cells. Pass false to skip the header row.|
 |**sheet_name**|String|`SpreadsheetArchitect`||
-|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`||
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows.|
+|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
+|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
+|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`
+All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'AC' or 'B'..Infinity. [See here for more xlsx styles]()|
+|**custom_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
   
 <br> 
 #### `SpreadsheetArchitect.to_ods`
@@ -229,7 +233,9 @@ class Post
     headers: true,
     header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    sheet_name: self.name
+    sheet_name: self.name,
+    column_styles: [],
+    custom_styles: []
   }
 end
 ```
@@ -238,33 +244,35 @@ end
 ```ruby
 # config/initializers/spreadsheet_architect.rb
 
-SpreadsheetArchitect.module_eval do
-  const_set('SPREADSHEET_OPTIONS', {
-    headers: true,
-    header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    sheet_name: 'My Project Export'
-  })
-end
+SpreadsheetArchitect.default_options = {
+  headers: true,
+  header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+  row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+  sheet_name: 'My Project Export',
+  column_styles: [],
+  custom_styles: []
+}
 ```
 
-# Format all numbers, money, or currency in xlsx only
+# Axlsx Styles Reference List
+There is a list of all available style options for `axlsx` in the [readme of the `axlsx_styler` gem](https://github.com/sakovias/axlsx_styler)
 
-Unfortunately so far I have only been successful in applying the format_code to all numbers in the entire spreadsheet.
+
+# Number Format Codes
+
+Here is the format for your number_format_code strings. For example this will output a dollar sign, comma's every three values, and minumum two decimal places:
 
 ```
-# Ex. dollar sign, comma's, and minumum two decimal places
-Product.to_xlsx(headers: headers, data: data, number_format_code: "$#,##0.00")
+"$#,##0.00"
 ```
 
 # TODO
 
 Would love for any help with new features for this projects. Some desired features are:
 
-- More ODS style options
-- Apply format codes to only certain columns (xlsx) - this is supposed to be possible with axlsx_styler
-- Add Columns styles (xlsx & ods)
 - Create multiple sheets (xlsx & ods)
+- More ODS style options
+- Add Columns styles to ods
 
 # Credits
 Created by Weston Ganger - @westonganger
@@ -272,4 +280,4 @@ Created by Weston Ganger - @westonganger
 Heavily influenced by the dead gem `acts_as_xlsx` by @randym but adapted to work for more spreadsheet types and plain ruby models.
 
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VKY8YAWAS5XRQ&lc=CA&item_name=Weston%20Ganger&item_number=spreadsheet_architect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHostedGuest" target="_blank" title="Buy Me A Coffee"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Buy Me A Coffee"/></a>
+<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
