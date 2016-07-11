@@ -157,7 +157,7 @@ File.open('path/to/file.xlsx') do |f|
 end
 ```
 
-# Method & Options
+# Methods & Options
 
 <br>
 #### `.to_xlsx` - (on custom class/model)
@@ -169,9 +169,9 @@ end
 |**sheet_name**|String|Class name||
 |**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
 |**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
-|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`
-All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'AC' or 'B'..Infinity. [See here for more xlsx styles]()|
+|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10. [See here for more xlsx styles]()|
 |**range_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
+|**borders**|Array||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
   
 <br>
 #### `.to_ods` - (on custom class/model)
