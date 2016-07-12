@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **July.1.2016**: 1.5.0
+- **July.12.2016**: 1.5.0
   - Added date/datetime default format code
   - Added multi-row header capability
   - Added ability to style columns and ranges in xlsx using the `column_styles` and `range_styles` options

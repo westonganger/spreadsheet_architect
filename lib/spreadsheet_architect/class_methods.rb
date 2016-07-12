@@ -87,45 +87,9 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
     
-      header_style = {}
-      if options[:header_style]
-        header_style[:fg_color] = options[:header_style].delete(:color)
-        header_style[:bg_color] = options[:header_style].delete(:background_color)
-        if header_style[:align]
-          header_style[:alignment] = {}
-          header_style[:alignment][:horizontal] = options[:header_style].delete(:align)
-        end
-        header_style[:b] = options[:header_style].delete(:bold)
-        header_style[:sz] = options[:header_style].delete(:font_size)
-        header_style[:i] = options[:header_style].delete(:italic)
-        if options[:header_style][:underline]
-          header_style[:u] = options[:header_style].delete(:underline)
-        end
-        header_style.delete_if{|x| x.nil?}
+      header_style = SpreadsheetArchitect::Util.convert_styles_to_axlsx(options[:header_style])
+      row_style = SpreadsheetArchitect::Util.convert_styles_to_axlsx(options[:row_style])
 
-        header_style = options[:header_style].merge(header_style)
-      end
-
-
-      row_style = {}
-      if options[:row_style]
-        row_style[:fg_color] = options[:row_style].delete(:color)
-        row_style[:bg_color] = options[:row_style].delete(:background_color)
-        if row_style[:align]
-          row_style[:alignment] = {}
-          row_style[:alignment][:horizontal] = options[:row_style][:align]
-        end
-        row_style[:b] = options[:row_style].delete(:bold)
-        row_style[:sz] = options[:row_style].delete(:font_size)
-        row_style[:i] = options[:row_style].delete(:italic)
-        if options[:row_style][:underline]
-          row_style[:u] = options[:row_style].delete(:underline)
-        end
-        row_style.delete_if{|x| x.nil?}
-
-        row_style = options[:row_style].merge(row_style)
-      end
-      
       package = Axlsx::Package.new
 
       return package if options[:data].empty?
@@ -166,19 +130,21 @@ module SpreadsheetArchitect
 
             if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
               x[:columns].each do |col|
-                sheet.col_style(col, x[:styles], row_offset: start_row)
+                sheet.col_style(col, SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]), row_offset: start_row)
               end
             elsif x[:columns].is_a?(Integer)
-              sheet.col_style(x[:columns], x[:styles], row_offset: start_row)
+              sheet.col_style(x[:columns], SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]), row_offset: start_row)
             end
+
+            row_style = (options[:row_style])
           end
         end
 
-        col_names = Array('A'..'ZZZ')
-        row_count = options[:data].count
-        row_count += options[:headers].count if options[:headers]
-
         if options[:borders]
+          col_names = Array('A'..'ZZZ')
+          row_count = options[:data].count
+          row_count += options[:headers].count if options[:headers]
+
           options[:borders].each do |x|
             range = ''
             if x[:columns]
@@ -192,22 +158,47 @@ module SpreadsheetArchitect
                 col_letter = col_names[x[:columns]]
                 range = "#{col_letter}#{start_row}:#{col_letter}#{row_count}"
               end
+
+              sheet.add_border range, x[:border_styles]
             end
 
             if x[:rows]
+              start_col = x[:skip_first] ? col_names[x[:skip_first].to_i] : 'A'
+              end_col = x[:skip_last] ? (col_names[options[:data][0].count-[:skip_last].to_i]) : col_names[option[:data][0].count]
+              if x[:rows].is_a?(Array) || x[:rows].is_a?(Range) 
+                x[:rows].each do |row|
+                  range = "#{start_col}#{x[:rows].first}:#{end_col}#{x[:rows].last}"
+                end
+              elsif x[:rows].is_a?(Integer)
+                col = col_names[x[:columns]]
+                range = "#{start_col}#{col}:#{end_col}#{col}"
+              end
 
+              sheet.add_border range, x[:border_styles]
             end
 
             if x[:range]
-
+              sheet.add_border x[:range], x[:border_styles]
             end
-
-            sheet.add_border range, x[:border_styles]
           end
         end
 
         if options[:range_styles]
-          options[:range_styles].each do |range, styles|
+          options[:range_styles].each do |x|
+            if x[:headers]
+              header_count = x[:headers].count
+            else
+              header_count = 0
+            end
+
+            range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
+
+            if range_numbers.first < header_count && range_numbers.last < header_count
+              styles = header_style.merge(SpreadsheetArchitect::Util.convert_styles_to_axlsx([:styles]))
+            else
+              styles = row_style.merge(SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]))
+            end
+
             sheet.add_style range, styles
           end
         end

@@ -166,5 +166,22 @@ module SpreadsheetArchitect
 
       return options.merge(header_style: header_style, row_style: row_style, sheet_name: sheet_name)
     end
+
+    def self.convert_styles_to_axlsx(styles={})
+      styles[:fg_color] = styles.delete(:color)
+      styles[:bg_color] = styles.delete(:background_color)
+      if styles[:align]
+        styles[:alignment] = {}
+        styles[:alignment][:horizontal] = styles.delete(:align)
+      end
+      styles[:b] = styles.delete(:bold)
+      styles[:sz] = styles.delete(:font_size)
+      styles[:i] = styles.delete(:italic)
+      if styles[:underline]
+        styles[:u] = styles.delete(:underline)
+      end
+
+      styles.delete_if{|x| x.nil?}
+    end
   end
 end

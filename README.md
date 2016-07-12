@@ -5,13 +5,14 @@ Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV s
 
 Key Features:
 
-- Can generate headers & columns from ActiveRecord column_names or a Class/Model's spreadsheet_columns method
-- Dead simple custom spreadsheets with array data
-- Plain Ruby support
-- Data Support: ActiveRecord relations, array of Ruby Objects, or 2D Array Data
+- Can generate headers & columns from ActiveRecord column_names or a Class/Model's `spreadsheet_columns` method
+- Dead simple custom spreadsheets with custom data
+- Data Sources: ActiveRecord relations, array of Ruby Objects, or 2D Array Data
 - Easily style headers, rows, columns, and ranges
-- Setting Model/Class or Project specific defaults
-- Simple to use ActionController renderers for rails
+- Powerful and dead-simple abstraction of custom styles for xlsx spreadsheets
+- Setting Class/Model or Project specific defaults
+- Simple to use ActionController renderers for Rails
+- Plain Ruby (without Rails) supported
 
 Spreadsheet Architect adds the following methods:
 ```ruby
@@ -33,7 +34,7 @@ SpreadsheetArchitect.to_ods(data: data, headers: headers)
 SpreadsheetArchitect.to_csv(data: data, header: false)
 
 # These return a ruby object that can be further manipulated
-# These methods may also be used on models/classes
+# They may also be used on models/classes
 SpreadsheetArchitect.to_axlsx('package', {data: data, headers: headers})
 SpreadsheetArchitect.to_axlsx('sheet', {data: data, headers: headers})
 SpreadsheetArchitect.to_rodf_spreadsheet(data: data, headers: headers)
@@ -41,10 +42,11 @@ SpreadsheetArchitect.to_rodf_spreadsheet(data: data, headers: headers)
 
 # Install
 ```ruby
-gem install spreadsheet_architect
+# Gemfile
+gem 'spreadsheet_architect'
 ```
 
-# Class/Model Setup
+# Basic Class/Model Setup
 
 ### Model
 ```ruby
@@ -62,7 +64,7 @@ class Post < ActiveRecord::Base #activerecord not required
     [
       ['Title', :title],
       ['Content', content],
-      ['Author', (author.name rescue nil)],
+      ['Author', (author.name if author)],
       ['Published?', (published ? 'Yes' : 'No')],
       ['Published At', :published_at],
       ['# of Views', :number_of_views],
@@ -78,6 +80,8 @@ class Post < ActiveRecord::Base #activerecord not required
   end
 end
 ```
+
+Note: Do not define your labels inside this method if you are going to be using custom headers in the model or project defaults.
 
 # Usage
 
@@ -133,7 +137,7 @@ end
 
 ### Method 2: Save to a file manually
 ```ruby
-# Ex. with ActiveRecord realtion
+# Ex. with ActiveRecord relation
 File.open('path/to/file.xlsx') do |f|
   f.write{ Post.order(published_at: :asc).to_xlsx }
 end
@@ -156,71 +160,73 @@ File.open('path/to/file.xlsx') do |f|
   f.write{ SpreadsheetArchitect::to_xlsx(data: data, headers: headers) }
 end
 ```
+<br>
 
 # Methods & Options
 
-<br>
-#### `.to_xlsx` - (on custom class/model)
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
-|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**|Array/2D Array/Bool|`true`|Defaults to models `spreadsheet_headers` or `column_names` method. Pass false to skip the header row.|
-|**sheet_name**|String|Class name||
-|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
-|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10. [See here for more xlsx styles]()|
-|**range_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
-|**borders**|Array||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
+
+## SomeClass.to_xlsx
+
+|Option|Default|Notes|
+|---|---|---|
+|**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override the model instances `spreadsheet_columns` method|
+|**instances**<br>*Array*| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass false to skip the header row.|
+|**sheet_name**<br>*String*|The class name||
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**column_styles**<br>*Array*||`[{columns: 1, include_header: true, styles: styles_hash}, {columns: 0..2, styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10.|
+|**range_styles**<br>*Array*||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`.]
+|**borders**<br>*Array*||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`.]
   
 <br>
-#### `.to_ods` - (on custom class/model)
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
-|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**|Boolean|`true`|Pass false to skip the header row.|
-|**sheet_name**|String|Class name||
-|**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
-|**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
+## SomeClass.to_ods
+|Option|Default|Notes|
+|---|---|---|
+|**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override the model instances `spreadsheet_columns` method|
+|**instances**<br>*Array*| |**Required for Non-ActiveRecord models** Array of class/model instances.|
+|**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass false to skip the header row.|
+|**sheet_name**<br>*String*|The class name||
+|**header_style**<br>*Hash*|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
+|**row_style**<br>*Hash*|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
   
 <br>
-#### `.to_csv` - (on custom class/model)
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**spreadsheet_columns**|Array| AR Model column_names | Required if `spreadsheet_columns` not defined on class except with ActiveRecord models which default to the `column_names` method. Will override models `spreadsheet_columns` method |
-|**instances**|Array| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**|Boolean|`true`|Pass false to skip the header row.|
+## SomeClass.to_csv
+|Option|Default|Notes|
+|---|---|---|
+|**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this to option override the model instances `spreadsheet_columns` method|
+|**instances**<br>*Array*| |**Required for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|| false|Pass false to skip the header row.|
 
 <br>
-#### `SpreadsheetArchitect.to_xlsx`
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**data**|Array| |**Required** 2D Array of data for the non-header row cells. |
-|**headers**|Array/2D Array/Bool|`false`|Defaults to models `spreadsheet_headers` or `column_names` method. Pass false to skip the header row.|
-|**sheet_name**|String|`SpreadsheetArchitect`||
-|**header_style**|Hash|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|[See here for more xlsx styles]()|
-|**row_style**|Hash|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. [See here for more xlsx styles]()|
-|**column_styles**|Array||`[{col: 1, include_header: true, styles: styles_hash}, {col: [2,:end], styles: other_styles_hash}]`
-All of the following are valid syntax for this value: 'A' or ['A','F'] or 'A'..'AC' or 'B'..Infinity. [See here for more xlsx styles]()|
-|**range_styles**|Array||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`. [See here for more xlsx styles]()]
+## SpreadsheetArchitect.to_xlsx
+|Option|Default|Notes|
+|---|---|---|
+|**data**<br>*Array*| |Data for the non-header row cells. |
+|**headers**<br>*2D Array*|`false`|Data for the header row cells. Pass false to skip the header row.|
+|**sheet_name**<br>*String*|`Sheet1`||
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**column_styles**<br>*Array*||`[{columns: 1, include_header: true, styles: styles_hash}, {columns: 0..2, styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10.|
+|**range_styles**<br>*Array*||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`.]
+|**borders**<br>*Array*||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`.|
   
 <br> 
-#### `SpreadsheetArchitect.to_ods`
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
-|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
-|**sheet_name**|String|`SpreadsheetArchitect`||
-|**header_style**|Hash|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently only supports these options (values can be changed though)|
-|**row_style**|Hash|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently only supports these options (values can be changed though)|
+## SpreadsheetArchitect.to_ods
+|Option|Default|Notes|
+|---|---|---|
+|**data**<br>*2D Array*| |Data for the non-header row cells.|
+|**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass false to skip the header row.|
+|**sheet_name**<br>*String*|`Sheet1`||
+|**header_style**<br>*Hash*|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
+|**row_style**<br>*Hash*|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
   
 <br>
-#### `SpreadsheetArchitect.to_csv`
-|Option|Type|Default|Notes|
-|---|---|---|---|
-|**data**|Array| |**Required** 2D Array of data for the non-header row cells.|
-|**headers**|Array|`false`|2D Array of data for the header rows cells. Pass false to skip the header row.|
+## SpreadsheetArchitect.to_csv
+|Option|Default|Notes|
+|---|---|---|
+|**data**<br>*2D Array*| |Data for the non-header row cells.|
+|**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass false to skip the header row.|
 
 
 # Change model default method options
@@ -233,12 +239,16 @@ class Post
   end
 
   SPREADSHEET_OPTIONS = {
-    headers: true,
+    headers: [
+      ['My Post Report'],
+      self.column_names.map{|x| x.titleize}
+    ],
     header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     sheet_name: self.name,
     column_styles: [],
-    custom_styles: []
+    range_styles: [],
+    borders: []
   }
 end
 ```
@@ -253,21 +263,13 @@ SpreadsheetArchitect.default_options = {
   row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
   sheet_name: 'My Project Export',
   column_styles: [],
-  custom_styles: []
+  range_styles: [],
+  borders: []
 }
 ```
 
 # Axlsx Styles Reference List
-There is a list of all available style options for `axlsx` in the [readme of the `axlsx_styler` gem](https://github.com/sakovias/axlsx_styler)
-
-
-# Number Format Codes
-
-Here is the format for your number_format_code strings. 
-
-This will output a dollar sign, comma's every three values, and minumum two decimal places: `$#,##0.00`
-
-This will output a nicely formatted date/time: `m/d/yyyy h:mm:ss AM/PM`
+I have compiled a list of all available style options for `axlsx` here: (https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)
 
 
 # TODO
@@ -276,7 +278,6 @@ Would love for any help with new features for this projects. Some desired featur
 
 - Create multiple sheets (xlsx & ods)
 - More ODS style options
-- Add Columns styles to ods
 
 # Credits
 Created by Weston Ganger - @westonganger
