@@ -10,7 +10,8 @@ SpreadsheetArchitect.default_options = {
   header_style: {background_color: "AAAAAA", color: "FFFFFF", align: :center, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false},
   row_style: {background_color: nil, color: "000000", align: :left, bold: false, font_name: 'Arial', font_size: 10, italic: false, underline: false},
   column_styles: [],
-  custom_styles: []
+  range_styles: [],
+  borders: []
 }
 eos
     end

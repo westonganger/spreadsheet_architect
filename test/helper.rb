@@ -1,5 +1,5 @@
-config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
-ActiveRecord::Base.establish_connection(config['sqlite3'])
+ActiveRecord::Base.establish_connection({adapter: 'sqlite3', database: 'test/spreadsheet_architect.sqlite3.db'})
+
 ActiveRecord::Schema.define(version: 0) do
   begin
   drop_table :posts, :force => true

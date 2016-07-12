@@ -1,84 +1,62 @@
 #!/usr/bin/env ruby -w
-require "spreadsheet_architect"
-require 'yaml'
-require 'active_record'
+
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 require 'minitest'
 
-require File.expand_path(File.join(File.dirname(__FILE__), 'helper'))
+require 'spreadsheet_architect'
+
+require 'minitest/autorun'
 
 class TestSpreadsheetArchitect < MiniTest::Test
-  class Post < ActiveRecord::Base
-    include SpreadsheetArchitect
+  def setup
+    require_relative 'helper'
 
-    def self.spreadsheet_columns
-      [:name, :title, :content, :votes, :ranking]
+    Minitest::Assertions.module_eval do
+      alias_method :eql, :assert_equal
     end
 
-    def ranking
-      1
-    end
+    SpreadsheetArchitect.default_options = {
+      headers: true,
+      header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+      row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+      sheet_name: 'My Project Export',
+      column_styles: [],
+      range_styles: [],
+      borders: []
+    }
   end
 
-  class OtherPost < ActiveRecord::Base
-    include SpreadsheetArchitect
+  def test_utils_methods
+    SpreadsheetArchitect::Utils.str_humanize
+
+    #SpreadsheetArchitect::Utils.get_type(value, type=nil, last_run=false)
+
+    SpreadsheetArchitect::Utils.get_cell_data(options, klass)
+
+    SpreadsheetArchitect::Utils.get_options(options, klass)
+      
+    SpreadsheetArchitect::Utils.convert_styles_to_axlsx
   end
 
-  class PlainPost
-    include SpreadsheetArchitect
+  def test_csv_methods
+    #Post.to_csv
+    SpreadsheetArchitect.to_csv
 
-    def self.spreadsheet_columns
-      [:name, :title, :content]
-    end
+    #Post.to_ods
+    SpreadsheetArchitect.to_ods
 
-    def name
-      "the name"
-    end
+    #Post.to_rodf_spreadsheet
+    SpreadsheetArchitect.to_rodf_spreadsheet
 
-    def title
-      "the title"
-    end
+    #Post.to_xlsx
+    SpreadsheetArchitect.to_xlsx
 
-    def content
-      "the content"
-    end
-  end
+    #Post.to_axlsx('package', {data: data, headers: headers})
+    SpreadsheetArchitect.to_axlsx('package', {data: data, headers: headers})
 
-  test "test_spreadsheet_options" do
-    assert_equal([:name, :title, :content, :votes, :ranking], Post.spreadsheet_columns)
-    assert_equal([:name, :title, :content, :votes, :created_at, :updated_at], OtherPost.column_names)
-    assert_equal([:name, :title, :content], PlainPost.spreadsheet_columns)
-  end
-end
-  
-class TestToCsv < MiniTest::Test
-  test "test_class_method" do
-    p = Post.to_csv(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
-  end
-  test 'test_chained_method' do
-    p = Post.order("name asc").to_csv(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
-  end
-end
-
-class TestToOds < MiniTest::Test
-  test 'test_class_method' do
-    p = Post.to_ods(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
-  end
-  test 'test_chained_method' do
-    p = Post.order("name asc").to_ods(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
-  end
-end
-
-class TestToXlsx < MiniTest::Test
-  test 'test_class_method' do
-    p = Post.to_xlsx(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
-  end
-  test 'test_chained_method' do
-    p = Post.order("name asc").to_xlsx(spreadsheet_columns: [:name, :votes, :content, :ranking])
-    assert_equal(true, p.is_a?(String))
+    #Post.to_axlsx('sheet', {data: data, headers: headers})
+    SpreadsheetArchitect.to_axlsx('sheet', {data: data, headers: headers})
   end
 end
