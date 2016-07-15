@@ -8,8 +8,8 @@ Key Features:
 - Can generate headers & columns from ActiveRecord column_names or a Class/Model's `spreadsheet_columns` method
 - Dead simple custom spreadsheets with custom data
 - Data Sources: ActiveRecord relations, array of Ruby Objects, or 2D Array Data
-- Easily style headers, rows, columns, and ranges
-- Powerful and dead-simple abstraction of custom styles for xlsx spreadsheets
+- Easily style and customize spreadsheets
+- Create multi sheet spreadsheets
 - Setting Class/Model or Project specific defaults
 - Simple to use ActionController renderers for Rails
 - Plain Ruby (without Rails) supported
@@ -32,12 +32,6 @@ data = [[1,2,3], [4,5,6], [7,8,9]]
 SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
 SpreadsheetArchitect.to_ods(data: data, headers: headers)
 SpreadsheetArchitect.to_csv(data: data, header: false)
-
-# These return a ruby object that can be further manipulated
-# They may also be used on models/classes
-SpreadsheetArchitect.to_axlsx('package', {data: data, headers: headers})
-SpreadsheetArchitect.to_axlsx('sheet', {data: data, headers: headers})
-SpreadsheetArchitect.to_rodf_spreadsheet(data: data, headers: headers)
 ```
 
 # Install
@@ -174,10 +168,11 @@ end
 |**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass false to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**column_styles**<br>*Array*||`[{columns: 1, include_header: true, styles: styles_hash}, {columns: 0..2, styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10.|
-|**range_styles**<br>*Array*||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`.]
-|**borders**<br>*Array*||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`.]
+|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
+|**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)]
+|**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
+|**borders**<br>*Array*||Experimental: Overwrites the styles on these cells. You can get around this by re-applying the styles to the cells using range styles. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
   
 <br>
 ## SomeClass.to_ods
@@ -206,10 +201,11 @@ end
 |**headers**<br>*2D Array*|`false`|Data for the header row cells. Pass false to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, number_format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**column_styles**<br>*Array*||`[{columns: 1, include_header: true, styles: styles_hash}, {columns: 0..2, styles: other_styles_hash}]`<br>All of the following are valid syntax for this value: 1 or [1,3,5] or 1..10.|
-|**range_styles**<br>*Array*||`[{range: "A1:B3", styles: styles_hash}, {range: "R2:D2", border: [:top, :right, :left, :bottom]}, {range: border: {edges: [:top, :bottom], style: :thick, color: 'CCCCCC'}]`.]
-|**borders**<br>*Array*||`[{columns: [0,1,2], include_header: false, border_styles: {edges: [:right], style: :thick, color: '333333'}, {rows: 1..10, border: [:bottom]}, {range: 'B2:F8', border: {edges: [:top, :bottom, :left, :right], style: :thick, color: 'CCCCCC'}]`.|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
+|**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)]
+|**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
+|**borders**<br>*Array*||Experimental: Overwrites the styles on these cells. You can get around this by re-applying the styles to the cells using range styles. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
   
 <br> 
 ## SpreadsheetArchitect.to_ods
@@ -248,6 +244,7 @@ class Post
     sheet_name: self.name,
     column_styles: [],
     range_styles: [],
+    merges: [],
     borders: []
   }
 end
@@ -264,20 +261,22 @@ SpreadsheetArchitect.default_options = {
   sheet_name: 'My Project Export',
   column_styles: [],
   range_styles: [],
+  merges: [],
   borders: []
 }
 ```
 
-# Axlsx Styles Reference List
+# Complex XLSX Example with Styling
+See this example: (https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)
+
+
+# Multi Sheet XLSX or ODS spreadsheets
+See this example: (https://github.com/westonganger/spreadsheet_architect/blob/master/examples/multi_sheet_spreadsheets.rb)
+
+
+# Axlsx Style Reference
 I have compiled a list of all available style options for `axlsx` here: (https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)
 
-
-# TODO
-
-Would love for any help with new features for this projects. Some desired features are:
-
-- Create multiple sheets (xlsx & ods)
-- More ODS style options
 
 # Credits
 Created by Weston Ganger - @westonganger

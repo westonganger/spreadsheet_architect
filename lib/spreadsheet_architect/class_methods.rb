@@ -17,12 +17,180 @@ module SpreadsheetArchitect
         end
       end
     end
+    
+    def to_ods(opts={})
+      return to_rodf_spreadsheet(opts).bytes
+    end
 
-    def to_rodf_spreadsheet
+    def to_xlsx(opts={})
+      return to_axlsx_package(opts).to_stream.read
+    end
+
+    def to_axlsx_package(opts={}, package=nil)
+      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
+      options = SpreadsheetArchitect::Utils.get_options(opts, self)
+    
+      header_style = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(options[:header_style])
+      row_style = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(options[:row_style])
+
+      if package.nil?
+        package = Axlsx::Package.new
+      end
+
+      return package if options[:data].empty?
+
+      package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
+        if options[:headers]
+          options[:headers] = [options[:headers]] unless options[:headers][0].is_a?(Array)
+
+          options[:headers].each do |header_row|
+            sheet.add_row header_row, style: package.workbook.styles.add_style(header_style)
+          end
+        end
+
+        max_row_length = options[:data].max_by{|x| x.length}.length
+
+        options[:data].each do |row_data|
+          missing = max_row_length - row_data.count
+          if missing > 0
+            missing.times do
+              row_data.push nil
+            end
+          end
+
+          sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
+        end
+
+        options[:types].each_with_index do |type, index|
+          if [:date, :time].include?(type)
+            if type == :date
+              format_code = 'm/d/yyyy'
+            else
+              format_code = 'm/d/yyyy h:mm AM/PM'
+            end
+
+            sheet.col_style(index, {format_code: format_code}, row_offset: (options[:headers] ? options[:headers].count : 0))
+          end
+        end
+
+        if options[:borders] || options[:column_styles]
+          col_names = max_row_length > 675 ? Array('A'..'ZZZ') : Array('A'..'ZZ')
+        end
+
+        if options[:borders]
+          row_count = options[:data].count
+          row_count += options[:headers].count if options[:headers]
+
+          options[:borders].each do |x|
+            if x[:columns]
+              start_row = 1
+              start_row += options[:headers].count if !x[:include_header] && options[:headers]
+
+              if x[:columns].is_a?(Array)
+                x[:columns].each do |col|
+                  if col.is_a?(Integer)
+                    col = col.zero? ? nil : col_names[col-1]
+                  end
+                  sheet.add_border "#{col}#{start_row}:#{col}#{row_count}", x[:border_styles]
+                end
+              elsif x[:columns].is_a?(Range)
+                if x[:columns].first.is_a?(Integer)
+                  range = "#{col_names[x[:columns].first-1]}#{start_row}:#{col_names[x[:columns].last-1]}#{row_count}"
+                else
+                  range = "#{x[:columns].first}#{start_row}:#{x[:columns].last}#{row_count}"
+                end
+                sheet.add_border range, x[:border_styles]
+              elsif x[:columns].is_a?(Integer)
+                col_letter = col_names[x[:columns]]
+                sheet.add_border "#{col_letter}#{start_row}:#{col_letter}#{row_count}", x[:border_styles]
+              elsif x[:columns].is_a?(String)
+                sheet.add_border "#{x[:columns]}#{start_row}:#{x[:columns]}#{row_count}", x[:border_styles]
+              end
+            end
+
+            if x[:rows]
+              start_col = x[:start_offset] ? col_names[x[:start_offset].to_i] : 'A'
+
+              end_index = max_row_length - 1
+              end_index -= x[:end_offset].to_i if x[:end_offset]
+              end_col = col_names[end_index]
+
+              if x[:rows].is_a?(Array)
+                x[:rows].each do |row|
+                  sheet.add_border "#{start_col}#{row}:#{end_col}#{row}", x[:border_styles]
+                end
+              elsif x[:rows].is_a?(Range)
+                sheet.add_border "#{start_col}#{x[:rows].first}:#{end_col}#{x[:rows].last}", x[:border_styles]
+              elsif x[:rows].is_a?(Integer)
+                col = col_names[x[:columns]]
+                sheet.add_border "#{start_col}#{col}:#{end_col}#{col}", x[:border_styles]
+              end
+            end
+
+            if x[:range]
+              sheet.add_border x[:range], x[:border_styles]
+            end
+          end
+        end
+
+        if options[:column_styles]
+          options[:column_styles].each do |x|
+            start_row = !x[:include_header] && options[:headers] ? options[:headers].count : 0
+
+            package.workbook.styles do |s|
+              style = s.add_style row_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
+              if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
+                x[:columns].each do |col|
+                  if col.is_a?(String)
+                    col = col_names.index(col)
+                  elsif col.is_a?(Integer)
+                    col = col - 1 unless col.zero?
+                  end
+
+                  sheet.col_style(col, style, row_offset: start_row)
+                end
+              elsif x[:columns].is_a?(Integer)
+                col = x[:columns] - 1 unless col.zero?
+                sheet.col_style(col, style, row_offset: start_row)
+              end
+            end
+          end
+        end
+
+        if options[:range_styles]
+          options[:range_styles].each do |x|
+            header_count = 1
+            header_count += x[:headers].count if x[:headers]
+
+            range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
+
+            if range_numbers.first < header_count && range_numbers.last < header_count
+              styles = header_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
+            else
+              styles = row_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
+            end
+
+            sheet.add_style x[:range], styles
+          end
+        end
+
+        if options[:merges]
+          options[:merges].each do |x|
+            sheet.merge x[:range]
+          end
+        end
+      end
+
+      return package
+    end
+
+    def to_rodf_spreadsheet(opts={}, spreadsheet=nil)
       opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
 
-      spreadsheet = ODF::Spreadsheet.new
+      if !spreadsheet
+        spreadsheet = ODF::Spreadsheet.new
+      end
 
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
@@ -77,142 +245,6 @@ module SpreadsheetArchitect
       end
 
       return spreadsheet
-    end
-    
-    def to_ods(opts={})
-      return to_rodf_spreadsheet(opts).bytes
-    end
-
-    def to_axlsx(which='sheet', opts={})
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-      options = SpreadsheetArchitect::Utils.get_options(opts, self)
-    
-      header_style = SpreadsheetArchitect::Util.convert_styles_to_axlsx(options[:header_style])
-      row_style = SpreadsheetArchitect::Util.convert_styles_to_axlsx(options[:row_style])
-
-      package = Axlsx::Package.new
-
-      return package if options[:data].empty?
-
-      the_sheet = package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
-
-        if options[:headers]
-          options[:headers] = [options[:headers]] unless options[:headers][0].is_a?(Array)
-
-          options[:headers].each do |header_row|
-            sheet.add_row header_row, style: package.workbook.styles.add_style(header_style)
-          end
-        end
-        
-        options[:data].each do |row_data|
-          sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
-        end
-
-        options[:types].each_with_index do |type, index|
-          if [:date, :time].include?(type)
-            if type == :date
-              format_code = 'm/d/yyyy'
-            else
-              format_code = 'm/d/yyyy h:mm AM/PM'
-            end
-
-            sheet.col_style(index, {format_code: format_code}, row_offset: (options[:headers] ? options[:headers].count : 0))
-          end
-        end
-
-        if options[:column_styles]
-          options[:column_styles].each do |x|
-            if x[:include_header] || !options[:headers]
-              start_row = 0
-            else
-              start_row = options[:headers].count
-            end
-
-            if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
-              x[:columns].each do |col|
-                sheet.col_style(col, SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]), row_offset: start_row)
-              end
-            elsif x[:columns].is_a?(Integer)
-              sheet.col_style(x[:columns], SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]), row_offset: start_row)
-            end
-
-            row_style = (options[:row_style])
-          end
-        end
-
-        if options[:borders]
-          col_names = Array('A'..'ZZZ')
-          row_count = options[:data].count
-          row_count += options[:headers].count if options[:headers]
-
-          options[:borders].each do |x|
-            range = ''
-            if x[:columns]
-              start_row = (x[:include_headers] && options[:headers]) ? options[:headers].count : 0
-
-              if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
-                x[:columns].each do |col|
-                  range = "#{col}#{start_row}:#{col}#{row_count}"
-                end
-              elsif x[:columns].is_a?(Integer)
-                col_letter = col_names[x[:columns]]
-                range = "#{col_letter}#{start_row}:#{col_letter}#{row_count}"
-              end
-
-              sheet.add_border range, x[:border_styles]
-            end
-
-            if x[:rows]
-              start_col = x[:skip_first] ? col_names[x[:skip_first].to_i] : 'A'
-              end_col = x[:skip_last] ? (col_names[options[:data][0].count-[:skip_last].to_i]) : col_names[option[:data][0].count]
-              if x[:rows].is_a?(Array) || x[:rows].is_a?(Range) 
-                x[:rows].each do |row|
-                  range = "#{start_col}#{x[:rows].first}:#{end_col}#{x[:rows].last}"
-                end
-              elsif x[:rows].is_a?(Integer)
-                col = col_names[x[:columns]]
-                range = "#{start_col}#{col}:#{end_col}#{col}"
-              end
-
-              sheet.add_border range, x[:border_styles]
-            end
-
-            if x[:range]
-              sheet.add_border x[:range], x[:border_styles]
-            end
-          end
-        end
-
-        if options[:range_styles]
-          options[:range_styles].each do |x|
-            if x[:headers]
-              header_count = x[:headers].count
-            else
-              header_count = 0
-            end
-
-            range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
-
-            if range_numbers.first < header_count && range_numbers.last < header_count
-              styles = header_style.merge(SpreadsheetArchitect::Util.convert_styles_to_axlsx([:styles]))
-            else
-              styles = row_style.merge(SpreadsheetArchitect::Util.convert_styles_to_axlsx(x[:styles]))
-            end
-
-            sheet.add_style range, styles
-          end
-        end
-      end
-
-      if which.to_sym == :sheet
-        return the_sheet
-      else
-        return package
-      end
-    end
-
-    def to_xlsx(opts={})
-      return to_axlsx('package', opts).to_stream.read
     end
 
   end

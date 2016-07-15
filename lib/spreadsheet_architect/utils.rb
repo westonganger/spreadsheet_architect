@@ -168,20 +168,17 @@ module SpreadsheetArchitect
     end
 
     def self.convert_styles_to_axlsx(styles={})
-      styles[:fg_color] = styles.delete(:color)
-      styles[:bg_color] = styles.delete(:background_color)
-      if styles[:align]
-        styles[:alignment] = {}
-        styles[:alignment][:horizontal] = styles.delete(:align)
+      styles[:fg_color] = styles.delete(:color) || styles[:fg_color]
+      styles[:bg_color] = styles.delete(:background_color) || styles[:bg_color]
+      if styles[:align].present?
+        styles[:alignment] = {horizontal: styles.delete(:align)}
       end
-      styles[:b] = styles.delete(:bold)
-      styles[:sz] = styles.delete(:font_size)
-      styles[:i] = styles.delete(:italic)
-      if styles[:underline]
-        styles[:u] = styles.delete(:underline)
-      end
+      styles[:b] = styles.delete(:bold) || styles[:b]
+      styles[:sz] = styles.delete(:font_size) || styles[:sz]
+      styles[:i] = styles.delete(:italic) || styles[:i]
+      styles[:u] = styles.delete(:underline) || styles[:u]
 
-      styles.delete_if{|x| x.nil?}
+      styles.delete_if{|k,v| v.nil?}
     end
   end
 end
