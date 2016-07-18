@@ -26,7 +26,7 @@ module SpreadsheetArchitect
     custom_styles: []
   }
 
-  def default_options=(val)
+  def self.default_options=(val)
     @default_options = val
   end
 

@@ -5,6 +5,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'minitest'
 
+require 'wrong/adapters/minitest'
+
 require 'spreadsheet_architect'
 
 require 'minitest/autorun'
@@ -29,34 +31,49 @@ class TestSpreadsheetArchitect < MiniTest::Test
   end
 
   def test_utils_methods
-    SpreadsheetArchitect::Utils.str_humanize
+    eql(SpreadsheetArchitect::Utils.str_humanize('my_project_export'), 'My Project Export')
+    eql(SpreadsheetArchitect::Utils.str_humanize('My Project Export'), 'My Project Export')
+    eql(SpreadsheetArchitect::Utils.str_humanize('TBS report'), 'TBS Report')
 
-    #SpreadsheetArchitect::Utils.get_type(value, type=nil, last_run=false)
+    eql(SpreadsheetArchitect::Utils.get_type('string'), :string)
+    eql(SpreadsheetArchitect::Utils.get_type(123.01), :float)
+    eql(SpreadsheetArchitect::Utils.get_type(BigDecimal('123.01')), :float)
+    eql(SpreadsheetArchitect::Utils.get_type(10), :integer)
+    eql(SpreadsheetArchitect::Utils.get_type(:test), :symbol)
 
-    SpreadsheetArchitect::Utils.get_cell_data(options, klass)
+    assert { SpreadsheetArchitect::Utils.get_type(Date.today) == :date }
+    assert { SpreadsheetArchitect::Utils.get_type(DateTime.now) == :time }
+    assert { SpreadsheetArchitect::Utils.get_type(Time.now) == :time }
 
-    SpreadsheetArchitect::Utils.get_options(options, klass)
+    #SpreadsheetArchitect::Utils.get_cell_data(options, klass)
+
+    #SpreadsheetArchitect::Utils.get_options(options, klass)
       
-    SpreadsheetArchitect::Utils.convert_styles_to_axlsx
+    eql(SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true}), {bg_color: '333333', fg_color: '000000', align: {horizontal: true, vertical: false}, b: true, sz: 14, i: true, u: true, test: true})
   end
 
   def test_csv_methods
+    headers = ['test1', 'test2','test3']
+    data = [
+      ['row1'],
+      ['row2 c1', 'row2 c2'],
+      ['the','data']
+    ]
+
     #Post.to_csv
-    SpreadsheetArchitect.to_csv
+    SpreadsheetArchitect.to_csv(headers: headers, data: data)
 
     #Post.to_ods
-    SpreadsheetArchitect.to_ods
+    SpreadsheetArchitect.to_ods(headers: headers, data: data)
 
     #Post.to_rodf_spreadsheet
-    SpreadsheetArchitect.to_rodf_spreadsheet
+    SpreadsheetArchitect.to_rodf_spreadsheet(headers: headers, data: data)
 
     #Post.to_xlsx
-    SpreadsheetArchitect.to_xlsx
+    SpreadsheetArchitect.to_xlsx(headers: headers, data: data)
 
-    #Post.to_axlsx('package', {data: data, headers: headers})
-    SpreadsheetArchitect.to_axlsx('package', {data: data, headers: headers})
-
-    #Post.to_axlsx('sheet', {data: data, headers: headers})
-    SpreadsheetArchitect.to_axlsx('sheet', {data: data, headers: headers})
+    #Post.to_axlsx_package({data: data, headers: headers})
+    package = SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers})
+    SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers, sheet_name: 'The Sheet Name'}, package)
   end
 end

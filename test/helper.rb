@@ -1,3 +1,5 @@
+require 'active_record'
+
 ActiveRecord::Base.establish_connection({adapter: 'sqlite3', database: 'test/spreadsheet_architect.sqlite3.db'})
 
 ActiveRecord::Schema.define(version: 0) do

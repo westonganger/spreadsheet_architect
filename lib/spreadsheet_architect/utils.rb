@@ -9,9 +9,10 @@ module SpreadsheetArchitect
     end
 
     def self.get_type(value, type=nil, last_run=false)
+      puts value.class.name
       return type if !type.blank?
       if value.is_a?(Numeric)
-        if [:float, :decimal].include?(type)
+        if value.is_a?(Float) || value.is_a?(BigDecimal)
           type = :float
         else
           type = :integer
