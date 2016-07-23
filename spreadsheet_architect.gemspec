@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir.glob("{test/**/*}")
 
   s.add_runtime_dependency 'axlsx', '>= 2.0'
-  s.add_runtime_dependency 'axlsx_styler', '>= 0.1.3'
+  s.add_runtime_dependency 'axlsx_styler', '>= 0.1.5' # TODO bump to 0.1.6 when new feature is ready
   s.add_runtime_dependency 'rodf', '>= 0.3.6'
   
   s.add_development_dependency 'rake'

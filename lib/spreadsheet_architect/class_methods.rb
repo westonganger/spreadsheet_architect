@@ -1,6 +1,5 @@
 module SpreadsheetArchitect
   module ClassMethods
-
     def to_csv(opts={})
       opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
@@ -89,13 +88,13 @@ module SpreadsheetArchitect
               if x[:columns].is_a?(Array)
                 x[:columns].each do |col|
                   if col.is_a?(Integer)
-                    col = col.zero? ? nil : col_names[col-1]
+                    col_names[col]
                   end
                   sheet.add_border "#{col}#{start_row}:#{col}#{row_count}", x[:border_styles]
                 end
               elsif x[:columns].is_a?(Range)
                 if x[:columns].first.is_a?(Integer)
-                  range = "#{col_names[x[:columns].first-1]}#{start_row}:#{col_names[x[:columns].last-1]}#{row_count}"
+                  range = "#{col_names[x[:columns].first]}#{start_row}:#{col_names[x[:columns].last]}#{row_count}"
                 else
                   range = "#{x[:columns].first}#{start_row}:#{x[:columns].last}#{row_count}"
                 end
@@ -143,15 +142,12 @@ module SpreadsheetArchitect
                 x[:columns].each do |col|
                   if col.is_a?(String)
                     col = col_names.index(col)
-                  elsif col.is_a?(Integer)
-                    col = col - 1 unless col.zero?
                   end
 
                   sheet.col_style(col, style, row_offset: start_row)
                 end
               elsif x[:columns].is_a?(Integer)
-                col = x[:columns] - 1 unless col.zero?
-                sheet.col_style(col, style, row_offset: start_row)
+                sheet.col_style(x[:columns], style, row_offset: start_row)
               end
             end
           end
@@ -162,13 +158,16 @@ module SpreadsheetArchitect
             header_count = 1
             header_count += x[:headers].count if x[:headers]
 
-            range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
+            #range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
 
-            if range_numbers.first < header_count && range_numbers.last < header_count
-              styles = header_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
-            else
-              styles = row_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
-            end
+            #if range_numbers.first < header_count && range_numbers.last < header_count
+            #  styles = header_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
+            #else
+            #  styles = row_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
+            #end
+
+            # with new axlsx_styler patch we dont need to provide a workaround for compounding styles
+            styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles])
 
             sheet.add_style x[:range], styles
           end
@@ -176,7 +175,7 @@ module SpreadsheetArchitect
 
         if options[:merges]
           options[:merges].each do |x|
-            sheet.merge x[:range]
+            sheet.merge_cells x[:range]
           end
         end
       end

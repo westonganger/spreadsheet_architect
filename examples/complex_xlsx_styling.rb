@@ -9,6 +9,7 @@ header_style = {}
 
 row_style = {}
 
+# zero based column indexes
 column_styles = [
   {},
   {},
@@ -17,6 +18,7 @@ column_styles = [
   {}
 ]
 
+# uses 1 based rows just like the spreadsheet grid
 range_styles = [
   {},
   {},
@@ -63,7 +65,7 @@ file_data = Post.order(created_at: :desc).limit(100).to_xlsx({
   row_style: row_style,
   column_styles: column_styles,
   range_styles: range_styles,
-  #borders: borders, # commented out because they currently cause problems with styles
+  borders: borders,
   merges: merges
 })
 
@@ -76,7 +78,7 @@ file_data = Post.to_xlsx({
   row_style: row_style,
   column_styles: column_styles,
   range_styles: range_styles,
-  #borders: borders, # commented out because they currently cause problems with styles
+  borders: borders,
   merges: merges
 })
 
