@@ -122,7 +122,7 @@ class PostsController < ActionController::Base
     respond_to do |format|
       format.html
       format.xlsx { render xlsx: @posts.to_xlsx(headers: false) }
-      format.ods { render ods: Post.to_odf(instances: @posts) }
+      format.ods { render ods: Post.to_ods(instances: @posts) }
       format.csv{ render csv: @posts.to_csv(headers: false), file_name: 'articles' }
     end
   end

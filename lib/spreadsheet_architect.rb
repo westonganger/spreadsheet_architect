@@ -1,6 +1,6 @@
 require 'axlsx'
 require 'axlsx_styler'
-require 'odf/spreadsheet'
+require 'rodf'
 require 'csv'
 
 require 'spreadsheet_architect/axlsx_column_width_patch'

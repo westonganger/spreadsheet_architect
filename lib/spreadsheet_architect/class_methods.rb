@@ -188,7 +188,7 @@ module SpreadsheetArchitect
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
 
       if !spreadsheet
-        spreadsheet = ODF::Spreadsheet.new
+        spreadsheet = RODF::Spreadsheet.new
       end
 
       spreadsheet.office_style :header_style, family: :cell do
