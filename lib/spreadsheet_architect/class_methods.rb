@@ -72,6 +72,10 @@ module SpreadsheetArchitect
           end
         end
 
+        if options[:column_widths]
+          sheet.column_widths options[:column_widths]
+        end
+
         if options[:borders] || options[:column_styles]
           col_names = max_row_length > 675 ? Array('A'..'ZZZ') : Array('A'..'ZZ')
         end
