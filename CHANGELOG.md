@@ -1,12 +1,13 @@
 CHANGELOG
 ---------
 
-- **July.15.2016**: 2.0.0
-  - Add to Axlsx: `merges`, `column_styles`, `range_styles`, `borders`, multi-row headers, date/time default format_code
+- **August.30.2016**: 2.0.0
+  - Add to Axlsx: `merges`, `column_styles`, `range_styles`, `borders` multi-row headers, date/time default format_code
+  - Add ability to make multi-sheet spreadsheets in XLSX & ODS
+  - Add `column_types` option for xlsx and ods
   - Adds `axlsx_styler` gem dependency
   - Add Examples
   - Add Axlsx Style Reference
-  - Add ability to make multi-sheet spreadsheets in XLSX & ODS
   - Refractor into smaller files
 - **May.16.2016**: 1.4.6
   - Fix hash syntax for support of ruby v2.1 and below

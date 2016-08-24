@@ -26,7 +26,7 @@ module SpreadsheetArchitect
     end
 
     def to_axlsx_package(opts={}, package=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
+      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self, :xlsx)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
     
       header_style = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(options[:header_style])
@@ -184,7 +184,7 @@ module SpreadsheetArchitect
     end
 
     def to_rodf_spreadsheet(opts={}, spreadsheet=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
+      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self, :ods)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
 
       if !spreadsheet

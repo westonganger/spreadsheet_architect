@@ -54,14 +54,14 @@ class Post < ActiveRecord::Base #activerecord not required
   #optional for activerecord classes, defaults to the models column_names
   def spreadsheet_columns
 
-    #[[Label, Method/Statement to Call on each Instance, Cell Type(optional)]....]
+    #[[Label, Method/Statement, Type(optional) to Call on each Instance, Cell Type(optional)]....]
     [
       ['Title', :title],
       ['Content', content],
       ['Author', (author.name if author)],
       ['Published?', (published ? 'Yes' : 'No')],
       ['Published At', :published_at],
-      ['# of Views', :number_of_views],
+      ['# of Views', :number_of_views, :float],
       ['Rating', :rating],
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
@@ -70,7 +70,7 @@ class Post < ActiveRecord::Base #activerecord not required
     [:title, :content, :published]
 
     # OR a Combination of Both ex. "Title", "Content", "Author Name", "Published"
-    [:title, :content, ['Author Name',(author.name rescue nil)], :published]
+    [:title, :content, ['Author Name',(author.name rescue nil)], ['# of Views', :number_of_views, :float], :published]
   end
 end
 ```
@@ -206,6 +206,7 @@ end
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)]
 |**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
+|**column_types**<br>*Array*||Valid types for xlsx are :string, :integer, :float, :date, :time, nil = auto determine|
   
 <br> 
 ## SpreadsheetArchitect.to_ods
@@ -216,6 +217,7 @@ end
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
+|**column_types**<br>*Array*||Valid types for ods are :string, :float, :date, :percent, :currency, nil = auto determine|
   
 <br>
 ## SpreadsheetArchitect.to_csv
@@ -245,7 +247,8 @@ class Post
     column_styles: [],
     range_styles: [],
     merges: [],
-    borders: []
+    borders: [],
+    column_types: []
   }
 end
 ```
@@ -262,7 +265,8 @@ SpreadsheetArchitect.default_options = {
   column_styles: [],
   range_styles: [],
   merges: [],
-  borders: []
+  borders: [],
+  column_types: []
 }
 ```
 

@@ -43,9 +43,9 @@ class TestSpreadsheetArchitect < MiniTest::Test
     eql(SpreadsheetArchitect::Utils.get_type(DateTime.now), :time)
     eql(SpreadsheetArchitect::Utils.get_type(Time.now), :time)
 
-    #SpreadsheetArchitect::Utils.get_cell_data(options, klass)
+    #SpreadsheetArchitect::Utils.get_cell_data(options, SpreadsheetArchitect)
 
-    #SpreadsheetArchitect::Utils.get_options(options, klass)
+    #SpreadsheetArchitect::Utils.get_options(options, SpreadsheetArchitect)
       
     eql(SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true}), {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
   end

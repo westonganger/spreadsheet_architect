@@ -9,38 +9,30 @@ header_style = {}
 
 row_style = {}
 
-# zero based column indexes
 column_styles = [
-  {},
-  {},
-  {},
-  {},
-  {}
+  {columns: 0, styles: {bold: true}},
+  {columns: (1..3), styles: {number_format: "$#,##0.00"}},
+  {columns: [4,9], include_header: true, styles: {italic: true}}
 ]
 
-# uses 1 based rows just like the spreadsheet grid
 range_styles = [
-  {},
-  {},
-  {},
-  {},
-  {}
+  {range: "B2:C4", styles: {background_color: "CCCCCC"}}
 ]
 
 borders = [
-  {},
-  {},
-  {},
-  {},
-  {}
+  {range: "B2:C4"},
+  {range: "D6:D7", border_styles: {style: :dashdot, color: "333333"}},
+  {rows: (2..11), border_styles: {edges: [:top,:bottom]}},
+  {rows: [1,3,5]},
+  {rows: 0},
+  {columns: 0, border_styles: {edges: [:right], style: :thick}},
+  {columns: (1..2)},
+  {columns: [4,6,8]}
+
 ]
 
 merges = [
-  {},
-  {},
-  {},
-  {},
-  {}
+  {range: "A1:C1"}
 ]
 
 # Using Array Data
@@ -51,7 +43,7 @@ file_data = SpreadsheetArchitect.to_xlsx({
   row_style: row_style,
   column_styles: column_styles,
   range_styles: range_styles,
-  #borders: borders, # commented out because they currently cause problems with styles
+  borders: borders,
   merges: merges
 })
 
