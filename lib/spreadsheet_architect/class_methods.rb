@@ -67,14 +67,16 @@ module SpreadsheetArchitect
 
             types[i] ||= SpreadsheetArchitect::Utils.get_type(x)
 
-            if [:date, :time].include?(types[i])
-              if types[i] == :date
-                format_code = 'm/d/yyyy'
-              else
-                format_code = 'm/d/yyyy h:mm AM/PM'
-              end
+            if i == 0
+              if [:date, :time].include?(types[i])
+                if types[i] == :date
+                  format_code = 'm/d/yyyy'
+                else
+                  format_code = 'm/d/yyyy h:mm AM/PM'
+                end
 
-              sheet.col_style(i, {format_code: format_code}, row_offset: (options[:headers] ? options[:headers].count : 0))
+                sheet.col_style(i, package.workbook.styles.add_style(format_code: format_code), row_offset: (options[:headers] ? options[:headers].count : 0))
+              end
             end
           end
 
