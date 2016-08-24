@@ -42,8 +42,6 @@ module SpreadsheetArchitect
         if options[:headers]
           header_style_index = package.workbook.styles.add_style(header_style)
 
-          options[:headers] = [options[:headers]] unless options[:headers][0].is_a?(Array)
-
           options[:headers].each do |header_row|
             sheet.add_row header_row, style: header_style_index
           end
@@ -241,7 +239,7 @@ module SpreadsheetArchitect
 
       spreadsheet.table options[:sheet_name] do 
         if options[:headers]
-          (options[:headers][0].is_a?(Array) ? options[:headers] : [options[:headers]]).each do |header_row|
+          options[:headers].each do |header_row|
             row do
               options[:headers].each_with_index do |header, i|
                 cell header, style: :header_style
