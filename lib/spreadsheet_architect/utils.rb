@@ -8,42 +8,29 @@ module SpreadsheetArchitect
       return str
     end
 
-    def self.get_type(value, format=:xlsx, type=nil, last_run=false)
+    def self.get_type(value, type=nil)
       return type if (type.respond_to?(:empty?) ? !type.empty? : !type.nil?)
       
-      case format
-      when :xlsx
-        if value.is_a?(Numeric)
-          if value.is_a?(Float) || value.is_a?(BigDecimal)
-            type = :float
-          else
-            type = :integer
-          end
-        elsif value.is_a?(DateTime) || value.is_a?(Time)
-          type = :time
-        elsif value.is_a?(Date)
-          type = :date
-        elsif !last_run && value.is_a?(Symbol)
-          type = :symbol
-        else
-          type = :string
-        end
-      when :ods
-        if value.is_a?(Numeric)
+      if value.is_a?(Numeric)
+        if value.is_a?(Float) || value.is_a?(BigDecimal)
           type = :float
-        elsif value.respond_to?(:strftime)
-          type = :date
-        elsif !last_run && value.is_a?(Symbol)
-          type = :symbol
         else
-          type = :string
+          type = :integer
         end
+      elsif value.respond_to?(:strftime)
+        if value.is_a?(DateTime) || value.is_a?(Time)
+          type = :time
+        else
+          type = :date
+        end
+      else
+        type = :string
       end
 
       return type
     end
 
-    def self.get_cell_data(options={}, klass, format)
+    def self.get_cell_data(options={}, klass)
       if klass.name == 'SpreadsheetArchitect'
         if !options[:data] || options[:data].empty?
           raise SpreadsheetArchitect::NoDataError
@@ -56,13 +43,6 @@ module SpreadsheetArchitect
         end
         
         data = options[:data]
-
-        unless options[:column_types]
-          types = []
-          data.first.each do |x|
-            types.push self.get_type(x, format)
-          end
-        end
       else
         has_custom_columns = options[:spreadsheet_columns] || klass.instance_methods.include?(:spreadsheet_columns)
 
@@ -88,25 +68,14 @@ module SpreadsheetArchitect
         if has_custom_columns 
           headers = [] if headers.nil?
           columns = []
-          types = []
           array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
           array.each_with_index do |x,i|
             if x.is_a?(Array)
               headers.push(x[0].to_s) if headers.nil?
               columns.push x[1]
-              if options[:column_types]
-                unless options[:column_types][i]
-                  options[:column_types][i] = self.get_type(x[1], format)
-                end
-              else
-                types.push self.get_type(x[1], format, x[2])
-              end
             else
               headers.push(str_humanize(x.to_s)) if headers.nil?
               columns.push x
-              unless options[:column_types]
-                types.push self.get_type(x, format)
-              end
             end
           end
         elsif !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
@@ -114,9 +83,6 @@ module SpreadsheetArchitect
           the_column_names = (klass.column_names - ignored_columns)
           headers = the_column_names.map{|x| str_humanize(x)} if headers.nil?
           columns = the_column_names.map{|x| x.to_sym}
-
-          types = klass.columns.keep_if{|x| !ignored_columns.include?(x.name)}.collect(&:type)
-          types.map!{|type| self.get_type(nil, format, type)}
         else
           raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
         end
@@ -137,18 +103,9 @@ module SpreadsheetArchitect
             data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
           end
         end
-      
-        # Fixes missing types from symbol methods
-        if !options[:column_types] && (has_custom_columns || options[:spreadsheet_columns])
-          data.first.each_with_index do |x,i|
-            if types[i] == :symbol
-              types[i] = self.get_type(x, format, nil, true)
-            end
-          end
-        end
       end
 
-      return options.merge(headers: headers, data: data, types: (options[:column_types] || types))
+      return options.merge(headers: headers, data: data, column_types: options[:column_types])
     end
 
     def self.get_options(options={}, klass)

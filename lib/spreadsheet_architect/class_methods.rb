@@ -26,7 +26,7 @@ module SpreadsheetArchitect
     end
 
     def to_axlsx_package(opts={}, package=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self, :xlsx)
+      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
     
       header_style = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(options[:header_style])
@@ -40,12 +40,16 @@ module SpreadsheetArchitect
 
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         if options[:headers]
+          header_style_index = package.workbook.styles.add_style(header_style)
+
           options[:headers] = [options[:headers]] unless options[:headers][0].is_a?(Array)
 
           options[:headers].each do |header_row|
-            sheet.add_row header_row, style: package.workbook.styles.add_style(header_style)
+            sheet.add_row header_row, style: header_style_index
           end
         end
+
+        row_style_index = package.workbook.styles.add_style(row_style)
 
         max_row_length = options[:data].max_by{|x| x.length}.length
 
@@ -57,19 +61,26 @@ module SpreadsheetArchitect
             end
           end
 
-          sheet.add_row row_data, style: package.workbook.styles.add_style(row_style), types: options[:types]
-        end
-
-        options[:types].each_with_index do |type, index|
-          if [:date, :time].include?(type)
-            if type == :date
-              format_code = 'm/d/yyyy'
-            else
-              format_code = 'm/d/yyyy h:mm AM/PM'
+          types = []
+          row_data.each_with_index do |x,i|
+            if options[:column_types]
+              types[i] = options[:column_types][i]
             end
 
-            sheet.col_style(index, {format_code: format_code}, row_offset: (options[:headers] ? options[:headers].count : 0))
+            types[i] ||= SpreadsheetArchitect::Utils.get_type(x)
+
+            if [:date, :time].include?(types[i])
+              if type == :date
+                format_code = 'm/d/yyyy'
+              else
+                format_code = 'm/d/yyyy h:mm AM/PM'
+              end
+
+              sheet.col_style(i, {format_code: format_code}, row_offset: (options[:headers] ? options[:headers].count : 0))
+            end
           end
+
+          sheet.add_row row_data, style: row_style_index, types: types
         end
 
         if options[:column_widths]
@@ -188,7 +199,7 @@ module SpreadsheetArchitect
     end
 
     def to_rodf_spreadsheet(opts={}, spreadsheet=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self, :ods)
+      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Utils.get_options(opts, self)
 
       if !spreadsheet
@@ -238,10 +249,11 @@ module SpreadsheetArchitect
             end
           end
         end
+
         options[:data].each_with_index do |row_data, index|
           row do 
             row_data.each_with_index do |y,i|
-              cell y, style: :row_style, type: options[:types][i]
+              cell y, style: :row_style, type: (options[:types][i] if options[:types])
             end
           end
         end

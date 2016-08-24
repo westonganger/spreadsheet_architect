@@ -1,5 +1,7 @@
 if defined? Axlsx
   Axlsx::Col.class_eval do
+    @width = nil
+
     def width=(v)
       if v.nil?
         @custom_width = false

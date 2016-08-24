@@ -37,7 +37,7 @@ class TestSpreadsheetArchitect < MiniTest::Test
     eql(SpreadsheetArchitect::Utils.get_type(123.01), :float)
     eql(SpreadsheetArchitect::Utils.get_type(BigDecimal('123.01')), :float)
     eql(SpreadsheetArchitect::Utils.get_type(10), :integer)
-    eql(SpreadsheetArchitect::Utils.get_type(:test), :symbol)
+    eql(SpreadsheetArchitect::Utils.get_type(:test), :string)
 
     eql(SpreadsheetArchitect::Utils.get_type(Time.now.to_date), :date)
     eql(SpreadsheetArchitect::Utils.get_type(DateTime.now), :time)
