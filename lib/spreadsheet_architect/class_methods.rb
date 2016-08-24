@@ -6,7 +6,7 @@ module SpreadsheetArchitect
 
       CSV.generate do |csv|
         if options[:headers]
-          (options[:headers][0].is_a?(Array) ? options[:headers] : [options[:headers]]).each do |header_row|
+          options[:headers].each do |header_row|
             csv << options[:headers]
           end
         end

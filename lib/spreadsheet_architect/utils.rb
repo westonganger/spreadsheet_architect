@@ -36,7 +36,7 @@ module SpreadsheetArchitect
           raise SpreadsheetArchitect::NoDataError
         end
 
-        if options[:headers] && !options[:headers].empty?
+        if options[:headers] && options[:headers].is_a?(Array) && !options[:headers].empty?
           headers = options[:headers]
         else
           headers = false
@@ -57,7 +57,7 @@ module SpreadsheetArchitect
         if options[:headers].nil?
           headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
           headers ||= SpreadsheetArchitect.default_options[:headers]
-        else
+        elsif options[:headers].is_a?(Array)
           headers = options[:headers]
         end
 
@@ -66,15 +66,16 @@ module SpreadsheetArchitect
         end
 
         if has_custom_columns 
-          headers = [] if headers.nil?
+          needs_headers = headers.nil?
+          headers = [] if needs_headers
           columns = []
           array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
           array.each_with_index do |x,i|
             if x.is_a?(Array)
-              headers.push(x[0].to_s) if headers.nil?
+              headers.push(x[0].to_s) if needs_headers
               columns.push x[1]
             else
-              headers.push(str_humanize(x.to_s)) if headers.nil?
+              headers.push(str_humanize(x.to_s)) if needs_headers
               columns.push x
             end
           end
