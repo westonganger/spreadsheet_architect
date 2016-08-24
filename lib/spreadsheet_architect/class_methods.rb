@@ -68,7 +68,7 @@ module SpreadsheetArchitect
             types[i] ||= SpreadsheetArchitect::Utils.get_type(x)
 
             if [:date, :time].include?(types[i])
-              if type == :date
+              if types[i] == :date
                 format_code = 'm/d/yyyy'
               else
                 format_code = 'm/d/yyyy h:mm AM/PM'
@@ -241,7 +241,7 @@ module SpreadsheetArchitect
         if options[:headers]
           options[:headers].each do |header_row|
             row do
-              options[:headers].each_with_index do |header, i|
+              header_row.each_with_index do |header, i|
                 cell header, style: :header_style
               end
             end
