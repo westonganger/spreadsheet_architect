@@ -7,7 +7,7 @@ module SpreadsheetArchitect
       CSV.generate do |csv|
         if options[:headers]
           options[:headers].each do |header_row|
-            csv << options[:headers]
+            csv << header_row
           end
         end
         

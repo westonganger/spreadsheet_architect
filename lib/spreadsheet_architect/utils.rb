@@ -108,6 +108,10 @@ module SpreadsheetArchitect
         end
       end
 
+      if headers && !headers[0].is_a?(Array)
+        headers = [headers]
+      end
+
       return options.merge(headers: headers, data: data, column_types: options[:column_types])
     end
 
