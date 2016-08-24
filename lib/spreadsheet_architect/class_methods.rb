@@ -72,7 +72,7 @@ module SpreadsheetArchitect
         end
 
         
-        options[:data].first.row_data.each_with_index do |x,i|
+        options[:data].first.each_with_index do |x,i|
           if options[:column_types]
             types[i] = options[:column_types][i]
           end
