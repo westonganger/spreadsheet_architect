@@ -73,6 +73,12 @@ module SpreadsheetArchitect
 
         
         options[:data].first.row_data.each_with_index do |x,i|
+          if options[:column_types]
+            types[i] = options[:column_types][i]
+          end
+
+          types[i] ||= SpreadsheetArchitect::Utils.get_type(x)
+
           if [:date, :time].include?(types[i])
             if types[i] == :date
               format_code = 'm/d/yyyy'
