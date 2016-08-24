@@ -71,8 +71,9 @@ module SpreadsheetArchitect
           sheet.add_row row_data, style: row_style_index, types: types
         end
 
-        
         options[:data].first.each_with_index do |x,i|
+          types = []
+
           if options[:column_types]
             types[i] = options[:column_types][i]
           end
