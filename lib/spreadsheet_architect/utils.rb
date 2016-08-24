@@ -63,10 +63,12 @@ module SpreadsheetArchitect
 
         unless headers == false || headers.is_a?(Array)
           headers = klass.spreadsheet_headers if klass.respond_to?(:spreadsheet_headers)
+          headers ||= true
         end
 
+        needs_headers = headers == true
+
         if has_custom_columns 
-          needs_headers = headers.nil?
           headers = [] if needs_headers
           columns = []
           array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
@@ -82,7 +84,7 @@ module SpreadsheetArchitect
         elsif !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
           ignored_columns = ["id","created_at","updated_at","deleted_at"] 
           the_column_names = (klass.column_names - ignored_columns)
-          headers = the_column_names.map{|x| str_humanize(x)} if headers.nil?
+          headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
           columns = the_column_names.map{|x| x.to_sym}
         else
           raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
