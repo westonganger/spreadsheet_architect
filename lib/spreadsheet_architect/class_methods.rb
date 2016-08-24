@@ -84,7 +84,7 @@ module SpreadsheetArchitect
             if types[i] == :date
               format_code = 'm/d/yyyy'
             else
-              format_code = 'm/d/yyyy h:mm AM/PM'
+              format_code = 'yyyy/m/d h:mm AM/PM'
             end
 
             sheet.col_style(i, package.workbook.styles.add_style(format_code: format_code), row_offset: (options[:headers] ? options[:headers].count : 0))
@@ -92,7 +92,7 @@ module SpreadsheetArchitect
         end
 
         if options[:column_widths]
-          sheet.column_widths options[:column_widths]
+          sheet.column_widths(*options[:column_widths])
         end
 
         if options[:borders] || options[:column_styles]
