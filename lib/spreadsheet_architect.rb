@@ -1,15 +1,12 @@
-require 'axlsx'
-require 'axlsx_styler'
-require 'rodf'
-require 'csv'
-
-require 'spreadsheet_architect/axlsx_column_width_patch'
-require 'spreadsheet_architect/set_mime_types'
+require 'spreadsheet_architect/mime_types'
 require 'spreadsheet_architect/action_controller_renderers'
 
 require 'spreadsheet_architect/exceptions'
 require 'spreadsheet_architect/utils'
-require 'spreadsheet_architect/class_methods'
+
+require 'spreadsheet_architect/class_methods/csv'
+require 'spreadsheet_architect/class_methods/ods'
+require 'spreadsheet_architect/class_methods/xlsx'
 
 module SpreadsheetArchitect
   def self.included(base)

@@ -1,26 +1,10 @@
+require 'axlsx'
+require 'axlsx_styler'
+
+require 'spreadsheet_architect/monkey_patches/axlsx_column_width'
+
 module SpreadsheetArchitect
   module ClassMethods
-    def to_csv(opts={})
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-      options = SpreadsheetArchitect::Utils.get_options(opts, self)
-
-      CSV.generate do |csv|
-        if options[:headers]
-          options[:headers].each do |header_row|
-            csv << header_row
-          end
-        end
-        
-        options[:data].each do |row_data|
-          csv << row_data
-        end
-      end
-    end
-    
-    def to_ods(opts={})
-      return to_rodf_spreadsheet(opts).bytes
-    end
-
     def to_xlsx(opts={})
       return to_axlsx_package(opts).to_stream.read
     end
@@ -205,70 +189,5 @@ module SpreadsheetArchitect
 
       return package
     end
-
-    def to_rodf_spreadsheet(opts={}, spreadsheet=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-      options = SpreadsheetArchitect::Utils.get_options(opts, self)
-
-      if !spreadsheet
-        spreadsheet = RODF::Spreadsheet.new
-      end
-
-      spreadsheet.office_style :header_style, family: :cell do
-        if options[:header_style]
-          unless opts[:header_style] && opts[:header_style][:bold] == false #uses opts, temporary
-            property :text, 'font-weight' => :bold
-          end
-          if options[:header_style][:align]
-            property :text, align: options[:header_style][:align]
-          end
-          if options[:header_style][:size]
-            property :text, 'font-size' => options[:header_style][:size]
-          end
-          if options[:header_style][:color] && opts[:header_style] && opts[:header_style][:color] #temporary
-            property :text, color: "##{options[:header_style][:color]}"
-          end
-        end
-      end
-      spreadsheet.office_style :row_style, family: :cell do
-        if options[:row_style]
-          if options[:row_style][:bold]
-            property :text, 'font-weight' => :bold
-          end
-          if options[:row_style][:align]
-            property :text, align: options[:row_style][:align]
-          end
-          if options[:row_style][:size]
-            property :text, 'font-size' => options[:row_style][:size]
-          end
-          if opts[:row_style] && opts[:row_style][:color] #uses opts, temporary
-            property :text, color: "##{options[:row_style][:color]}"
-          end
-        end
-      end
-
-      spreadsheet.table options[:sheet_name] do 
-        if options[:headers]
-          options[:headers].each do |header_row|
-            row do
-              header_row.each_with_index do |header, i|
-                cell header, style: :header_style
-              end
-            end
-          end
-        end
-
-        options[:data].each_with_index do |row_data, index|
-          row do 
-            row_data.each_with_index do |y,i|
-              cell y, style: :row_style, type: (options[:types][i] if options[:types])
-            end
-          end
-        end
-      end
-
-      return spreadsheet
-    end
-
   end
 end

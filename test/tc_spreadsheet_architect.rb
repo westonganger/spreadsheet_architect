@@ -55,7 +55,7 @@ class TestSpreadsheetArchitect < MiniTest::Test
     #SpreadsheetArchitect::Utils.get_options(options, SpreadsheetArchitect)
       
     styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
-    eql(styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
+    eql(styles, {'bg_color' => '333333', 'fg_color' => '000000', 'alignment' => {'horizontal' => true}, 'b' => true, 'sz' => 14, 'i' => true, 'u' => true, 'test' => true})
   end
 
   def test_xlsx
