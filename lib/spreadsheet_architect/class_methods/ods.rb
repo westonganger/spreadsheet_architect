@@ -16,15 +16,20 @@ module SpreadsheetArchitect
 
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
-          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:header_style]).each do |k,v|
-            property v['property'], k => v['value']
+          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:header_style]).each do |prop, styles|
+            styles.each do |k,v|
+              property prop, k => v
+            end
           end
         end
       end
+
       spreadsheet.office_style :row_style, family: :cell do
         if options[:row_style]
-          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:row_style]).each do |k,v|
-            property v['property'], k => v['value']
+          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:row_style]).each do |prop, styles|
+            styles.each do |k,v|
+              property prop, k => v
+            end
           end
         end
       end

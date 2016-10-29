@@ -115,11 +115,12 @@ module SpreadsheetArchitect
             end
 
             if x[:rows]
-              start_col = x[:start_offset] ? col_names[x[:start_offset].to_i] : 'A'
-
-              end_index = max_row_length - 1
-              end_index -= x[:end_offset].to_i if x[:end_offset]
-              end_col = col_names[end_index]
+              start_col = x[:start_column] ? x[:start_column] : 'A'
+              if x[:end_column]
+                end_col = x[:end_column] > col_names[max_row_length-1] ? col_names[max_row_length-1] : x[:end_column]
+              else
+                end_col = col_names[max_row_length-1]
+              end
 
               if x[:rows].is_a?(Array)
                 x[:rows].each do |row|
@@ -128,8 +129,7 @@ module SpreadsheetArchitect
               elsif x[:rows].is_a?(Range)
                 sheet.add_border "#{start_col}#{x[:rows].first}:#{end_col}#{x[:rows].last}", x[:border_styles]
               elsif x[:rows].is_a?(Integer)
-                col = col_names[x[:columns]]
-                sheet.add_border "#{start_col}#{col}:#{end_col}#{col}", x[:border_styles]
+                sheet.add_border "#{start_col}#{x[:rows]}:#{end_col}#{x[:rows]}", x[:border_styles]
               end
             end
 

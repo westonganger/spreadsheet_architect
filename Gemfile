@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'axlsx'
-gem 'axlsx_styler', github: 'westonganger/axlsx_styler', branch: :merge_styles
+gem 'axlsx_styler'
 gem 'rodf', github: 'thiagoarrais/rodf', branch: :develop
 
 group :rails do

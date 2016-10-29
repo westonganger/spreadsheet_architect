@@ -173,7 +173,7 @@ end
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
-|**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
+|**column_widths**<br>*Array*||Sometimes you  may want explicit column widths. Use nil if you want a column to autofit again.|
   
 <br>
 ## SomeClass.to_ods
@@ -183,8 +183,8 @@ end
 |**instances**<br>*Array*| |**Required for Non-ActiveRecord models** Array of class/model instances.|
 |**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass false to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
-|**header_style**<br>*Hash*|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
-|**row_style**<br>*Hash*|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
+|**row_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
   
 <br>
 ## SomeClass.to_csv
@@ -217,8 +217,8 @@ end
 |**data**<br>*2D Array*| |Data for the non-header row cells.|
 |**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass false to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
-|**header_style**<br>*Hash*|`{color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
-|**row_style**<br>*Hash*|`{color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
+|**row_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :percent, :currency, nil = auto determine|
   
 <br>

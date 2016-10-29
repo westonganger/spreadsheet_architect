@@ -2,13 +2,13 @@ module SpreadsheetArchitect
   module Exceptions
     class NoDataError < StandardError
       def initialize
-        super("Missing data option or data is empty")
+        super("Missing or incorrect :data option")
       end
     end
 
     class NoInstancesError < StandardError
       def initialize
-        super("Missing instances option or relation is empty.")
+        super("Missing :instances option")
       end
     end
     

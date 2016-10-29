@@ -13,6 +13,8 @@ class TestSpreadsheetArchitect < MiniTest::Test
   def setup
     require_relative 'helper'
 
+    FileUtils.mkdir_p File.join(Dir.pwd, 'tmp')
+
     Minitest::Assertions.module_eval do
       alias_method :eql, :assert_equal
     end
@@ -24,7 +26,8 @@ class TestSpreadsheetArchitect < MiniTest::Test
       sheet_name: 'My Project Export',
       column_styles: [],
       range_styles: [],
-      borders: []
+      borders: [],
+      merges: []
     }
 
     @headers = ['test1', 'test2','test3']
@@ -45,7 +48,6 @@ class TestSpreadsheetArchitect < MiniTest::Test
     eql(SpreadsheetArchitect::Utils.get_type(BigDecimal('123.01')), :float)
     eql(SpreadsheetArchitect::Utils.get_type(10), :integer)
     eql(SpreadsheetArchitect::Utils.get_type(:test), :string)
-
     eql(SpreadsheetArchitect::Utils.get_type(Time.now.to_date), :date)
     eql(SpreadsheetArchitect::Utils.get_type(DateTime.now), :time)
     eql(SpreadsheetArchitect::Utils.get_type(Time.now), :time)
@@ -54,8 +56,17 @@ class TestSpreadsheetArchitect < MiniTest::Test
 
     #SpreadsheetArchitect::Utils.get_options(options, SpreadsheetArchitect)
       
-    styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
-    eql(styles, {'bg_color' => '333333', 'fg_color' => '000000', 'alignment' => {'horizontal' => true}, 'b' => true, 'sz' => 14, 'i' => true, 'u' => true, 'test' => true})
+    xlsx_styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
+    eql(xlsx_styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
+
+    ods_styles = SpreadsheetArchitect::Utils.convert_styles_to_ods({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
+    eql(ods_styles, {'cell' => {'background-color' => '#333333'}, 'text' => {'color' => '#000000', 'align' => true, 'font-weight' => 'bold', 'font-size' => 14, 'font-style' => 'italic', 'text-underline-type' => 'single', 'text-underline-style' => 'solid'}})
+  end
+
+  def test_empty
+    SpreadsheetArchitect.to_xlsx(data: [])
+    SpreadsheetArchitect.to_ods(data: [])
+    SpreadsheetArchitect.to_csv(data: [])
   end
 
   def test_xlsx

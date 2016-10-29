@@ -32,7 +32,7 @@ module SpreadsheetArchitect
 
     def self.get_cell_data(options={}, klass)
       if klass.name == 'SpreadsheetArchitect'
-        if !options[:data] || options[:data].empty?
+        if !options[:data] || !options[:data].is_a?(Array)
           raise SpreadsheetArchitect::NoDataError
         end
 
@@ -158,55 +158,61 @@ module SpreadsheetArchitect
     end
 
     def self.convert_styles_to_axlsx(styles={})
-      styles = self.stringify_keys(styles)
+      styles = {} unless styles.is_a?(Hash)
+      styles = self.symbolize_keys(styles)
 
-      styles['fg_color'] = styles.delete('color') || styles['fg_color']
-      styles['bg_color'] = styles.delete('background_color') || styles['bg_color']
-      if styles['align']
-        if styles['align'].is_a?(Hash)
-          styles['alignment'] = {'horizontal' => styles['align']['horizontal'], 'vertical' => styles['align']['vertical']}
-          styles.delete('align')
+      if styles[:color].respond_to?(:sub) && !styles[:color].empty?
+        styles[:fg_color] = styles.delete(:color).sub('#','')
+      end
+
+      if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
+        styles[:bg_color] = styles.delete(:background_color).sub('#','')
+      end
+
+      if styles[:align]
+        if styles[:align].is_a?(Hash)
+          styles[:alignment] = {horizontal: styles[:align][:horizontal], vertical: styles[:align][:vertical]}
+          styles.delete(:align)
         else
-          styles['alignment'] = {'horizontal' => styles.delete('align')}
+          styles[:alignment] = {horizontal: styles.delete(:align)}
         end
       end
-      styles['b'] = styles.delete('bold') || styles['b']
-      styles['sz'] = styles.delete('font_size') || styles['sz']
-      styles['i'] = styles.delete('italic') || styles['i']
-      styles['u'] = styles.delete('underline') || styles['u']
+      styles[:b] = styles.delete(:bold) || styles[:b]
+      styles[:sz] = styles.delete(:font_size) || styles[:sz]
+      styles[:i] = styles.delete(:italic) || styles[:i]
+      styles[:u] = styles.delete(:underline) || styles[:u]
 
       styles.delete_if{|k,v| v.nil?}
     end
 
 
     def self.convert_styles_to_ods(styles={})
+      styles = {} unless styles.is_a?(Hash)
       styles = self.stringify_keys(styles)
 
       property_styles = {}
 
       text_styles = {}
-      text_styles['font-weight'] = styles.delete('bold') || styles.delete('font-weight')
-      text_styles['font-size'] = styles.delete('size') || styles.delete('font-size')
+      text_styles['font-weight'] = styles.delete('bold') ? 'bold' : styles.delete('font-weight')
+      text_styles['font-size'] = styles.delete('font_size') || styles.delete('font-size')
+      text_styles['font-style'] = styles.delete('italic') ? 'italic' : styles.delete('font-style')
+      if styles['underline']
+        styles.delete('underline')
+        text_styles['text-underline-style'] = 'solid'
+        text_styles['text-underline-type'] = 'single'
+      end
       if styles['align']
         text_styles['align'] = true
       end 
       if styles['color'].respond_to?(:sub) && !styles['color'].empty?
-        text_styles['color'] = "##{styles['color'].sub('#','')}"
+        text_styles['color'] = "##{styles.delete('color').sub('#','')}"
       end
       text_styles.delete_if{|k,v| v.nil?}
       property_styles['text'] = text_styles
       
       cell_styles = {}
-      cell_styles['background-color'] = styles.delete('background-color')
-
-      if styles['borders'] && styles['borders'].is_a?(Hash)
-        styles['borders']['edges'] ||= [:top, :left, :right, :bottom]
-        styles['borders']['edges'].each do |edge|
-          str = "#{styles['borders']['width'] || '1pt'}"
-          str += " #{styles['borders']['style'] || 'solid'}"
-          str += " ##{"styles['borders']['color'].sub('#','')}" || '000000'}"
-          cell_styles["border-#{edge.to_s}"] = str
-        end
+      if styles['background_color'].respond_to?(:sub) && !styles['background_color'].empty?
+        cell_styles['background-color'] = "##{styles.delete('background_color').sub('#','')}"
       end
 
       cell_styles.delete_if{|k,v| v.nil?}
@@ -217,19 +223,34 @@ module SpreadsheetArchitect
 
     private
 
-    # only coverts the first 2 levels
-    def self.stringify_keys(orig_styles={})
-      styles = {}
-      orig_styles.each do |k,v|
+    # only converts the first 2 levels
+    def self.stringify_keys(hash={})
+      new_hash = {}
+      hash.each do |k,v|
         if v.is_a?(Hash)
           v.each do |k2,v2|
-            styles[k2.to_s] = v2
+            new_hash[k2.to_s] = v2
           end
         else
-          styles[k.to_s] = v
+          new_hash[k.to_s] = v
         end
       end
-      return styles
+      return new_hash
+    end
+
+    # only converts the first 2 levels
+    def self.symbolize_keys(hash={})
+      new_hash = {}
+      hash.each do |k,v|
+        if v.is_a?(Hash)
+          v.each do |k2,v2|
+            new_hash[k2.to_sym] = v2
+          end
+        else
+          new_hash[k.to_sym] = v
+        end
+      end
+      return new_hash
     end
   end
 end
