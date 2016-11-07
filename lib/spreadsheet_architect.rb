@@ -203,7 +203,7 @@ module SpreadsheetArchitect
       end
     end
 
-    def to_rodf_spreadsheet
+    def to_rodf_spreadsheet(opts={})
       opts = SpreadsheetArchitect::Helpers.get_cell_data(opts, self)
       options = SpreadsheetArchitect::Helpers.get_options(opts, self)
 

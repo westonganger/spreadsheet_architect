@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+- **November.7.2016**: 1.4.7
+  - Fix method arguments for `to_rodf_spreadsheet` method
+- **May.12.2016**: 1.4.6
+  - Fix ruby <= 2.1 hash syntax
 - **May.4.2016**: 1.4.5
   - Bug fixes
 - **May.3.2016**: 1.4.4
