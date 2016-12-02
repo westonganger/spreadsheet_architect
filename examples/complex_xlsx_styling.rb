@@ -11,7 +11,7 @@ row_style = {}
 
 column_styles = [
   {columns: 0, styles: {bold: true}},
-  {columns: (1..3), styles: {number_format: "$#,##0.00"}},
+  {columns: (1..3), styles: {format_code: "$#,##0.00"}},
   {columns: [4,9], include_header: true, styles: {italic: true}}
 ]
 

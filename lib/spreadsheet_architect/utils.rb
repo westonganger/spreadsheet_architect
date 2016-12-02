@@ -31,8 +31,10 @@ module SpreadsheetArchitect
     end
 
     def self.get_cell_data(options={}, klass)
+      self.check_options_types
+
       if klass.name == 'SpreadsheetArchitect'
-        if !options[:data] || !options[:data].is_a?(Array)
+        if !options[:data]
           raise SpreadsheetArchitect::NoDataError
         end
 
@@ -185,7 +187,6 @@ module SpreadsheetArchitect
       styles.delete_if{|k,v| v.nil?}
     end
 
-
     def self.convert_styles_to_ods(styles={})
       styles = {} unless styles.is_a?(Hash)
       styles = self.stringify_keys(styles)
@@ -222,6 +223,36 @@ module SpreadsheetArchitect
     end
 
     private
+
+    def self.check_type(options, option_name, type)
+      unless options[option_name].nil?
+        valid = false
+
+        if type.is_a?(Array)
+          valid = type.any?{|t| options[option_name].is_a?(t)}
+        elsif options[option_name].is_a?(type)
+          valid = true
+        end
+
+        if valid
+          raise SpreadsheetArchitect::IncorrectTypeError option_name
+        end
+      end
+    end
+
+    def self.check_options_types(options={})
+      self.check_type(options, :spreadsheet_columns, Array)
+      self.check_type(options, :instances, Array)
+      self.check_type(options, :headers, [Boolean, Array])
+      self.check_type(options, :sheet_name, String)
+      self.check_type(options, :header_style, Hash)
+      self.check_type(options, :row_style, Hash)
+      self.check_type(options, :column_styles, Array)
+      self.check_type(options, :range_styles, Array)
+      self.check_type(options, :merges, Array)
+      self.check_type(options, :borders, Array)
+      self.check_type(options, :column_widths, Array)
+    end
 
     # only converts the first 2 levels
     def self.stringify_keys(hash={})
