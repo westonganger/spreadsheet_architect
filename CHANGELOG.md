@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **November.7.2016**: 1.4.8
+- **December.6.2016**: 1.4.8
   - Lock `rodf` gem to v0.3.7 for last v1 version of this gem
 - **November.7.2016**: 1.4.7
   - Fix method arguments for `to_rodf_spreadsheet` method
