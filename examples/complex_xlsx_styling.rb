@@ -23,11 +23,13 @@ borders = [
   {range: "B2:C4"},
   {range: "D6:D7", border_styles: {style: :dashdot, color: "333333"}},
   {rows: (2..11), border_styles: {edges: [:top,:bottom]}},
-  {rows: [1,3,5], start_column: 'B', end_column: 'F'},
+  {rows: [1,3,5], columns: ('B'..'F')},
   {rows: 1},
   {columns: 0, border_styles: {edges: [:right], style: :thick}},
   {columns: (1..2)},
-  {columns: [4,6,8]}
+  {columns: ('D'..'F')},
+  {columns: [4,6,8]},
+  {columns: ['A','C','E']}
 
 ]
 
@@ -76,6 +78,6 @@ file_data = Post.to_xlsx({
 
 
 # Save the file_data
-File.open('path/to/file.xlsx') do |f|
+File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write file_data
 end

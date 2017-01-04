@@ -132,23 +132,23 @@ end
 ### Method 2: Save to a file manually
 ```ruby
 # Ex. with ActiveRecord relation
-File.open('path/to/file.xlsx') do |f|
+File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write{ Post.order(published_at: :asc).to_xlsx }
 end
-File.open('path/to/file.ods') do |f|
+File.open('path/to/file.ods', 'w+b) do |f|
   f.write{ Post.order(published_at: :asc).to_ods }
 end
-File.open('path/to/file.csv') do |f|
+File.open('path/to/file.csv', 'w+b') do |f|
   f.write{ Post.order(published_at: :asc).to_csv }
 end
 
 # Ex. with plain ruby class
-File.open('path/to/file.xlsx') do |f|
+File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write{ Post.to_xlsx(instances: posts_array) }
 end
 
 # Ex. One time Usage
-File.open('path/to/file.xlsx') do |f|
+File.open('path/to/file.xlsx', 'w+b') do |f|
   headers = ['Col 1','Col 2','Col 3']
   data = [[1,2,3], [4,5,6], [7,8,9]]
   f.write{ SpreadsheetArchitect::to_xlsx(data: data, headers: headers) }
@@ -168,7 +168,7 @@ end
 |**headers**<br>*2D Array*|This defaults to your models custom spreadsheet_columns method or `self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
@@ -183,8 +183,8 @@ end
 |**instances**<br>*Array*| |**Required only for Non-ActiveRecord models** Array of class/model instances.|
 |**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
-|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
-|**row_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
   
 <br>
 ## SomeClass.to_csv
@@ -202,7 +202,7 @@ end
 |**headers**<br>*2D Array*|`false`|Data for the header row cells. Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "FFFFFF", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
 |**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)|
@@ -217,8 +217,8 @@ end
 |**data**<br>*2D Array*| |Data for the non-header row cells.|
 |**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
-|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
-|**row_style**<br>*Hash*|`{background_color: "AAAAAA", color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :percent, :currency, nil = auto determine|
   
 <br>
@@ -244,7 +244,7 @@ class Post
       self.column_names.map{|x| x.titleize}
     ],
     header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
-    row_style: {background_color: nil, color: 'FFFFFF', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
+    row_style: {background_color: nil, color: '000000', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     sheet_name: self.name,
     column_styles: [],
     range_styles: [],

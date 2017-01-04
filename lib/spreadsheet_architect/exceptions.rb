@@ -1,5 +1,6 @@
 module SpreadsheetArchitect
   module Exceptions
+
     class NoDataError < StandardError
       def initialize
         super("Missing :data option")
@@ -18,10 +19,11 @@ module SpreadsheetArchitect
       end
     end
     
-    class SpreadsheetColumnsNotDefined < StandardError
+    class SpreadsheetColumnsNotDefinedError < StandardError
       def initialize(klass=nil)
         super("The spreadsheet_columns option is not defined on #{klass.name}")
       end
     end
+
   end
 end

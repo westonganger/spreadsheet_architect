@@ -7,5 +7,7 @@ coverage/
 doc/
 pkg/
 spec/reports/
-tmp/
 test/*.sqlite3.db
+test/rails_app/tmp/**/*.csv
+test/rails_app/tmp/**/*.ods
+test/rails_app/tmp/**/*.xlsx

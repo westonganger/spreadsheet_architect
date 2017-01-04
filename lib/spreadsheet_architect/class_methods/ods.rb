@@ -18,7 +18,7 @@ module SpreadsheetArchitect
         if options[:header_style]
           SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:header_style]).each do |prop, styles|
             styles.each do |k,v|
-              property prop, k => v
+              property prop.to_sym, k => v
             end
           end
         end
@@ -28,7 +28,7 @@ module SpreadsheetArchitect
         if options[:row_style]
           SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:row_style]).each do |prop, styles|
             styles.each do |k,v|
-              property prop, k => v
+              property prop.to_sym, k => v
             end
           end
         end

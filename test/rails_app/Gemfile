@@ -1,0 +1,15 @@
+source 'https://rubygems.org'
+
+
+gem 'rails', '~> 5'
+gem 'sqlite3'
+
+gem 'spreadsheet_architect', path: '../../'
+gem 'responders'
+
+gem 'listen'
+
+gem 'database_cleaner'
+gem 'minitest-reporters'
+gem 'minitest-rails'
+gem 'rails-controller-testing'

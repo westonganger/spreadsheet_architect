@@ -20,7 +20,7 @@ module SpreadsheetArchitect
         package = Axlsx::Package.new
       end
 
-      return package if options[:data].empty?
+      return package if !options[:headers] && options[:data].empty?
 
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         if options[:headers]
@@ -29,6 +29,10 @@ module SpreadsheetArchitect
           options[:headers].each do |header_row|
             sheet.add_row header_row, style: header_style_index
           end
+        end
+
+        if options[:data].empty?
+          break
         end
 
         row_style_index = package.workbook.styles.add_style(row_style)
@@ -162,18 +166,6 @@ module SpreadsheetArchitect
 
         if options[:range_styles]
           options[:range_styles].each do |x|
-            header_count = 1
-            header_count += x[:headers].count if x[:headers]
-
-            #range_numbers = x[:range].scan(/\d+/).map{|num| num.to_i}
-
-            #if range_numbers.first < header_count && range_numbers.last < header_count
-            #  styles = header_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
-            #else
-            #  styles = row_style.merge(SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles]))
-            #end
-
-            # with new axlsx_styler patch we dont need to provide a workaround for compounding styles
             styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx(x[:styles])
 
             sheet.add_style x[:range], styles

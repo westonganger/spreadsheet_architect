@@ -35,7 +35,7 @@ module SpreadsheetArchitect
 
       if klass.name == 'SpreadsheetArchitect'
         if !options[:data]
-          raise SpreadsheetArchitect::NoDataError
+          raise SpreadsheetArchitect::Exceptions::NoDataError
         end
 
         if options[:headers] && options[:headers].is_a?(Array) && !options[:headers].empty?
@@ -52,8 +52,8 @@ module SpreadsheetArchitect
           options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
         end
 
-        if !options[:instances] || options[:instances].empty?
-          raise SpreadsheetArchitect::NoInstancesError
+        if !options[:instances]
+          raise SpreadsheetArchitect::Exceptions::NoInstancesError
         end
 
         if options[:headers].nil?
@@ -63,17 +63,17 @@ module SpreadsheetArchitect
           headers = options[:headers]
         end
 
-        unless headers == false || headers.is_a?(Array)
-          headers = klass.spreadsheet_headers if klass.respond_to?(:spreadsheet_headers)
-          headers ||= true
+        if headers == false || headers.is_a?(Array)
+          needs_headers = false
+        else
+          headers = true
+          needs_headers = true
         end
-
-        needs_headers = headers == true
 
         if has_custom_columns 
           headers = [] if needs_headers
           columns = []
-          array = options[:spreadsheet_columns] || options[:instances].first.spreadsheet_columns
+          array = options[:spreadsheet_columns] || (options[:instances].empty? ? [] : options[:instances].first.spreadsheet_columns)
           array.each_with_index do |x,i|
             if x.is_a?(Array)
               headers.push(x[0].to_s) if needs_headers
@@ -89,7 +89,7 @@ module SpreadsheetArchitect
           headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
           columns = the_column_names.map{|x| x.to_sym}
         else
-          raise SpreadsheetArchitect::SpreadsheetColumnsNotDefined, klass
+          raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, klass
         end
 
         data = []
@@ -208,15 +208,16 @@ module SpreadsheetArchitect
       if styles['color'].respond_to?(:sub) && !styles['color'].empty?
         text_styles['color'] = "##{styles.delete('color').sub('#','')}"
       end
-      text_styles.delete_if{|k,v| v.nil?}
+      text_styles.delete_if{|_,v| v.nil?}
       property_styles['text'] = text_styles
       
       cell_styles = {}
+      styles['background_color'] ||= styles.delete('background-color')
       if styles['background_color'].respond_to?(:sub) && !styles['background_color'].empty?
         cell_styles['background-color'] = "##{styles.delete('background_color').sub('#','')}"
       end
 
-      cell_styles.delete_if{|k,v| v.nil?}
+      cell_styles.delete_if{|_,v| v.nil?}
       property_styles['cell'] = cell_styles
 
       return property_styles
@@ -235,7 +236,7 @@ module SpreadsheetArchitect
         end
 
         if valid
-          raise SpreadsheetArchitect::IncorrectTypeError option_name
+          raise SpreadsheetArchitect::Exceptions::IncorrectTypeError option_name
         end
       end
     end
@@ -243,7 +244,7 @@ module SpreadsheetArchitect
     def self.check_options_types(options={})
       self.check_type(options, :spreadsheet_columns, Array)
       self.check_type(options, :instances, Array)
-      self.check_type(options, :headers, [Boolean, Array])
+      self.check_type(options, :headers, [TrueClass, FalseClass, Array])
       self.check_type(options, :sheet_name, String)
       self.check_type(options, :header_style, Hash)
       self.check_type(options, :row_style, Hash)
