@@ -14,7 +14,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
       ActiveModelObject.to_csv
     end
 
-    instances = 3.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
+    instances = 20.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
     data = ActiveModelObject.to_csv(instances: instances)
 
     File.open(File.join(@path, 'csv.csv'), 'w+b') do |f|
@@ -27,7 +27,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
       ActiveModelObject.to_ods
     end
 
-    instances = 3.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
+    instances = 20.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
     data = ActiveModelObject.to_ods(instances: instances)
 
     File.open(File.join(@path, 'ods.ods'), 'w+b') do |f|
@@ -40,7 +40,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
       ActiveModelObject.to_xlsx
     end
 
-    instances = 3.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
+    instances = 20.times.map{|_| ActiveModelObject.new(name: :asd, content: :asd, created_at: Time.now)}
     data = ActiveModelObject.to_xlsx(instances: instances)
 
     File.open(File.join(@path, 'xlsx.xlsx'), 'w+b') do |f|
