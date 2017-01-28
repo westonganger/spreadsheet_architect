@@ -5,6 +5,4 @@ if defined? Mime
   unless defined? Mime::ODS
     Mime::Type.register "application/vnd.oasis.opendocument.spreadsheet", :ods
   end
-else
-  puts "Mime module not defined. Skipping registration of xlsx & ods"
 end

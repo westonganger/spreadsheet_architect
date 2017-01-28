@@ -1,3 +1,3 @@
 module SpreadsheetArchitect
-  VERSION = "1.4.8"
+  VERSION = "2.0.0"
 end

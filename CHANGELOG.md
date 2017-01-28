@@ -1,12 +1,20 @@
 CHANGELOG
 ---------
 
+- **January.28.2017**: 2.0.0
+  - Add to xlsx: `merges`, `column_styles`, `range_styles`, `borders`, `column_widths` multi-row headers, date/time default format_code
+  - Add `column_types` option for xlsx and ods
+  - Add ability to make multi-sheet spreadsheets in XLSX & ODS
+  - Adds `axlsx_styler` gem dependency
+  - Add Examples
+  - Add Axlsx Style Reference
+  - Refractor into smaller files
 - **December.6.2016**: 1.4.8
   - Lock `rodf` gem to v0.3.7 for last v1 version of this gem
 - **November.7.2016**: 1.4.7
   - Fix method arguments for `to_rodf_spreadsheet` method
-- **May.12.2016**: 1.4.6
-  - Fix ruby <= 2.1 hash syntax
+- **May.16.2016**: 1.4.6
+  - Fix hash syntax for support of ruby v2.1 and below
 - **May.4.2016**: 1.4.5
   - Bug fixes
 - **May.3.2016**: 1.4.4

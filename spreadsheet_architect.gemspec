@@ -9,13 +9,14 @@ Gem::Specification.new do |s|
   s.email       = 'westonganger@gmail.com'
   s.homepage 	= 'https://github.com/westonganger/spreadsheet_architect'
   
-  s.summary     = "Spreadsheet Generator for ActiveRecord Models and Ruby Classes/Modules"
-  s.description = "SpreadsheetArchitect lets you turn any activerecord relation or ruby object collection into a XLSX, ODS, or CSV spreadsheets. Generates columns from model activerecord column_names or from an array of ruby methods."
+  s.summary     = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
+  s.description = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.test_files  = Dir.glob("{test/**/*}")
 
   s.add_runtime_dependency 'axlsx', '>= 2.0'
-  s.add_runtime_dependency 'rodf', '0.3.7'
+  s.add_runtime_dependency 'axlsx_styler', '>= 0.1.7'
+  s.add_runtime_dependency 'rodf', '>= 1.0.0'
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
