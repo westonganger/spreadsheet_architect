@@ -1,4 +1,5 @@
 # Spreadsheet Architect
+<a href='https://www.patreon.com/bePatron?u=4956947' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://miraclesfor.me/wp-content/plugins/patron-button-and-widgets-by-codebard/images/patreon-medium-button.png' border='0' alt='Become a Patron' /></a>
 <a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
@@ -289,5 +290,5 @@ Created by Weston Ganger - @westonganger
 
 Heavily influenced by the dead gem `acts_as_xlsx` by @randym but adapted to work for more spreadsheet types and plain ruby models.
 
-
+<a href='https://www.patreon.com/bePatron?u=4956947' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://miraclesfor.me/wp-content/plugins/patron-button-and-widgets-by-codebard/images/patreon-medium-button.png' border='0' alt='Become a Patron' /></a>
 <a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
