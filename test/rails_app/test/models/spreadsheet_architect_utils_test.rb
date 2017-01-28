@@ -30,14 +30,14 @@ class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
   end
 
   def test_get_type
-    assert_equal(SpreadsheetArchitect::Utils.get_type('string'), :string)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(123.01), :float)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(BigDecimal('123.01')), :float)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(10), :integer)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(:test), :string)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(Time.now.to_date), :date)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(DateTime.now), :time)
-    assert_equal(SpreadsheetArchitect::Utils.get_type(Time.now), :time)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type('string'), :string)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(123.01), :float)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(BigDecimal('123.01')), :float)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(10), :integer)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(:test), :string)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(Time.now.to_date), :date)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(DateTime.now), :time)
+    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(Time.now), :time)
   end
 
   def test_get_cell_data
@@ -53,7 +53,7 @@ class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
   end
       
   def test_convert_styles_to_axlsx
-    xlsx_styles = SpreadsheetArchitect::Utils.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
+    xlsx_styles = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
     assert_equal(xlsx_styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
   end
   

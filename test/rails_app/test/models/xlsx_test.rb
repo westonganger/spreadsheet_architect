@@ -42,9 +42,7 @@ class XlsxTest < ActiveSupport::TestCase
       ['Title','Category','Author','Posted on','Earnings']
     ]
 
-    data = [
-      50.times.map{|x| ['Title','Category','Author','Posted on','Earnings']}
-    ]
+    data = 50.times.map{|x| ['Title','Category','Author','Posted on','Earnings']}
 
     header_style = {}
 
@@ -53,30 +51,29 @@ class XlsxTest < ActiveSupport::TestCase
     column_styles = [
       {columns: 0, styles: {bold: true}},
       {columns: (1..3), styles: {format_code: "$#,##0.00"}},
-      {columns: [4,9], include_header: true, styles: {italic: true}}
+      {columns: [4], include_header: true, styles: {italic: true}}
     ]
 
     range_styles = [
-      {range: "B2:C4", styles: {background_color: "CCCCCC"}}
+      {range: "B2:C4", styles: {background_color: "CCCCCC"}},
+      {range: {rows: 1, columns: :all}, styles: {bold: true}},
+      {range: {rows: (0..5), columns: (1..4)}, styles: {italic: true}},
+      {range: {rows: :all, columns: (3..4)}, styles: {color: "FFFFFF"}}
     ]
 
     borders = [
       {range: "B2:C4"},
-      {range: "D6:D7", border_styles: {style: :dashdot, color: "333333"}},
-      {rows: (2..11), border_styles: {edges: [:top,:bottom]}},
-      {rows: [1,3,5], columns: ('B'..'F')},
-      {rows: 1},
-      {columns: 0, border_styles: {edges: [:right], style: :thick}},
-      {columns: (1..2)},
-      {columns: ('D'..'F')},
-      {columns: [4,6,8]},
-      {columns: ['A','C','E']}
-
+      {range: "D6:D7", border_styles: {style: :dashDot, color: "333333"}},
+      {range: {rows: (2..11), columns: :all}, border_styles: {edges: [:top,:bottom]}},
+      {range: {rows: 3, columns: 4}, border_styles: {edges: [:top,:bottom]}}
     ]
 
     merges = [
-      {range: "A1:C1"}
+      {range: "A1:C1"},
+      {range: {rows: 0, columns: :all}},
+      {range: {rows: (0..1), columns: (0..3)}}
     ]
+
 
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx({

@@ -8,28 +8,6 @@ module SpreadsheetArchitect
       return str
     end
 
-    def self.get_type(value, type=nil)
-      return type if (type.respond_to?(:empty?) ? !type.empty? : !type.nil?)
-      
-      if value.is_a?(Numeric)
-        if value.is_a?(Float) || value.is_a?(BigDecimal)
-          type = :float
-        else
-          type = :integer
-        end
-      elsif value.respond_to?(:strftime)
-        if value.is_a?(DateTime) || value.is_a?(Time)
-          type = :time
-        else
-          type = :date
-        end
-      else
-        type = :string
-      end
-
-      return type
-    end
-
     def self.get_cell_data(options={}, klass)
       self.check_options_types
 
@@ -159,34 +137,6 @@ module SpreadsheetArchitect
       return options.merge(header_style: header_style, row_style: row_style, sheet_name: sheet_name)
     end
 
-    def self.convert_styles_to_axlsx(styles={})
-      styles = {} unless styles.is_a?(Hash)
-      styles = self.symbolize_keys(styles)
-
-      if styles[:color].respond_to?(:sub) && !styles[:color].empty?
-        styles[:fg_color] = styles.delete(:color).sub('#','')
-      end
-
-      if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
-        styles[:bg_color] = styles.delete(:background_color).sub('#','')
-      end
-
-      if styles[:align]
-        if styles[:align].is_a?(Hash)
-          styles[:alignment] = {horizontal: styles[:align][:horizontal], vertical: styles[:align][:vertical]}
-          styles.delete(:align)
-        else
-          styles[:alignment] = {horizontal: styles.delete(:align)}
-        end
-      end
-      styles[:b] = styles.delete(:bold) || styles[:b]
-      styles[:sz] = styles.delete(:font_size) || styles[:sz]
-      styles[:i] = styles.delete(:italic) || styles[:i]
-      styles[:u] = styles.delete(:underline) || styles[:u]
-
-      styles.delete_if{|k,v| v.nil?}
-    end
-
     def self.convert_styles_to_ods(styles={})
       styles = {} unless styles.is_a?(Hash)
       styles = self.stringify_keys(styles)
@@ -265,21 +215,6 @@ module SpreadsheetArchitect
           end
         else
           new_hash[k.to_s] = v
-        end
-      end
-      return new_hash
-    end
-
-    # only converts the first 2 levels
-    def self.symbolize_keys(hash={})
-      new_hash = {}
-      hash.each do |k,v|
-        if v.is_a?(Hash)
-          v.each do |k2,v2|
-            new_hash[k2.to_sym] = v2
-          end
-        else
-          new_hash[k.to_sym] = v
         end
       end
       return new_hash
