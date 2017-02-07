@@ -136,7 +136,7 @@ end
 File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write{ Post.order(published_at: :asc).to_xlsx }
 end
-File.open('path/to/file.ods', 'w+b) do |f|
+File.open('path/to/file.ods', 'w+b') do |f|
   f.write{ Post.order(published_at: :asc).to_ods }
 end
 File.open('path/to/file.csv', 'w+b') do |f|
