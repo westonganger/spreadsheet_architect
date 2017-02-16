@@ -33,7 +33,7 @@ module SpreadsheetArchitect
 
     class InvalidRangeStylesOptionError < StandardError
       def initialize(type, opt)
-        super("Invalid type `#{opt}` for range_styles #{type} option. Allowed formats are Integer, Range, or :all")
+        super("Invalid or missing :#{type} option for `#{opt}`. :#{type} can be an integer, range, or :all")
       end
     end
 
