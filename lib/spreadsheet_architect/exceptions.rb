@@ -26,26 +26,26 @@ module SpreadsheetArchitect
     end
 
     class InvalidColumnError < StandardError
-      def initialize
-        super("Invalid Column given for column_types options")
+      def initialize(range_hash)
+        super("Invalid Column `#{range_hash}` given for column_types options")
       end
     end
 
     class InvalidRangeStylesOptionError < StandardError
-      def initialize(type)
-        super("Invalid type for range_styles #{type} option. Allowed formats are Integer, Range, or :all")
+      def initialize(type, opt)
+        super("Invalid type `#{opt}` for range_styles #{type} option. Allowed formats are Integer, Range, or :all")
       end
     end
 
     class BadRangeError < StandardError
-      def initialize(type)
+      def initialize(type, range)
         case type
         when :columns, :rows
-          super("Bad range passed. Some of the #{type} specified were greater than the total number of #{type}")
+          super("Bad range `#{range}` passed. Some of the #{type} specified were greater than the total number of #{type}")
         when :format
-          super('Bad range passed. Format must be as follows: A1:D4')
+          super("Bad range `#{range}` passed. Format must be as follows: A1:D4")
         when :type
-          super('Incorrect range type. Valid types are String and Hash')
+          super("Incorrect range type `#{range}`. Valid types are String and Hash")
         end
       end
     end

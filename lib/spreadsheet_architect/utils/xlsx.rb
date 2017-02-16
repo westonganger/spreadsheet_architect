@@ -63,7 +63,7 @@ module SpreadsheetArchitect
           start_col = 'A'
           end_col = col_names[num_columns-1]
         else
-          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:columns)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:columns, hash)
         end
 
         case hash[:rows]
@@ -76,7 +76,7 @@ module SpreadsheetArchitect
           start_row = 0
           end_row = num_rows-1
         else
-          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:rows)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:rows, hash)
         end
 
         return "#{start_col}#{start_row}:#{end_col}#{end_row}"
@@ -90,17 +90,17 @@ module SpreadsheetArchitect
             end_col, end_row = back.scan(/\d+|\D+/)
 
             unless col_names.include?(start_col) && col_names.include?(end_col)
-              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:columns)
+              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:columns, range)
             end
             
             unless start_row.to_i <= num_rows && end_row.to_i <= num_rows
-              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:rows)
+              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:rows, range)
             end
           else
-            raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:format)
+            raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:format, range)
           end
         else
-          raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:type)
+          raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:type, range)
         end
       end
 

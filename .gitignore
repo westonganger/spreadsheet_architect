@@ -12,3 +12,4 @@ test/rails_app/tmp/**/*.csv
 test/rails_app/tmp/**/*.ods
 test/rails_app/tmp/**/*.xlsx
 test/rails_app/tmp/**/*.log
+test/rails_app/test/*.log
