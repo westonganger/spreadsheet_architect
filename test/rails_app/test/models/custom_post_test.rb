@@ -41,6 +41,13 @@ class CustomPostTest < ActiveSupport::TestCase
     end
   end
 
+  def test_constants_dont_change
+    x = CustomPost::SPREADSHEET_OPTIONS.to_s
+    SpreadsheetArchitect.to_xlsx(headers: [[1]], data: [[1]], header_style: {b: false}, row_style: {background_color: '000000'})
+    assert_equal(x, CustomPost::SPREADSHEET_OPTIONS.to_s)
+  end
+
+
   def teardown
     DatabaseCleaner.clean
   end

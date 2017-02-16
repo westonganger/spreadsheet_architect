@@ -112,20 +112,42 @@ module SpreadsheetArchitect
 
         if options[:column_styles]
           options[:column_styles].each do |x|
-            start_row = !x[:include_header] && options[:headers] ? options[:headers].count : 0
+            start_row = options[:headers] ? options[:headers].count : 0
+
+            if x[:include_header] && start_row > 0
+              h_style = header_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
+            end
 
             package.workbook.styles do |s|
               style = s.add_style row_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
+
               if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
                 x[:columns].each do |col|
                   if col.is_a?(String)
                     col = col_names.index(col)
                   end
 
-                  sheet.col_style(col, style, row_offset: start_row)
+                  if col.is_a?(Integer) && col < max_row_length
+                    sheet.col_style(col, style, row_offset: start_row)
+
+                    if h_style
+                      sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
+                    end
+                  else
+                    raise SpreadsheetArchitect::Exceptions::InvalidColumnError
+                  end
                 end
               elsif x[:columns].is_a?(Integer)
-                sheet.col_style(x[:columns], style, row_offset: start_row)
+                col = x[:columns]
+                if col < max_row_length
+                  sheet.col_style(x[:columns], style, row_offset: start_row)
+
+                  if h_style
+                    sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
+                  end
+                else
+                  raise SpreadsheetArchitect::Exceptions::InvalidColumnError
+                end
               end
             end
           end

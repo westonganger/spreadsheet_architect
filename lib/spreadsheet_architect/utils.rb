@@ -98,9 +98,9 @@ module SpreadsheetArchitect
     def self.get_options(options={}, klass)
       if options[:headers]
         if defined?(klass::SPREADSHEET_OPTIONS)
-          header_style = SpreadsheetArchitect.default_options[:header_style].merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
+          header_style = deep_clone(SpreadsheetArchitect.default_options[:header_style]).merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
         else
-          header_style = SpreadsheetArchitect.default_options[:header_style]
+          header_style = deep_clone(SpreadsheetArchitect.default_options[:header_style])
         end
         
         if options[:header_style]
@@ -116,9 +116,9 @@ module SpreadsheetArchitect
         row_style = false
       else
         if defined?(klass::SPREADSHEET_OPTIONS)
-          row_style = SpreadsheetArchitect.default_options[:row_style].merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
+          row_style = deep_clone(SpreadsheetArchitect.default_options[:row_style]).merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
         else
-          row_style = SpreadsheetArchitect.default_options[:row_style]
+          row_style = deep_clone(SpreadsheetArchitect.default_options[:row_style])
         end
 
         if options[:row_style]
@@ -174,6 +174,10 @@ module SpreadsheetArchitect
     end
 
     private
+
+    def self.deep_clone(x)
+      Marshal.load(Marshal.dump(x))
+    end
 
     def self.check_type(options, option_name, type)
       unless options[option_name].nil?

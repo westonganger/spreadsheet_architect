@@ -23,6 +23,12 @@ class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
     }
   end
 
+  def test_constants_dont_change
+    x = SpreadsheetArchitect.default_options.to_s
+    SpreadsheetArchitect.to_xlsx(headers: [[1]], data: [[1]], header_style: {b: false}, row_style: {background_color: '000000'})
+    assert_equal(x, SpreadsheetArchitect.default_options.to_s)
+  end
+
   def test_str_humanize
     assert_equal(SpreadsheetArchitect::Utils.str_humanize('my_project_export'), 'My Project Export')
     assert_equal(SpreadsheetArchitect::Utils.str_humanize('My Project Export'), 'My Project Export')

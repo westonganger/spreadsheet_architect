@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+- **February.16.2017**: 2.0.1
+  - Fix bug where `SpreadsheetArchitect.default_options` and `SPREADSHEET_OPTIONS` were being overwritten
+  - Fix bug where col_styles ignored previous styles on header when using `include_header` option
 - **January.28.2017**: 2.0.0
   - Add to xlsx: `merges`, `column_styles`, `range_styles`, `borders`, `column_widths` multi-row headers, date/time default format_code
   - Add `column_types` option for xlsx and ods

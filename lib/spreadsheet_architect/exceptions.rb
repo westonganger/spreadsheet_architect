@@ -25,6 +25,12 @@ module SpreadsheetArchitect
       end
     end
 
+    class InvalidColumnError < StandardError
+      def initialize
+        super("Invalid Column given for column_types options")
+      end
+    end
+
     class InvalidRangeStylesOptionError < StandardError
       def initialize(type)
         super("Invalid type for range_styles #{type} option. Allowed formats are Integer, Range, or :all")

@@ -278,6 +278,15 @@ See this example: (https://github.com/westonganger/spreadsheet_architect/blob/ma
 
 
 # Multi Sheet XLSX or ODS spreadsheets
+```ruby
+# Returns corresponding spreadsheet libraries object
+package = SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers})
+SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers}, package) # to combine two sheets to one file
+
+spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers})
+SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreadsheet) # to combine two sheets to one file
+```
+
 See this example: (https://github.com/westonganger/spreadsheet_architect/blob/master/examples/multi_sheet_spreadsheets.rb)
 
 
