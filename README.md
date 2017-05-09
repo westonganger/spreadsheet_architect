@@ -1,5 +1,4 @@
 # Spreadsheet Architect
-<a href='https://www.patreon.com/bePatron?u=4956947' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://miraclesfor.me/wp-content/plugins/patron-button-and-widgets-by-codebard/images/patreon-medium-button.png' border='0' alt='Become a Patron' /></a>
 <a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
@@ -177,7 +176,9 @@ end
 |**column_widths**<br>*Array*||Sometimes you  may want explicit column widths. Use nil if you want a column to autofit again.|
   
 <br>
+
 ## SomeClass.to_ods
+
 |Option|Default|Notes|
 |---|---|---|
 |**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override the model instances `spreadsheet_columns` method|
@@ -188,7 +189,9 @@ end
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
   
 <br>
+
 ## SomeClass.to_csv
+
 |Option|Default|Notes|
 |---|---|---|
 |**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this to option override the model instances `spreadsheet_columns` method|
@@ -196,7 +199,9 @@ end
 |**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`| Data for the header rows cells. Pass `false` to skip the header row.|
 
 <br>
+
 ## SpreadsheetArchitect.to_xlsx
+
 |Option|Default|Notes|
 |---|---|---|
 |**data**<br>*Array*| |Data for the non-header row cells. |
@@ -212,7 +217,9 @@ end
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
   
 <br> 
+
 ## SpreadsheetArchitect.to_ods
+
 |Option|Default|Notes|
 |---|---|---|
 |**data**<br>*2D Array*| |Data for the non-header row cells.|
@@ -223,7 +230,9 @@ end
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :percent, :currency, nil = auto determine|
   
 <br>
+
 ## SpreadsheetArchitect.to_csv
+
 |Option|Default|Notes|
 |---|---|---|
 |**data**<br>*2D Array*| |Data for the non-header row cells.|
@@ -295,9 +304,8 @@ I have compiled a list of all available style options for `axlsx` here: (https:/
 
 
 # Credits
-Created by Weston Ganger - @westonganger
+Created by [@westonganger](https://github.com/westonganger)
 
-Heavily influenced by the dead gem `acts_as_xlsx` by @randym but adapted to work for more spreadsheet types and plain ruby models.
+For any contract and consulting work please contact me on my company website [Solid Foundation Web Development](https://solidfoundationwebdev.com)
 
-<a href='https://www.patreon.com/bePatron?u=4956947' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://miraclesfor.me/wp-content/plugins/patron-button-and-widgets-by-codebard/images/patreon-medium-button.png' border='0' alt='Become a Patron' /></a>
-<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
+[![Solid Foundation Web Development Logo](https://solidfoundationwebdev.com/logo.png)](https://solidfoundationwebdev.com)
