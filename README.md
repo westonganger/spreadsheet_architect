@@ -300,12 +300,12 @@ See this example: (https://github.com/westonganger/spreadsheet_architect/blob/ma
 
 
 # Axlsx Style Reference
-I have compiled a list of all available style options for `axlsx` here: (https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)
+I have compiled a list of all available style options for `axlsx` here: (https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)
 
 
 # Credits
 Created by [@westonganger](https://github.com/westonganger)
 
-For any contract and consulting work please contact me on my company website [Solid Foundation Web Development](https://solidfoundationwebdev.com)
+For any consulting or contract work please contact me via my company website: [Solid Foundation Web Development](https://solidfoundationwebdev.com)
 
 [![Solid Foundation Web Development Logo](https://solidfoundationwebdev.com/logo.png)](https://solidfoundationwebdev.com)
