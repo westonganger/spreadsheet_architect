@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **UNRELEASED**: 2.0.2
+- **July.14.2017**: 2.0.2
   - Fix bug with range styles rows option not counting headers
   - Fix bug with range styles rows :all option
 - **February.16.2017**: 2.0.1
