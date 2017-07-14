@@ -59,7 +59,7 @@ module SpreadsheetArchitect
         when Range
           start_col = col_names[hash[:columns].first]
           end_col = col_names[hash[:columns].last]
-        when Symbol
+        when :all
           start_col = 'A'
           end_col = col_names[num_columns-1]
         else
@@ -72,9 +72,9 @@ module SpreadsheetArchitect
         when Range
           start_row = hash[:rows].first
           end_row = hash[:rows].last
-        when Symbol
-          start_row = 0
-          end_row = num_rows-1
+        when :all
+          start_row = 1
+          end_row = num_rows
         else
           raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:rows, hash)
         end

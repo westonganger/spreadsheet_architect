@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+- **UNRELEASED**: 2.0.2
+  - Fix bug with range styles rows option not counting headers
+  - Fix bug with range styles rows :all option
 - **February.16.2017**: 2.0.1
   - Fix bug where `SpreadsheetArchitect.default_options` and `SPREADSHEET_OPTIONS` were being overwritten
   - Fix bug where col_styles ignored previous styles on header when using `include_header` option

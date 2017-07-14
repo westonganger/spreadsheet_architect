@@ -96,7 +96,7 @@ module SpreadsheetArchitect
 
         if options[:borders] || options[:column_styles] || options[:range_styles] || options[:merges]
           col_names = max_row_length > 675 ? Array('A'..'ZZZ') : Array('A'..'ZZ')
-          num_rows = options[:data].count
+          num_rows = options[:data].count + (options[:headers] ? options[:headers].count : 0)
         end
 
         if options[:borders]
