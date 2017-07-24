@@ -283,7 +283,7 @@ SpreadsheetArchitect.default_options = {
 ```
 
 # Complex XLSX Example with Styling
-See this example: (https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb)
+See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/examples/complex_xlsx_styling.rb
 
 
 # Multi Sheet XLSX or ODS spreadsheets
@@ -296,11 +296,11 @@ spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: hea
 SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreadsheet) # to combine two sheets to one file
 ```
 
-See this example: (https://github.com/westonganger/spreadsheet_architect/blob/master/examples/multi_sheet_spreadsheets.rb)
+See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/examples/multi_sheet_spreadsheets.rb
 
 
 # Axlsx Style Reference
-I have compiled a list of all available style options for `axlsx` here: (https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)
+I have compiled a list of all available style options for axlsx here: https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md
 
 
 # Credits
@@ -308,4 +308,4 @@ Created by [@westonganger](https://github.com/westonganger)
 
 For any consulting or contract work please contact me via my company website: [Solid Foundation Web Development](https://solidfoundationwebdev.com)
 
-[![Solid Foundation Web Development Logo](https://solidfoundationwebdev.com/logo.png)](https://solidfoundationwebdev.com)
+[![Solid Foundation Web Development Logo](https://solidfoundationwebdev.com/logo-sm.png)](https://solidfoundationwebdev.com)
