@@ -92,7 +92,7 @@ class PostsController < ActionController::Base
     respond_with @posts
   end
 
-  # Using respond_with with custom options
+  # OR Using respond_with with custom options
   def index
     @posts = Post.order(published_at: :asc)
 
@@ -103,7 +103,7 @@ class PostsController < ActionController::Base
     end
   end
 
-  # Using responders
+  # OR Using responders
   def index
     @posts = Post.order(published_at: :asc)
 
@@ -115,7 +115,7 @@ class PostsController < ActionController::Base
     end
   end
 
-  # Using responders with custom options
+  # OR Using responders with custom options
   def index
     @posts = Post.order(published_at: :asc)
 
