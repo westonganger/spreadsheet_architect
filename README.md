@@ -133,25 +133,25 @@ end
 ```ruby
 # Ex. with ActiveRecord relation
 File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write{ Post.order(published_at: :asc).to_xlsx }
+  f.write Post.order(published_at: :asc).to_xlsx
 end
 File.open('path/to/file.ods', 'w+b') do |f|
-  f.write{ Post.order(published_at: :asc).to_ods }
+  f.write Post.order(published_at: :asc).to_ods
 end
 File.open('path/to/file.csv', 'w+b') do |f|
-  f.write{ Post.order(published_at: :asc).to_csv }
+  f.write Post.order(published_at: :asc).to_csv
 end
 
 # Ex. with plain ruby class
 File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write{ Post.to_xlsx(instances: posts_array) }
+  f.write Post.to_xlsx(instances: posts_array)
 end
 
 # Ex. One time Usage
 File.open('path/to/file.xlsx', 'w+b') do |f|
   headers = ['Col 1','Col 2','Col 3']
   data = [[1,2,3], [4,5,6], [7,8,9]]
-  f.write{ SpreadsheetArchitect::to_xlsx(data: data, headers: headers) }
+  f.write SpreadsheetArchitect::to_xlsx(data: data, headers: headers)
 end
 ```
 <br>
