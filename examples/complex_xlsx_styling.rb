@@ -31,8 +31,8 @@ borders = [
 
 merges = [
   {range: "A1:C1"},
-  {range: {rows: 0, columns: :all}},
-  {range: {rows: (0..1), columns: (0..3)}}
+  {range: {rows: 1, columns: :all}},
+  {range: {rows: (1..2), columns: (0..3)}}
 ]
 
 file_data = SpreadsheetArchitect.to_xlsx({
