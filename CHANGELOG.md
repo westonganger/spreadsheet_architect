@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 - **2.0.3** - UNRELEASED
+  - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
   - Improved the method symbolize_keys. This method did not work properly for nested objects. PR #15
   - Added the ability to pass :text_wrap option within the :alignment style. PR #15
 - **2.0.2** - July 14 2017

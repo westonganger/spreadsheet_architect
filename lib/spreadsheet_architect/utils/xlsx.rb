@@ -28,31 +28,47 @@ module SpreadsheetArchitect
         styles = {} unless styles.is_a?(Hash)
         styles = self.symbolize_keys(styles)
 
-        if styles[:color].respond_to?(:sub) && !styles[:color].empty?
-          styles[:fg_color] = styles.delete(:color).sub('#','')
+        if styles[:fg_color].nil?
+          if styles[:color].respond_to?(:sub) && !styles[:color].empty?
+            styles[:fg_color] = styles.delete(:color).sub('#','')
+          end
         end
 
-        if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
-          styles[:bg_color] = styles.delete(:background_color).sub('#','')
+        if styles[:bg_color].nil?
+          if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
+            styles[:bg_color] = styles.delete(:background_color).sub('#','')
+          end
         end
         
-        if styles[:align]
+        if styles[:alignment].nil? && styles[:align]
           if styles[:align].is_a?(Hash)
             styles[:alignment] = {
               horizontal: styles[:align][:horizontal], 
               vertical: styles[:align][:vertical], 
               wrap_text: styles[:align][:wrap_text]
             }
-            styles.delete(:align)
           else
             styles[:alignment] = {horizontal: styles.delete(:align)}
           end
+
+          styles.delete(:align)
         end
 
-        styles[:b] = styles.delete(:bold) || styles[:b]
-        styles[:sz] = styles.delete(:font_size) || styles[:sz]
-        styles[:i] = styles.delete(:italic) || styles[:i]
-        styles[:u] = styles.delete(:underline) || styles[:u]
+        if styles[:b].nil?
+          styles[:b] = styles.delete(:bold)
+        end
+
+        if styles[:sz].nil?
+          styles[:sz] = styles.delete(:font_size)
+        end
+
+        if styles[:i].nil?
+          styles[:i] = styles.delete(:italic)
+        end
+
+        if styles[:u].nil?
+          styles[:u] = styles.delete(:underline)
+        end
         
         styles.delete_if{|k,v| v.nil?}
       end

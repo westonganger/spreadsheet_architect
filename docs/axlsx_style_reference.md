@@ -91,3 +91,5 @@ I wanted a better and generic set of options for use between `xlsx` and `ods` so
 - `background_color` (String) - Same as `bg_color`
 - `align` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: true, vertical: false, wrap_text: false}`
 - `font_size` (Integer) - Same as `sz`
+
+Note: If both an original axlsx style option and alias style option are both provided in the style the original axlsx style option will take precedence.
