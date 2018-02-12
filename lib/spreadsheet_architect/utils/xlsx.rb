@@ -35,20 +35,25 @@ module SpreadsheetArchitect
         if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
           styles[:bg_color] = styles.delete(:background_color).sub('#','')
         end
-
+        
         if styles[:align]
           if styles[:align].is_a?(Hash)
-            styles[:alignment] = {horizontal: styles[:align][:horizontal], vertical: styles[:align][:vertical]}
+            styles[:alignment] = {
+              horizontal: styles[:align][:horizontal], 
+              vertical: styles[:align][:vertical], 
+              wrap_text: styles[:align][:wrap_text]
+            }
             styles.delete(:align)
           else
             styles[:alignment] = {horizontal: styles.delete(:align)}
           end
         end
+
         styles[:b] = styles.delete(:bold) || styles[:b]
         styles[:sz] = styles.delete(:font_size) || styles[:sz]
         styles[:i] = styles.delete(:italic) || styles[:i]
         styles[:u] = styles.delete(:underline) || styles[:u]
-
+        
         styles.delete_if{|k,v| v.nil?}
       end
 
@@ -106,19 +111,16 @@ module SpreadsheetArchitect
 
       private
 
-      # only converts the first 2 levels
       def self.symbolize_keys(hash={})
         new_hash = {}
-        hash.each do |k,v|
+        hash.each do |k, v|
           if v.is_a?(Hash)
-            v.each do |k2,v2|
-              new_hash[k2.to_sym] = v2
-            end
+            new_hash[k.to_sym] = self.symbolize_keys(v)
           else
             new_hash[k.to_sym] = v
           end
         end
-        return new_hash
+        new_hash
       end
 
     end
