@@ -1,14 +1,17 @@
 CHANGELOG
 ---------
 
-- **July.14.2017**: 2.0.2
+- **2.0.3** - UNRELEASED
+  - Improved the method symbolize_keys. This method did not work properly for nested objects. PR #15
+  - Added the ability to pass :text_wrap option within the :alignment style. PR #15
+- **2.0.2** - July 14 2017
   - Fix bug with range styles rows option not counting headers
   - Fix bug with range styles rows :all option
-- **February.16.2017**: 2.0.1
+- **2.0.1** - February 16 2017
   - Fix bug where `SpreadsheetArchitect.default_options` and `SPREADSHEET_OPTIONS` were being overwritten
   - Fix bug where col_styles ignored previous styles on header when using `include_header` option
   - Errors now try to provide which value is the cause
-- **January.28.2017**: 2.0.0
+- **2.0.0** - January 28 2017
   - Add to xlsx: `merges`, `column_styles`, `range_styles`, `borders`, `column_widths` multi-row headers, date/time default format_code
   - Add `column_types` option for xlsx and ods
   - Add ability to make multi-sheet spreadsheets in XLSX & ODS
@@ -16,52 +19,52 @@ CHANGELOG
   - Add Examples
   - Add Axlsx Style Reference
   - Refractor into smaller files
-- **December.6.2016**: 1.4.8
+- **1.4.8** - December 6 2016
   - Lock `rodf` gem to v0.3.7 for last v1 version of this gem
-- **November.7.2016**: 1.4.7
+- **1.4.7** - November 7 2016
   - Fix method arguments for `to_rodf_spreadsheet` method
-- **May.16.2016**: 1.4.6
+- **1.4.6** - May 16 2016
   - Fix hash syntax for support of ruby v2.1 and below
-- **May.4.2016**: 1.4.5
+- **1.4.5** - May 4 2016
   - Bug fixes
-- **May.3.2016**: 1.4.4
+- **1.4.4** - May 3 2016
   - Add Ability to add format_code to all numbers body rows
-- **May.3.2016**: 1.4.3
+- **1.4.3** - May 3 2016
   - Bug fixes
-- **May.3.2016**: 1.4.2
+- **1.4.2** - May 3 2016
   - Add to_axlsx_package, to_rodf_spreadsheet methods for the item to be further manipulated. Ex. axlsx_styler
-- **May.2.2016**: 1.4.1
+- **1.4.1** - May 2 2016
   - Add rails generator for project defaults initializer
-- **April.29.2016**: 1.4.0
+- **1.4.0** - April 29 2016
   - Add to_xlsx, to_ods, & to_csv to SpreadsheetArchitect model for direct calling by passing in cell data
-- **April.21.2016**: 1.3.0
+- **1.3.0** - April 21 2016
   - Add ability to create class/model and project option defaults
-- **March.25.2016**: 1.2.5
+- **1.2.5** - March 25 2016
   - Fix each_with_index bug
-- **March.24.2016**: 1.2.4
+- **1.2.4** - March 24 2016
   - Fix cell type logic for symbol methods
-- **March.20.2016**: 1.2.3
+- **1.2.3** - March 20 2016
   - Fix cell type logic
-- **March.19.2016**: 1.2.2
+- **1.2.2** - March 19 2016
   - Make cell type numeric if value is numeric
-- **March.13.2016**: 1.2.1
+- **1.2.1** - March 13 2016
   - Better error reporting
   - Fix for Plain ruby models
-- **March.10.2016**: 1.2.0
+- **1.2.0** - March 10 2016
   - Fix Bug: first row data repeated for all records on custom values
-- **March.3.2016**: 1.1.0 - Breaking Changes
-  - Move spreadsheet_columns method from the class to the instance
+- **1.1.0** - March 3 2016
+  - Breaking Change - Move spreadsheet_columns method from the class to the instance
   - Fix Bug: remove default underline on cells
-- **March.1.2016**: 1.0.4
+- **1.0.4** - March 1 2016
   - Extract helper methods to seperate module
   - Improve readme
-- **March.1.2016**: 1.0.3
+- **1.0.3** - March 1 2016
   - Fix/Improve renderers
   - Fix header default background color
   - Fix default columns
-- **February.26.2016**: 1.0.2
+- **1.0.2** - February 26 2016
   - Enhance Style options
-- **February.26.2016**: 1.0.1
+- **1.0.1** - February 26 2016
   - Fix bug in renderers
-- **February.26.2016**: 1.0.0
+- **1.0.0** - February 26 2016
   - Gem Initial Release
