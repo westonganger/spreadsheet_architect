@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = 'spreadsheet_architect'
   s.version     =  SpreadsheetArchitect::VERSION
   s.author	= "Weston Ganger"
-  s.email       = 'westonganger@gmail.com'
+  s.email       = 'weston@westonganger.com'
   s.homepage 	= 'https://github.com/westonganger/spreadsheet_architect'
   
   s.summary     = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
