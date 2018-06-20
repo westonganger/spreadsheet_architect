@@ -24,31 +24,31 @@ class CsvTest < ActiveSupport::TestCase
 
   def test_empty_model
     Post.delete_all
-    File.open('tmp/empty_model.csv','w+b') do |f|
+    File.open(Rails.root.join('tmp/empty_model.csv'),'w+b') do |f|
       f.write Post.to_csv
     end
   end
 
   def test_empty_sa
-    File.open('tmp/empty_sa.csv','w+b') do |f|
+    File.open(Rails.root.join('tmp/empty_sa.csv'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_csv(data: [])
     end
   end
 
   def test_sa
-    File.open('tmp/sa.csv','w+b') do |f|
+    File.open(Rails.root.join('tmp/sa.csv'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_csv(headers: @headers, data: @data)
     end
   end
 
   def test_model
-    File.open('tmp/model.csv','w+b') do |f|
+    File.open(Rails.root.join('tmp/model.csv'),'w+b') do |f|
       f.write Post.to_csv
     end
   end
 
   def test_options
-    File.open('tmp/options.csv','w+b') do |f|
+    File.open(Rails.root.join('tmp/options.csv'),'w+b') do |f|
       f.write Post.to_csv(@options)
     end
   end

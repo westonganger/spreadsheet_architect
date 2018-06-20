@@ -13,25 +13,25 @@ class XlsxTest < ActiveSupport::TestCase
 
   def test_empty_model
     Post.delete_all
-    File.open('tmp/empty_model.xlsx','w+b') do |f|
+    File.open(Rails.root.join('tmp/empty_model.xlsx'),'w+b') do |f|
       f.write Post.to_xlsx
     end
   end
 
   def test_empty_sa
-    File.open('tmp/empty_sa.xlsx','w+b') do |f|
+    File.open(Rails.root.join('tmp/empty_sa.xlsx'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_xlsx(data: [])
     end
   end
 
   def test_sa
-    File.open('tmp/sa.xlsx','w+b') do |f|
+    File.open(Rails.root.join('tmp/sa.xlsx'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_xlsx(headers: @headers, data: @data)
     end
   end
 
   def test_model
-    File.open('tmp/model.xlsx','w+b') do |f|
+    File.open(Rails.root.join('tmp/model.xlsx'),'w+b') do |f|
       f.write Post.to_xlsx
     end
   end
@@ -58,7 +58,7 @@ class XlsxTest < ActiveSupport::TestCase
       {range: "B2:C4", styles: {background_color: "CCCCCC"}},
       {range: {rows: 1, columns: :all}, styles: {bold: true}},
       {range: {rows: (0..5), columns: (1..4)}, styles: {italic: true}},
-      {range: {rows: :all, columns: (3..4)}, styles: {color: "FFFFFF"}}
+      {range: {rows: :all, columns: (3..4)}, styles: {color: "999999"}}
     ]
 
     borders = [
@@ -87,7 +87,7 @@ class XlsxTest < ActiveSupport::TestCase
       merges: merges
     })
 
-    File.open('tmp/extreme.xlsx','w+b') do |f|
+    File.open(Rails.root.join('tmp/extreme.xlsx'),'w+b') do |f|
       f.write file_data
     end
   end

@@ -2,6 +2,12 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require 'axlsx'
+silence_warnings do
+  ### required until monkey patch in axlsx_styler is updated to Ruby 2.0 prepend syntax
+  require 'axlsx_styler'
+end
+
 Bundler.require
 
 require "spreadsheet_architect"

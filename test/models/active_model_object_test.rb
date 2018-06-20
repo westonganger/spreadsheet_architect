@@ -3,7 +3,7 @@ require "test_helper"
 class ActiveModelObjectTest < ActiveSupport::TestCase
 
   def setup
-    @path = 'tmp/active_model_object'
+    @path = Rails.root.join('tmp/active_model_object')
     FileUtils.mkdir_p(@path)
   end
 

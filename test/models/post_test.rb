@@ -3,7 +3,7 @@ require "test_helper"
 class PostTest < ActiveSupport::TestCase
 
   def setup
-    @path = 'tmp/posts'
+    @path = Rails.root.join('tmp/posts')
     FileUtils.mkdir_p(@path)
   end
 

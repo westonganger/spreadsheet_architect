@@ -3,7 +3,7 @@ require 'test_helper'
 class OdsTest < ActiveSupport::TestCase
 
   def setup
-    FileUtils.mkdir_p('tmp/ods')
+    FileUtils.mkdir_p(Rails.root.join('tmp/ods'))
 
     10.times.each do
       CustomPost.create(name: SecureRandom.hex, content: SecureRandom.hex, age: 2)
@@ -30,31 +30,31 @@ class OdsTest < ActiveSupport::TestCase
 
   def test_empty_model
     CustomPost.delete_all
-    File.open('tmp/ods/empty_model.ods','w+b') do |f|
+    File.open(Rails.root.join('tmp/ods/empty_model.ods'),'w+b') do |f|
       f.write CustomPost.to_ods
     end
   end
 
   def test_empty_sa
-    File.open('tmp/ods/empty_sa.ods','w+b') do |f|
+    File.open(Rails.root.join('tmp/ods/empty_sa.ods'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_ods(data: [])
     end
   end
 
   def test_sa
-    File.open('tmp/ods/sa.ods','w+b') do |f|
+    File.open(Rails.root.join('tmp/ods/sa.ods'),'w+b') do |f|
       f.write SpreadsheetArchitect.to_ods(headers: @headers, data: @data)
     end
   end
 
   def test_model
-    File.open('tmp/ods/model.ods','w+b') do |f|
+    File.open(Rails.root.join('tmp/ods/model.ods'),'w+b') do |f|
       f.write CustomPost.to_ods
     end
   end
 
   def test_options
-    File.open('tmp/ods/model_options.ods','w+b') do |f|
+    File.open(Rails.root.join('tmp/ods/model_options.ods'),'w+b') do |f|
       f.write CustomPost.to_ods(@options)
     end
   end

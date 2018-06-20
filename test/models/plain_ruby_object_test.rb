@@ -3,7 +3,7 @@ require "test_helper"
 class PlainRubyObjectTest < ActiveSupport::TestCase
 
   def setup
-    @path = 'tmp/plain_ruby_object'
+    @path = Rails.root.join('tmp/plain_ruby_object')
     FileUtils.mkdir_p(@path)
   end
 

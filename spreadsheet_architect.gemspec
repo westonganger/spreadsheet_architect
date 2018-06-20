@@ -19,9 +19,11 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rodf', '>= 1.0.0'
   
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest'
   s.add_development_dependency 'bundler'
+  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest-reporters'
   s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'rails'
   s.add_development_dependency 'activerecord'
 
   s.required_ruby_version = '>= 1.9.3'
