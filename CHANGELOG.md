@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+- **3.0.0** - UNRELEASED
+  - Remove all Rails generators `spreadsheet_architect:add_default_options`
+  - Add a lot more tests
 - **2.1.0** - June 20, 2018
   - PR #15 - Improved the method symbolize_keys. This method did not work properly for nested objects.
   - PR #15 - Added the ability to pass `:text_wrap` option within the `:alignment` style
