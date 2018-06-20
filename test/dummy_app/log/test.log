@@ -23608,3 +23608,957 @@ CustomPostTest: test_empty
   [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
   [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
   [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------
+PlainRubyObjectTest: test_csv
+-----------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------------
+PlainRubyObjectTest: test_xlsx
+------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------
+PlainRubyObjectTest: test_ods
+-----------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------
+CustomPostTest: test_csv
+------------------------
+  [1m[36mCustomPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+CustomPostTest: test_xlsx
+-------------------------
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------
+CustomPostTest: test_ods
+------------------------
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+CustomPostTest: test_empty
+--------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.3ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.3ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 2]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 3]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 5]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+CustomPostTest: test_constants_dont_change
+------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+BadPlainRubyObjectTest: test_csv
+--------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------
+BadPlainRubyObjectTest: test_xlsx
+---------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+BadPlainRubyObjectTest: test_ods
+--------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_constants_dont_change
+---------------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_convert_styles_to_axlsx
+-----------------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_options
+-----------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_str_humanize
+------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_type
+--------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_cell_data
+-------------------------------------------------
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_convert_styles_to_ods
+---------------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+ActiveModelObjectTest: test_xlsx
+--------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------
+ActiveModelObjectTest: test_ods
+-------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------
+ActiveModelObjectTest: test_csv
+-------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------------
+ApplicationTest: test_alt_xlsx
+------------------------------
+Started GET "/spreadsheet/alt_xlsx?format=xlsx" for 127.0.0.1 at 2018-06-20 09:14:47 -0700
+Processing by SpreadsheetsController#alt_xlsx as XLSX
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (1.2ms)
+Completed 200 OK in 16ms (Views: 11.6ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+ApplicationTest: test_csv
+-------------------------
+Started GET "/spreadsheet/csv" for 127.0.0.1 at 2018-06-20 09:14:47 -0700
+Processing by SpreadsheetsController#csv as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data data.csv (0.4ms)
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+ApplicationTest: test_xlsx
+--------------------------
+Started GET "/spreadsheet/xlsx" for 127.0.0.1 at 2018-06-20 09:14:47 -0700
+Processing by SpreadsheetsController#xlsx as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (0.4ms)
+Completed 200 OK in 11ms (Views: 0.6ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------------
+ApplicationTest: test_Renders_sample_xlsx_action
+------------------------------------------------
+Started GET "/spreadsheet/xlsx?format=xlsx" for 127.0.0.1 at 2018-06-20 09:14:47 -0700
+Processing by SpreadsheetsController#xlsx as XLSX
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (0.4ms)
+Completed 200 OK in 11ms (Views: 0.7ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+ApplicationTest: test_ods
+-------------------------
+Started GET "/spreadsheet/ods" for 127.0.0.1 at 2018-06-20 09:14:47 -0700
+Processing by SpreadsheetsController#ods as HTML
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data data.ods (0.5ms)
+Completed 200 OK in 6ms (Views: 0.6ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------------
+SpreadsheetArchitectTest: test_config
+-------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------
+PostTest: test_ods
+------------------
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+PostTest: test_xlsx
+-------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------
+PostTest: test_csv
+------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------
+PostTest: test_empty
+--------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.3ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.3ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 2]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 3]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 5]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+XlsxTest: test_empty_model
+--------------------------
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------
+XlsxTest: test_sa
+-----------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+XlsxTest: test_empty_sa
+-----------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+XlsxTest: test_extreme
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------
+XlsxTest: test_model
+--------------------
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+---------------------
+OdsTest: test_options
+---------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.4ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "5e72bd9ed5ff178e1d28a7041e5e237e"], ["content", "f1f1673a0f9879435c4121e0e82505c2"], ["age", 2], ["created_at", "2018-06-20 16:14:47.658109"], ["updated_at", "2018-06-20 16:14:47.658109"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "51e6ce10d66f5ba27d803d767645c84b"], ["content", "536e4e0560b19dfa1be63a0f08483393"], ["age", 2], ["created_at", "2018-06-20 16:14:47.660776"], ["updated_at", "2018-06-20 16:14:47.660776"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "498a4cc9248e5a2380663be40a606de8"], ["content", "cbf508e3b80fdb8a3db3cdba3c28ba74"], ["age", 2], ["created_at", "2018-06-20 16:14:47.663029"], ["updated_at", "2018-06-20 16:14:47.663029"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "ffe8096f58beda621162c29aa196d526"], ["content", "36ab9d5b10617bb5de0bd8848c4b4a9e"], ["age", 2], ["created_at", "2018-06-20 16:14:47.665144"], ["updated_at", "2018-06-20 16:14:47.665144"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "7d016aee3aa70884e92a4cab1cde8542"], ["content", "8b0fe039086b0bde14de2ae8663b5bc2"], ["age", 2], ["created_at", "2018-06-20 16:14:47.667204"], ["updated_at", "2018-06-20 16:14:47.667204"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "2ea87da6fc5b0f19035809ba6d014fe4"], ["content", "7dc368aa98ccf9d3cbe4040b7e96f5cb"], ["age", 2], ["created_at", "2018-06-20 16:14:47.669265"], ["updated_at", "2018-06-20 16:14:47.669265"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "8f1b70b83adb3443754486eb2f0b967e"], ["content", "312d54b34933a10dc89c2abc843854a7"], ["age", 2], ["created_at", "2018-06-20 16:14:47.671382"], ["updated_at", "2018-06-20 16:14:47.671382"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "78b79c64933e20259f0f77a3ef8415dc"], ["content", "f74cc50b4693068078103336bbd71f80"], ["age", 2], ["created_at", "2018-06-20 16:14:47.673577"], ["updated_at", "2018-06-20 16:14:47.673577"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "aaa33071bd501f96466b5a4be46c0935"], ["content", "ac9b904085fc4fc0e1c01e0e1218311e"], ["age", 2], ["created_at", "2018-06-20 16:14:47.675624"], ["updated_at", "2018-06-20 16:14:47.675624"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d00c2726913220acd63613fa0dc2a2b2"], ["content", "dd2a8fb96885724d47ba8acc6fddc819"], ["age", 2], ["created_at", "2018-06-20 16:14:47.677702"], ["updated_at", "2018-06-20 16:14:47.677702"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+OdsTest: test_empty_model
+-------------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "3158818fffe8e18e3a15cc158374aaac"], ["content", "02dbf5ef482fe0f12b57a1d0597d1f8d"], ["age", 2], ["created_at", "2018-06-20 16:14:47.693939"], ["updated_at", "2018-06-20 16:14:47.693939"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "9258b2acac87fb0bba238a45f93dd4c8"], ["content", "758c7d8b02fff6f348b82bd1a8de4edf"], ["age", 2], ["created_at", "2018-06-20 16:14:47.696150"], ["updated_at", "2018-06-20 16:14:47.696150"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "12271ceebdd208195dad63536227b2f9"], ["content", "31de4de6a1cf0c49cf26e0d04eddcf64"], ["age", 2], ["created_at", "2018-06-20 16:14:47.698440"], ["updated_at", "2018-06-20 16:14:47.698440"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "63cf64222bec5e80edd993d0644fcf2c"], ["content", "eedc9b9bc60afe77063b98b63f1085cf"], ["age", 2], ["created_at", "2018-06-20 16:14:47.700632"], ["updated_at", "2018-06-20 16:14:47.700632"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d0a867fe2ab63db6ab54f3a0ebcf74d1"], ["content", "fa9c0eca481164e3be4139a8a08dc957"], ["age", 2], ["created_at", "2018-06-20 16:14:47.702654"], ["updated_at", "2018-06-20 16:14:47.702654"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "05de49bd9ae8e6bfe7eb7e5298819483"], ["content", "b9df64e41665075ea69a3ca808489037"], ["age", 2], ["created_at", "2018-06-20 16:14:47.704778"], ["updated_at", "2018-06-20 16:14:47.704778"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "eab23f001f425e315f10112f2b9dd899"], ["content", "62efd08417ed3c3481801dd7106f0aa2"], ["age", 2], ["created_at", "2018-06-20 16:14:47.706969"], ["updated_at", "2018-06-20 16:14:47.706969"]]
+  [1m[35m (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "21404ecd7100368a29a7fb9b8d365503"], ["content", "b8ed28260734a4bc1a2bfe49770ff781"], ["age", 2], ["created_at", "2018-06-20 16:14:47.709192"], ["updated_at", "2018-06-20 16:14:47.709192"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "05bf8e4a7c88d3b474809ef1f12ad753"], ["content", "68cf121f1fbca566cd87fed449e59b40"], ["age", 2], ["created_at", "2018-06-20 16:14:47.711278"], ["updated_at", "2018-06-20 16:14:47.711278"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "7144569584ed8c6467a86311d670b51e"], ["content", "6a6db1381b552319aab506c087f2e269"], ["age", 2], ["created_at", "2018-06-20 16:14:47.713443"], ["updated_at", "2018-06-20 16:14:47.713443"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+OdsTest: test_empty_sa
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "dd265394ccf41813d5521ef7e822643a"], ["content", "d5c19a7ee54782e50dd837ac6274dc13"], ["age", 2], ["created_at", "2018-06-20 16:14:47.720851"], ["updated_at", "2018-06-20 16:14:47.720851"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "b4190872da38aef992e52e5a089e89ad"], ["content", "92f45673d7197df5ed6b035731480d3e"], ["age", 2], ["created_at", "2018-06-20 16:14:47.723042"], ["updated_at", "2018-06-20 16:14:47.723042"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d1d8d0cb17d86aea9bd767b2bd438c00"], ["content", "2ff95141db196a6de8fec4202a7f3d3d"], ["age", 2], ["created_at", "2018-06-20 16:14:47.725355"], ["updated_at", "2018-06-20 16:14:47.725355"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "331694eb30044e249d56d92fe54e8c19"], ["content", "783d66036a83e5c60aba20430b7ec3ee"], ["age", 2], ["created_at", "2018-06-20 16:14:47.727415"], ["updated_at", "2018-06-20 16:14:47.727415"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d3cdfdc306df1c5f9ec23c25f14127fc"], ["content", "49c7b55af6179c0e39466118d615dac4"], ["age", 2], ["created_at", "2018-06-20 16:14:47.729455"], ["updated_at", "2018-06-20 16:14:47.729455"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "c011f0e61482d80ca2b41b43a25fc10c"], ["content", "1b208a82a0ed5aad7cb9aef56bce8375"], ["age", 2], ["created_at", "2018-06-20 16:14:47.731482"], ["updated_at", "2018-06-20 16:14:47.731482"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "cf52f3d0121268b4fe4b056120f63a6a"], ["content", "197278636922c585d3c6c2b6d1ea173b"], ["age", 2], ["created_at", "2018-06-20 16:14:47.733531"], ["updated_at", "2018-06-20 16:14:47.733531"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "118fa105d3e9abafad055a229cc7052b"], ["content", "10b4e419e7ed0dfd61770c2683a13e9a"], ["age", 2], ["created_at", "2018-06-20 16:14:47.735563"], ["updated_at", "2018-06-20 16:14:47.735563"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "60ad288eab699d42e9a7d411f253e13f"], ["content", "a7cca8a5ce565a9b618c3e695e83df74"], ["age", 2], ["created_at", "2018-06-20 16:14:47.737673"], ["updated_at", "2018-06-20 16:14:47.737673"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "9d830661c039f9e4ede3785497a42cfa"], ["content", "46c0d0748afc328826362f2290241cfc"], ["age", 2], ["created_at", "2018-06-20 16:14:47.739739"], ["updated_at", "2018-06-20 16:14:47.739739"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+OdsTest: test_model
+-------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.4ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "280e7377554fd446563d09f68d5bc359"], ["content", "22e91774218720125665aef83fbc644b"], ["age", 2], ["created_at", "2018-06-20 16:14:47.745605"], ["updated_at", "2018-06-20 16:14:47.745605"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "219fdcff16d4af8cd5d99738e5106482"], ["content", "a48cdb7b87c0949c8a478f97eee64d96"], ["age", 2], ["created_at", "2018-06-20 16:14:47.747945"], ["updated_at", "2018-06-20 16:14:47.747945"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "fe625a30b03b03663eefdc7df73c2298"], ["content", "571d39825a9be0faa951c2c7924936fd"], ["age", 2], ["created_at", "2018-06-20 16:14:47.750306"], ["updated_at", "2018-06-20 16:14:47.750306"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "713fcea989f52b2be7502f79a32a8b32"], ["content", "ecc6dfddbdbcfba0791bcc65533faf25"], ["age", 2], ["created_at", "2018-06-20 16:14:47.752469"], ["updated_at", "2018-06-20 16:14:47.752469"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "ba0e28443add02f75de79109694d5658"], ["content", "a4a0afcdbf3f66788662c98e20452c4e"], ["age", 2], ["created_at", "2018-06-20 16:14:47.754537"], ["updated_at", "2018-06-20 16:14:47.754537"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "85b4e09530934daa4b2de318c7560f7e"], ["content", "d3eccd8d4afa041f2dd8d8e8b11080e5"], ["age", 2], ["created_at", "2018-06-20 16:14:47.756711"], ["updated_at", "2018-06-20 16:14:47.756711"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "c00d6e147ac1c4b11607052c2aa132cf"], ["content", "db3431884e5e85d830b47fa823898ba7"], ["age", 2], ["created_at", "2018-06-20 16:14:47.758832"], ["updated_at", "2018-06-20 16:14:47.758832"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "b8b5a22de8903df6fdab27146d2a7efe"], ["content", "20653fe8199ffd7e118320e80a520cb4"], ["age", 2], ["created_at", "2018-06-20 16:14:47.760982"], ["updated_at", "2018-06-20 16:14:47.760982"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "7eab0c24b7c397693ef20df05480c269"], ["content", "612d329142b7a9fc991ac368ef90e9d1"], ["age", 2], ["created_at", "2018-06-20 16:14:47.763105"], ["updated_at", "2018-06-20 16:14:47.763105"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "da230245cf025584aaec78b873011a4f"], ["content", "933a0a09f4b2f704fd282836888d47bc"], ["age", 2], ["created_at", "2018-06-20 16:14:47.765346"], ["updated_at", "2018-06-20 16:14:47.765346"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------
+OdsTest: test_sa
+----------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "44bdacbe329e5c4fc498674dc36923f0"], ["content", "b060b2632318f715dceed40ab459ab89"], ["age", 2], ["created_at", "2018-06-20 16:14:47.789514"], ["updated_at", "2018-06-20 16:14:47.789514"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "e88deb315dbc0174f20b2d82a81b9afd"], ["content", "7849e0932e1ffcd37360a61f392d2dd5"], ["age", 2], ["created_at", "2018-06-20 16:14:47.791952"], ["updated_at", "2018-06-20 16:14:47.791952"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "8152020bb505fcdc4f938bb9baedf8ac"], ["content", "a5547afce3cb320c7854e9610f002bb6"], ["age", 2], ["created_at", "2018-06-20 16:14:47.794410"], ["updated_at", "2018-06-20 16:14:47.794410"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "082702ca3792595eb88c1e40cf0541c5"], ["content", "abc8ff44e707d872286aa4a6c466823a"], ["age", 2], ["created_at", "2018-06-20 16:14:47.796777"], ["updated_at", "2018-06-20 16:14:47.796777"]]
+  [1m[35m (0.5ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "01a14fd151d2dbee06fea96f3020f034"], ["content", "89f0e9b31d676e453a373c519cf3067c"], ["age", 2], ["created_at", "2018-06-20 16:14:47.799127"], ["updated_at", "2018-06-20 16:14:47.799127"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "1eaaf2ffd43652e14937895df3f84059"], ["content", "df13df316ed901416694c55136cf06c1"], ["age", 2], ["created_at", "2018-06-20 16:14:47.801471"], ["updated_at", "2018-06-20 16:14:47.801471"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "123284838e80af36dad228df96f9d739"], ["content", "b95b25838127510afdf59615577b3cc5"], ["age", 2], ["created_at", "2018-06-20 16:14:47.803881"], ["updated_at", "2018-06-20 16:14:47.803881"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "785e2e82e3008a34e91d1711cbcb1511"], ["content", "cb7df65833bdfb517501f2b0fa3aba55"], ["age", 2], ["created_at", "2018-06-20 16:14:47.805846"], ["updated_at", "2018-06-20 16:14:47.805846"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "07287a290d9c5bea2de48062c710f47d"], ["content", "ced6c2c133a6338264b2a739fde8b535"], ["age", 2], ["created_at", "2018-06-20 16:14:47.808189"], ["updated_at", "2018-06-20 16:14:47.808189"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.6ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "88a38b8cb229d9732ce1fc017f622f05"], ["content", "735f90c92a0e52e4f1b11c9bc18d75a6"], ["age", 2], ["created_at", "2018-06-20 16:14:47.810614"], ["updated_at", "2018-06-20 16:14:47.810614"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+CsvTest: test_empty_model
+-------------------------
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------
+CsvTest: test_sa
+----------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+CsvTest: test_empty_sa
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+CsvTest: test_model
+-------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+---------------------
+CsvTest: test_options
+---------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+ApplicationTest: test_xlsx
+--------------------------
+Started GET "/spreadsheet/xlsx" for 127.0.0.1 at 2018-06-20 09:15:11 -0700
+Processing by SpreadsheetsController#xlsx as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (2.6ms)
+Completed 200 OK in 18ms (Views: 2.8ms | ActiveRecord: 0.5ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------------
+ApplicationTest: test_Renders_sample_xlsx_action
+------------------------------------------------
+Started GET "/spreadsheet/xlsx?format=xlsx" for 127.0.0.1 at 2018-06-20 09:15:11 -0700
+Processing by SpreadsheetsController#xlsx as XLSX
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (0.4ms)
+Completed 200 OK in 10ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+ApplicationTest: test_csv
+-------------------------
+Started GET "/spreadsheet/csv" for 127.0.0.1 at 2018-06-20 09:15:11 -0700
+Processing by SpreadsheetsController#csv as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data data.csv (0.3ms)
+Completed 200 OK in 2ms (Views: 0.4ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+ApplicationTest: test_ods
+-------------------------
+Started GET "/spreadsheet/ods" for 127.0.0.1 at 2018-06-20 09:15:11 -0700
+Processing by SpreadsheetsController#ods as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data data.ods (0.4ms)
+Completed 200 OK in 10ms (Views: 0.5ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------
+ApplicationTest: test_alt_xlsx
+------------------------------
+Started GET "/spreadsheet/alt_xlsx?format=xlsx" for 127.0.0.1 at 2018-06-20 09:15:11 -0700
+Processing by SpreadsheetsController#alt_xlsx as XLSX
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendering text template
+  Rendered text template (0.0ms)
+Sent data Posts.xlsx (0.4ms)
+Completed 200 OK in 11ms (Views: 9.0ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+BadPlainRubyObjectTest: test_ods
+--------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+BadPlainRubyObjectTest: test_csv
+--------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------
+BadPlainRubyObjectTest: test_xlsx
+---------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+------------------
+PostTest: test_ods
+------------------
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------
+PostTest: test_csv
+------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+PostTest: test_xlsx
+-------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------
+PostTest: test_empty
+--------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 2]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 3]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 5]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_cell_data
+-------------------------------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_constants_dont_change
+---------------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_str_humanize
+------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_convert_styles_to_axlsx
+-----------------------------------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_type
+--------------------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------------
+SpreadsheetArchitectUtilsTest: test_get_options
+-----------------------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------------------
+SpreadsheetArchitectUtilsTest: test_convert_styles_to_ods
+---------------------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------------
+SpreadsheetArchitectTest: test_config
+-------------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------
+CustomPostTest: test_csv
+------------------------
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------
+CustomPostTest: test_ods
+------------------------
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+CustomPostTest: test_xlsx
+-------------------------
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+CustomPostTest: test_empty
+--------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 2]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 3]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 5]]
+  [1m[35m (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+CustomPostTest: test_constants_dont_change
+------------------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+OdsTest: test_empty_model
+-------------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "4bda5d21c3e474bd29ed10bde92d3620"], ["content", "76a4dadcf2860050d23358a8a14f7b28"], ["age", 2], ["created_at", "2018-06-20 16:15:11.510690"], ["updated_at", "2018-06-20 16:15:11.510690"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "94eb67f709cecc48b509e1054078b202"], ["content", "365689f46585ca1267effe6e491896e3"], ["age", 2], ["created_at", "2018-06-20 16:15:11.512409"], ["updated_at", "2018-06-20 16:15:11.512409"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "7d567c661695a39edc8be10d93aeb451"], ["content", "e4ea9453112f7f86fbf4261816aaafbe"], ["age", 2], ["created_at", "2018-06-20 16:15:11.513671"], ["updated_at", "2018-06-20 16:15:11.513671"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "ece4c27669665bc7aee6d62555bdaa35"], ["content", "f6fc81876a2c2b350ef846ea5707faa7"], ["age", 2], ["created_at", "2018-06-20 16:15:11.514839"], ["updated_at", "2018-06-20 16:15:11.514839"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "79b9d341483164b4378baabe0341aabb"], ["content", "c3e255dd1ee29c0e4f74b4aeafbf2daa"], ["age", 2], ["created_at", "2018-06-20 16:15:11.515998"], ["updated_at", "2018-06-20 16:15:11.515998"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "557dbd599650f1a1c9b834bb3b178fa1"], ["content", "04c2b84e6affea852697c6fe93949d3b"], ["age", 2], ["created_at", "2018-06-20 16:15:11.517239"], ["updated_at", "2018-06-20 16:15:11.517239"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "b82e749b39fe590c1265784c3b61a503"], ["content", "2758608ad91b0da3d0f0fab06e15dc24"], ["age", 2], ["created_at", "2018-06-20 16:15:11.518408"], ["updated_at", "2018-06-20 16:15:11.518408"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "3ee80841824f32839c93f40b77844987"], ["content", "11cebb3d6fe675124b0a3f3db0c42687"], ["age", 2], ["created_at", "2018-06-20 16:15:11.519577"], ["updated_at", "2018-06-20 16:15:11.519577"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "e65aa4defa67030687e62dc0405f59fb"], ["content", "d4c43722eda106f3f2318a903cdce18f"], ["age", 2], ["created_at", "2018-06-20 16:15:11.520758"], ["updated_at", "2018-06-20 16:15:11.520758"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "918a2b661ebea60e2367c5d37589bab6"], ["content", "be5af55c4f40d4d4eae0c204da33d144"], ["age", 2], ["created_at", "2018-06-20 16:15:11.521939"], ["updated_at", "2018-06-20 16:15:11.521939"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Destroy (0.1ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------
+OdsTest: test_options
+---------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "17a105457575c3661ddd75256a4bf059"], ["content", "4d24a5b8522f3e17b7427dbe96ec7629"], ["age", 2], ["created_at", "2018-06-20 16:15:11.526847"], ["updated_at", "2018-06-20 16:15:11.526847"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "e810dadf9c46e12988d15b74a658582d"], ["content", "ced717b411d44e441142688f689816de"], ["age", 2], ["created_at", "2018-06-20 16:15:11.528137"], ["updated_at", "2018-06-20 16:15:11.528137"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "74c1ad5057ab46332be9d5798c4c30ea"], ["content", "8d5c61bd336436c68bd8b090892289b4"], ["age", 2], ["created_at", "2018-06-20 16:15:11.529408"], ["updated_at", "2018-06-20 16:15:11.529408"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "9a8c9d8fcf7662c83a141fe1299b89e1"], ["content", "961a1f53db83f2ef650f3c6d69229f43"], ["age", 2], ["created_at", "2018-06-20 16:15:11.530580"], ["updated_at", "2018-06-20 16:15:11.530580"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "90d3ea48f2c03f15c535eb63a2c72d53"], ["content", "bb2bb243f38f5c79ec13a51d693c2629"], ["age", 2], ["created_at", "2018-06-20 16:15:11.531743"], ["updated_at", "2018-06-20 16:15:11.531743"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "7f89e0cd289781580452f1e17b8ff0c0"], ["content", "fad6a144bb0e2dc67d4c70f86945b1cb"], ["age", 2], ["created_at", "2018-06-20 16:15:11.533005"], ["updated_at", "2018-06-20 16:15:11.533005"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "59e3958d63395f006ac15ac2b36f1f64"], ["content", "e0167b1003b427737f0d719dded5c6c2"], ["age", 2], ["created_at", "2018-06-20 16:15:11.534269"], ["updated_at", "2018-06-20 16:15:11.534269"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "4afd98e2f2e778a85a8cfd980ef47045"], ["content", "89adec153a3c0eca704f5f126b9a72a8"], ["age", 2], ["created_at", "2018-06-20 16:15:11.535451"], ["updated_at", "2018-06-20 16:15:11.535451"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "56eefbc3bcf4a9c7cf4bda14a777a9ee"], ["content", "868f5ea6c254dc89e64fd73afdf77910"], ["age", 2], ["created_at", "2018-06-20 16:15:11.536637"], ["updated_at", "2018-06-20 16:15:11.536637"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "507387535a169c8fbad959417dbc6472"], ["content", "b56393e9c77a7fcd4b5337fa7468af89"], ["age", 2], ["created_at", "2018-06-20 16:15:11.537810"], ["updated_at", "2018-06-20 16:15:11.537810"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+OdsTest: test_empty_sa
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "661de8607a49e2b742e23488d4151b70"], ["content", "8965acddcbc5203ef043d30205936094"], ["age", 2], ["created_at", "2018-06-20 16:15:11.553062"], ["updated_at", "2018-06-20 16:15:11.553062"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "2934c413e00f255835c3cf9ff95f1ac0"], ["content", "9fe6e36e30bb5a7db6c88b7abffd58e3"], ["age", 2], ["created_at", "2018-06-20 16:15:11.554546"], ["updated_at", "2018-06-20 16:15:11.554546"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "3c48c9d5c0a6b66a9f653547551a3e7a"], ["content", "9def0a7ea3bebb5c67dfb8e723b4583a"], ["age", 2], ["created_at", "2018-06-20 16:15:11.555900"], ["updated_at", "2018-06-20 16:15:11.555900"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "a8583cd70cb55d1288e57a34105e90cd"], ["content", "13bda321b232996ee3452e70f1fa8af0"], ["age", 2], ["created_at", "2018-06-20 16:15:11.557152"], ["updated_at", "2018-06-20 16:15:11.557152"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "2ff40e8a6d58e85bead746a84ae0f79a"], ["content", "5dc2662d467e2bf7c000fba21ef623fe"], ["age", 2], ["created_at", "2018-06-20 16:15:11.558332"], ["updated_at", "2018-06-20 16:15:11.558332"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "da42351e1d2f0564c9cff4b18a87cb81"], ["content", "f361607f53da135252394d75f904a296"], ["age", 2], ["created_at", "2018-06-20 16:15:11.559541"], ["updated_at", "2018-06-20 16:15:11.559541"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "4af26fd2f884028f5c569eca522b158a"], ["content", "e6ed7ba8a13ba521f503f0b2006f7b8b"], ["age", 2], ["created_at", "2018-06-20 16:15:11.560861"], ["updated_at", "2018-06-20 16:15:11.560861"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "bff8d9f968158027ef1f02ff18d72801"], ["content", "849e733b24c53392cef0b3977290457a"], ["age", 2], ["created_at", "2018-06-20 16:15:11.562079"], ["updated_at", "2018-06-20 16:15:11.562079"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "0167d089fc66372b6360eb21e4ec68a9"], ["content", "1b8cd7426d1fedb5ed0603c2de107dd5"], ["age", 2], ["created_at", "2018-06-20 16:15:11.563262"], ["updated_at", "2018-06-20 16:15:11.563262"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "cc72fc45d1cc8fef5608432c6616d568"], ["content", "cf4328e6f75777a26f3f1f5bff39a835"], ["age", 2], ["created_at", "2018-06-20 16:15:11.564492"], ["updated_at", "2018-06-20 16:15:11.564492"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+OdsTest: test_model
+-------------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d2edca93ad44f4afc1d20117d5e9ebe4"], ["content", "d9c191b102e27dbfe015528b8090459e"], ["age", 2], ["created_at", "2018-06-20 16:15:11.568395"], ["updated_at", "2018-06-20 16:15:11.568395"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "53bad60898d95d6051e0103fd5fe4a52"], ["content", "49fce8613225bc1f5cb1228be51f7f61"], ["age", 2], ["created_at", "2018-06-20 16:15:11.569712"], ["updated_at", "2018-06-20 16:15:11.569712"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "a1f2eebacb50475c00b4d5c8f15923fc"], ["content", "3def11e3eec92ce7efdda639996b9a92"], ["age", 2], ["created_at", "2018-06-20 16:15:11.570973"], ["updated_at", "2018-06-20 16:15:11.570973"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "0d7c31ea906e3b7cc57a6441e26adbc7"], ["content", "722e465ef660414c9e71d58fe541f65c"], ["age", 2], ["created_at", "2018-06-20 16:15:11.572205"], ["updated_at", "2018-06-20 16:15:11.572205"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "fcfd935d7cd1588aaafd841f960cb716"], ["content", "2deea94b87d12cf852d824041866af34"], ["age", 2], ["created_at", "2018-06-20 16:15:11.573495"], ["updated_at", "2018-06-20 16:15:11.573495"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "aff7bf25a3cfa4a389af5438eb85f654"], ["content", "c8b05f09b9a82865be40a03c244ed29c"], ["age", 2], ["created_at", "2018-06-20 16:15:11.574754"], ["updated_at", "2018-06-20 16:15:11.574754"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "804983ff7666e79f29e52502f370e9ab"], ["content", "bd14f1f3bf3ea84bfaf8d4424cb1a981"], ["age", 2], ["created_at", "2018-06-20 16:15:11.575937"], ["updated_at", "2018-06-20 16:15:11.575937"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "3e8f779ed1dd2ad7ab81762d3bce7c4a"], ["content", "f2d122abf26a0a35fbeb69b95b753534"], ["age", 2], ["created_at", "2018-06-20 16:15:11.577225"], ["updated_at", "2018-06-20 16:15:11.577225"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "6521e11ec60bfe7509f4ea5f71497e2a"], ["content", "8c588694f8c7b6b66dbd450d34eafe86"], ["age", 2], ["created_at", "2018-06-20 16:15:11.578445"], ["updated_at", "2018-06-20 16:15:11.578445"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "75123319d0c6008b6fdea6b4f0eb1a4c"], ["content", "75f175107645e74b11181349ee235ad0"], ["age", 2], ["created_at", "2018-06-20 16:15:11.579703"], ["updated_at", "2018-06-20 16:15:11.579703"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Load (0.2ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------
+OdsTest: test_sa
+----------------
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "a28692f7140cd35370bde0731671540e"], ["content", "17f1bfd2345ef872f4fa6b73cc2c49d8"], ["age", 2], ["created_at", "2018-06-20 16:15:11.592499"], ["updated_at", "2018-06-20 16:15:11.592499"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "d49602d362954789fa35a2b9229937a3"], ["content", "6ab83aa77b9cab9f7b5b744119ae3953"], ["age", 2], ["created_at", "2018-06-20 16:15:11.593927"], ["updated_at", "2018-06-20 16:15:11.593927"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "ecc424780e45d41c48cd0ed79010d7dd"], ["content", "82657344aa750487555a04a9b507af54"], ["age", 2], ["created_at", "2018-06-20 16:15:11.595176"], ["updated_at", "2018-06-20 16:15:11.595176"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "6f25b7db12cb8a0e69881c96a0bb7d86"], ["content", "1a03e624011eb4b2cadc303593cc1ee9"], ["age", 2], ["created_at", "2018-06-20 16:15:11.596487"], ["updated_at", "2018-06-20 16:15:11.596487"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "8e904d41c6ccedf370677ba703772214"], ["content", "d87fb89db7f4932577199f840fa60cc3"], ["age", 2], ["created_at", "2018-06-20 16:15:11.597695"], ["updated_at", "2018-06-20 16:15:11.597695"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "a636f1ba129edd1447bd664bf66b9bf8"], ["content", "da408da96a2bba56e16ace86131f4c3c"], ["age", 2], ["created_at", "2018-06-20 16:15:11.598919"], ["updated_at", "2018-06-20 16:15:11.598919"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "78ad3fe6461a04a4cae0c12586962521"], ["content", "f7f0741987f08b040705a26b9c69a670"], ["age", 2], ["created_at", "2018-06-20 16:15:11.600170"], ["updated_at", "2018-06-20 16:15:11.600170"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "2b8887bc32c266ba163e6d25cc10a3c2"], ["content", "eb9dac246fe026e45ec6975bae30ad7d"], ["age", 2], ["created_at", "2018-06-20 16:15:11.601396"], ["updated_at", "2018-06-20 16:15:11.601396"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "03f012fff34b964a80f0741afd78d6d2"], ["content", "e924bd0a602c5edd263df85de0809bbc"], ["age", 2], ["created_at", "2018-06-20 16:15:11.602605"], ["updated_at", "2018-06-20 16:15:11.602605"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomPost Create (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "content", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["name", "86851fffb3f4d42d6500619fefb1266a"], ["content", "5c8d90146a6742beaa363db78a548f2e"], ["age", 2], ["created_at", "2018-06-20 16:15:11.603799"], ["updated_at", "2018-06-20 16:15:11.603799"]]
+  [1m[35m (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------
+PlainRubyObjectTest: test_csv
+-----------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------
+PlainRubyObjectTest: test_ods
+-----------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------
+PlainRubyObjectTest: test_xlsx
+------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------
+CsvTest: test_sa
+----------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------
+CsvTest: test_empty_model
+-------------------------
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------
+CsvTest: test_options
+---------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+CsvTest: test_empty_sa
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------
+CsvTest: test_model
+-------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+ActiveModelObjectTest: test_xlsx
+--------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------
+ActiveModelObjectTest: test_csv
+-------------------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-------------------------------
+ActiveModelObjectTest: test_ods
+-------------------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------
+XlsxTest: test_extreme
+----------------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------
+XlsxTest: test_empty_model
+--------------------------
+  [1m[36mPost Destroy (0.2ms)[0m  [1m[31mDELETE FROM "posts"[0m
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+XlsxTest: test_empty_sa
+-----------------------
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------
+XlsxTest: test_model
+--------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------
+XlsxTest: test_sa
+-----------------
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m

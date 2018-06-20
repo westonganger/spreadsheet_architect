@@ -24,7 +24,7 @@ Minitest::Reporters.use!
 require 'custom_assertions'
 
 ### Cleanup old test spreadsheets
-FileUtils.rm_r(Rails.root.join('tmp/'))
+FileUtils.remove_dir(Rails.root.join('tmp/'), true)
 FileUtils.mkdir(Rails.root.join('tmp/'))
 
 post_count = Post.count
