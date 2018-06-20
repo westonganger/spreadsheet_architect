@@ -1,5 +1,7 @@
 # Spreadsheet Architect
-<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
+
+<a href='https://travis-ci.org/westonganger/spreadsheet_architect' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://api.travis-ci.org/westonganger/spreadsheet_architect.svg?branch=master' border='0' alt='Build Status' /></a> 
+<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
 
