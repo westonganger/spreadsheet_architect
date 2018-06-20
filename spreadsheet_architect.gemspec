@@ -23,8 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'minitest-reporters'
   s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rails'
-  s.add_development_dependency 'activerecord'
+  s.add_development_dependency 'rails', '>= 5.2'
 
   s.required_ruby_version = '>= 1.9.3'
   s.require_path = 'lib'
