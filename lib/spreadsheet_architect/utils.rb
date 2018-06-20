@@ -11,47 +11,56 @@ module SpreadsheetArchitect
     def self.get_cell_data(options={}, klass)
       self.check_options_types
 
-      if klass.name == 'SpreadsheetArchitect'
-        if !options[:data]
-          raise SpreadsheetArchitect::Exceptions::NoDataError
-        end
+      if options[:data] && options[:instances]
+        raise SpreadsheetArchitect::Exceptions::MultipleDataSourcesError
+      end
 
-        if options[:headers] && options[:headers].is_a?(Array) && !options[:headers].empty?
-          headers = options[:headers]
-        else
-          headers = false
-        end
-        
+      if options[:data]
         data = options[:data]
-      else
-        has_custom_columns = options[:spreadsheet_columns] || klass.instance_methods.include?(:spreadsheet_columns)
+      end
 
-        if !options[:instances] && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
+      if options[:headers].nil?
+        headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
+        headers ||= SpreadsheetArchitect.default_options[:headers]
+        if headers == true
+          headers = true
+          needs_headers = true
+        end
+      elsif options[:headers].is_a?(Array)
+        headers = options[:headers]
+      else
+        headers = false
+      end
+
+      if !data
+        if !options[:instances] && self.is_ar_model?(klass) 
           options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
         end
 
         if !options[:instances]
-          raise SpreadsheetArchitect::Exceptions::NoInstancesError
+          raise SpreadsheetArchitect::Exceptions::NoDataError
         end
 
-        if options[:headers].nil?
-          headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
-          headers ||= SpreadsheetArchitect.default_options[:headers]
-        elsif options[:headers].is_a?(Array)
-          headers = options[:headers]
+        has_custom_columns = !!options[:spreadsheet_columns]
+        if !has_custom_columns && klass != SpreadsheetArchitect
+          has_custom_columns = klass.instance_methods.include?(:spreadsheet_columns)
         end
 
-        if headers == false || headers.is_a?(Array)
-          needs_headers = false
-        else
-          headers = true
-          needs_headers = true
-        end
-
-        if has_custom_columns 
+        if has_custom_columns
           headers = [] if needs_headers
           columns = []
-          array = options[:spreadsheet_columns] || (options[:instances].empty? ? [] : options[:instances].first.spreadsheet_columns)
+
+          array = options[:spreadsheet_columns]
+          if !array
+            if options[:instances].empty?
+              array = []
+            elsif options[:instances].first.respond_to?(:spreadsheet_columns)
+              array = options[:instances].first.spreadsheet_columns
+            else
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, options[:instances].first.class
+            end
+          end
+
           array.each_with_index do |x,i|
             if x.is_a?(Array)
               headers.push(x[0].to_s) if needs_headers
@@ -61,35 +70,58 @@ module SpreadsheetArchitect
               columns.push x
             end
           end
-        elsif !has_custom_columns && defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
-          ignored_columns = ["id","created_at","updated_at","deleted_at"] 
-          the_column_names = (klass.column_names - ignored_columns)
-          headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
-          columns = the_column_names.map{|x| x.to_sym}
-        else
-          raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, klass
+          needs_headers = false
+        elsif klass != SpreadsheetArchitect
+          if self.is_ar_model?(klass)
+            ignored_columns = ["id","created_at","updated_at","deleted_at"] 
+            the_column_names = (klass.column_names - ignored_columns)
+            headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
+            columns = the_column_names.map{|x| x.to_sym}
+          else
+            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, klass
+          end
         end
 
         data = []
         options[:instances].each do |instance|
-          if has_custom_columns && !options[:spreadsheet_columns]
+          if columns
+            data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+          else
             row_data = []
-            instance.spreadsheet_columns.each do |x|
+
+            if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
+              if self.is_ar_model?
+                ignored_columns = ["id","created_at","updated_at","deleted_at"] 
+                the_column_names = (klass.column_names - ignored_columns)
+                headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
+                instance_cols = the_column_names.map{|x| x.to_sym}
+              else
+                raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, instance.class
+              end
+            else
+              instance_cols = instance.spreadsheet_columns
+            end
+
+            instance_cols.each do |x|
               if x.is_a?(Array)
                 row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
               else
                 row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
               end
             end
+
             data.push row_data
-          else
-            data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
           end
+
         end
       end
 
-      if headers && !headers[0].is_a?(Array)
-        headers = [headers]
+      if headers
+        if headers == true
+          headers = false
+        elsif !headers[0].is_a?(Array)
+          headers = [headers]
+        end
       end
 
       return options.merge(headers: headers, data: data, column_types: options[:column_types])
@@ -222,6 +254,10 @@ module SpreadsheetArchitect
         end
       end
       return new_hash
+    end
+
+    def self.is_ar_model?(klass)
+      defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
     end
   end
 end

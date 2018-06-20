@@ -24,16 +24,16 @@ Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 
 # Plain Ruby Class
-Post.to_xlsx(instances: posts_array)
-Post.to_ods(instances: posts_array)
-Post.to_csv(instances: posts_array)
+SpreadsheetArchitect.to_xlsx(instances: posts_array)
+SpreadsheetArchitect.to_ods(instances: posts_array, headers: false)
+SpreadsheetArchitect.to_csv(instances: posts_array, headers: ['Some', 'Custom', 'Headers'])
 
 # One Time Usage
 headers = ['Col 1','Col 2','Col 3']
 data = [[1,2,3], [4,5,6], [7,8,9]]
 SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
 SpreadsheetArchitect.to_ods(data: data, headers: headers)
-SpreadsheetArchitect.to_csv(data: data, header: false)
+SpreadsheetArchitect.to_csv(data: data, header: headers)
 ```
 
 # Install
@@ -46,14 +46,12 @@ gem 'spreadsheet_architect'
 
 ### Model
 ```ruby
-class Post < ActiveRecord::Base #activerecord not required
-  include SpreadsheetArchitect
+class Post < ActiveRecord::Base ### Note: ActiveRecord not required
 
-  belongs_to :author
-  belongs_to :category
-  has_many :tags
+  include SpreadsheetArchitect ### required only if ActiveRecord model
 
-  #optional for activerecord classes, defaults to the models column_names
+  ### Required for non-ActiveRecord Model
+  ### Optional if ActiveRecord model. Defaults to the models `column_names`
   def spreadsheet_columns
 
     #[[Label, Method/Statement, Type(optional) to Call on each Instance, Cell Type(optional)]....]
@@ -146,7 +144,7 @@ end
 
 # Ex. with plain ruby class
 File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write Post.to_xlsx(instances: posts_array)
+  f.write SpreadsheetArchitect.to_xlsx(instances: posts_array)
 end
 
 # Ex. One time Usage
@@ -166,8 +164,7 @@ end
 |Option|Default|Notes|
 |---|---|---|
 |**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override the model instances `spreadsheet_columns` method|
-|**instances**<br>*Array*| |**Required only for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**<br>*2D Array*|This defaults to your models custom spreadsheet_columns method or `self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
+|**headers**<br>*Array / 2D Array*|This defaults to your models custom spreadsheet_columns method or `self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
@@ -184,8 +181,7 @@ end
 |Option|Default|Notes|
 |---|---|---|
 |**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override the model instances `spreadsheet_columns` method|
-|**instances**<br>*Array*| |**Required only for Non-ActiveRecord models** Array of class/model instances.|
-|**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
+|**headers**<br>*Array / 2D Array*|`self.column_names.collect(&:titleize)`|Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|The class name||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options (values can be changed though)|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
@@ -197,8 +193,7 @@ end
 |Option|Default|Notes|
 |---|---|---|
 |**spreadsheet_columns**<br>*Array*| This defaults to your models custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this to option override the model instances `spreadsheet_columns` method|
-|**instances**<br>*Array*| |**Required only for Non-ActiveRecord classes** Array of class/model instances.|
-|**headers**<br>*2D Array*|`self.column_names.collect(&:titleize)`| Data for the header rows cells. Pass `false` to skip the header row.|
+|**headers**<br>*Array / 2D Array*|`self.column_names.collect(&:titleize)`| Data for the header rows cells. Pass `false` to skip the header row.|
 
 <br>
 
@@ -206,8 +201,9 @@ end
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*Array*| |Data for the non-header row cells. |
-|**headers**<br>*2D Array*|`false`|Data for the header row cells. Pass `false` to skip the header row.|
+|**data**<br>*2D Array*| |Tabular data for the non-header row cells. Cannot be used with :instances option |
+|**instances**<br>*Array*| |Array of class/model instances to be used as row data. Cannot be used with :data option|
+|**headers**<br>*Array / 2D Array*|`false`|Data for the header row cells. Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
@@ -224,8 +220,10 @@ end
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Data for the non-header row cells.|
-|**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
+|**data**<br>*2D Array*| |Tabular data for the non-header row cells. Cannot be used with :instances option |
+|**instances**<br>*Array*| |Array of class/model instances to be used as row data. Cannot be used with :data option|
+|**instances**<br>*Array*| |**Required only for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**<br>*Array / 2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
@@ -238,7 +236,8 @@ end
 |Option|Default|Notes|
 |---|---|---|
 |**data**<br>*2D Array*| |Data for the non-header row cells.|
-|**headers**<br>*2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
+|**instances**<br>*Array*| |**Required only for Non-ActiveRecord classes** Array of class/model instances.|
+|**headers**<br>*Array / 2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
 
 
 # Change model default method options
