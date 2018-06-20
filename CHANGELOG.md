@@ -2,11 +2,11 @@ CHANGELOG
 ---------
 
 - **2.1.0** - June 20, 2018
-  - Improve test suite
   - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
   - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
   - PR #15 - Improved the method symbolize_keys. This method did not work properly for nested objects.
   - Added the ability to pass `:text_wrap` option within the `:alignment` style. PR #15
+  - Improve test suite
 - **2.0.2** - July 14 2017
   - Fix bug with range styles rows option not counting headers
   - Fix bug with range styles rows :all option

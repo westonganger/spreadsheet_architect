@@ -8,8 +8,9 @@ doc/
 pkg/
 spec/reports/
 test/*.sqlite3.db
-test/rails_app/tmp/**/*.csv
-test/rails_app/tmp/**/*.ods
-test/rails_app/tmp/**/*.xlsx
-test/rails_app/tmp/**/*.log
-test/rails_app/test/*.log
+test/dummy_app/tmp/**/*.csv
+test/dummy_app/tmp/**/*.ods
+test/dummy_app/tmp/**/*.xlsx
+test/dummy_app/tmp/**/*.log
+test/dummy_app/test/*.log
+tmp/
