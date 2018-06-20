@@ -2,6 +2,9 @@ CHANGELOG
 ---------
 
 - **3.0.0** - UNRELEASED
+  - TODO: Test instances option in all configurations
+  - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
+  - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
   - Remove all Rails generators `spreadsheet_architect:add_default_options`
   - Add a lot more tests
 - **2.1.0** - June 20, 2018
