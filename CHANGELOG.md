@@ -8,6 +8,7 @@ CHANGELOG
   - Use `prepend` monkey patches in Ruby 2+ to avoid annoying overwrite warnings when using old `define_method` monkey patches
   - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
   - Improve test suite
+  - Dont test against Ruby versions that Rails no longer supports. Gem code should remain compatible with Ruby 1.9.3.
 - **2.0.2** - July 14 2017
   - Fix bug with range styles rows option not counting headers
   - Fix bug with range styles rows :all option
