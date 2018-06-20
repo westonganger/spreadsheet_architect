@@ -2,10 +2,11 @@ CHANGELOG
 ---------
 
 - **2.1.0** - June 20, 2018
-  - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
-  - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
   - PR #15 - Improved the method symbolize_keys. This method did not work properly for nested objects.
-  - Added the ability to pass `:text_wrap` option within the `:alignment` style. PR #15
+  - PR #15 - Added the ability to pass `:text_wrap` option within the `:alignment` style
+  - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
+  - Use `prepend` monkey patches in Ruby 2+ to avoid annoying overwrite warnings when using old `define_method` monkey patches
+  - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
   - Improve test suite
 - **2.0.2** - July 14 2017
   - Fix bug with range styles rows option not counting headers
