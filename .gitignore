@@ -12,5 +12,5 @@ test/dummy_app/tmp/**/*.csv
 test/dummy_app/tmp/**/*.ods
 test/dummy_app/tmp/**/*.xlsx
 test/dummy_app/tmp/**/*.log
-test/dummy_app/test/*.log
+test/dummy_app/log/*.log
 tmp/

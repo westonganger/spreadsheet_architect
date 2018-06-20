@@ -8,7 +8,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
   end
 
   def test_csv
-    assert_raise SpreadsheetArchitect::Exceptions::NoInstancesError do
+    assert_raise SpreadsheetArchitect::Exceptions::NoDataError do
       ActiveModelObject.to_csv
     end
 
@@ -21,7 +21,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
   end
 
   def test_ods
-    assert_raise SpreadsheetArchitect::Exceptions::NoInstancesError do
+    assert_raise SpreadsheetArchitect::Exceptions::NoDataError do
       ActiveModelObject.to_ods
     end
 
@@ -34,7 +34,7 @@ class ActiveModelObjectTest < ActiveSupport::TestCase
   end
 
   def test_xlsx
-    assert_raise SpreadsheetArchitect::Exceptions::NoInstancesError do
+    assert_raise SpreadsheetArchitect::Exceptions::NoDataError do
       ActiveModelObject.to_xlsx
     end
 

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
+class UtilsTest < ActiveSupport::TestCase
 
   def setup
     @headers = ['test1', 'test2','test3']

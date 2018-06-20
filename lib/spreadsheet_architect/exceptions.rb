@@ -3,13 +3,13 @@ module SpreadsheetArchitect
 
     class NoDataError < StandardError
       def initialize
-        super("Missing :data option")
+        super("Missing :data or :instances option")
       end
     end
 
-    class NoInstancesError < StandardError
+    class MultipleDataSourcesError < StandardError
       def initialize
-        super("Missing :instances option")
+        super("Both :data and :instances options cannot be combined, please choose one.")
       end
     end
 
@@ -21,13 +21,13 @@ module SpreadsheetArchitect
     
     class SpreadsheetColumnsNotDefinedError < StandardError
       def initialize(klass=nil)
-        super("The spreadsheet_columns option is not defined on #{klass.name}")
+        super("The instance method `spreadsheet_columns` is not defined on #{klass.name}")
       end
     end
 
     class InvalidColumnError < StandardError
-      def initialize(range_hash)
-        super("Invalid Column `#{range_hash}` given for column_types options")
+      def initialize(col)
+        super("Invalid Column `#{col}` given for column_types options")
       end
     end
 
@@ -46,6 +46,8 @@ module SpreadsheetArchitect
           super("Bad range `#{range}` passed. Format must be as follows: A1:D4")
         when :type
           super("Incorrect range type `#{range}`. Valid types are String and Hash")
+        else
+          super("Bad range `#{range}` passed.")
         end
       end
     end

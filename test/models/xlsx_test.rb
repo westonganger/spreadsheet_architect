@@ -42,7 +42,7 @@ class XlsxTest < ActiveSupport::TestCase
       ['Title','Category','Author','Posted on','Earnings']
     ]
 
-    data = 50.times.map{|x| ['Title','Category','Author','Posted on','Earnings']}
+    data = 50.times.map{|i| [i, i+i, i+i+i, i+i+i+i, i+i+i+i+i]}
 
     header_style = {}
 

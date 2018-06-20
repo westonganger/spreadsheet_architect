@@ -1,6 +1,4 @@
 class PlainRubyObject
-  include SpreadsheetArchitect
-
   def spreadsheet_columns
     [
       ['Title', :title],
