@@ -1,17 +1,12 @@
 class PlainRubyObject
+  attr_accessor :name, :content, :created_at
+
   def spreadsheet_columns
     [
-      ['Title', :title],
+      ['Name', :name],
       :content,
       ['Object ID', (object_id)]
     ]
   end
 
-  def title
-    'My Title'
-  end
-
-  def content
-    'The content...'
-  end
 end

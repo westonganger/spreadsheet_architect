@@ -11,4 +11,5 @@ class ActiveModelObject
       :created_at
     ]
   end
+
 end

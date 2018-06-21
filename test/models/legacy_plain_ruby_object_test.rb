@@ -3,20 +3,30 @@ require "test_helper"
 class LegacyPlainRubyObjectTest < ActiveSupport::TestCase
 
   def setup
-  end
+    @klass = LegacyPlainRubyObject
 
-  def test_csv
-    LegacyPlainRubyObject.to_csv(instances: [])
-  end
-
-  def test_ods
-    LegacyPlainRubyObject.to_ods(instances: [])
-  end
-
-  def test_xlsx
-    LegacyPlainRubyObject.to_xlsx(instances: [])
+    @instances = 5.times.map{|i| 
+      x = @klass.new
+      x.name = i
+      x.content = i+2
+      x.created_at = Time.now
+      x
+    }
   end
 
   def teardown
   end
+
+  test "Is not an AR object" do
+    assert_not @instances.first.is_a?(ActiveRecord::Base)
+  end
+
+  ['csv', 'ods', 'xlsx'].each do |format|
+
+    test "Legacy PORO #{format}" do
+      @klass.to_csv(instances: @instances)
+    end
+
+  end
+
 end

@@ -24,4 +24,5 @@ class CustomPost < ActiveRecord::Base
     borders: [],
     column_types: []
   }
+
 end

@@ -1,9 +1,9 @@
 require "test_helper"
 
-class PostTest < ActiveSupport::TestCase
+class SpreadsheetArchitectDataTest < ActiveSupport::TestCase
 
   def setup
-    @path = Rails.root.join('tmp/posts')
+    @path = Rails.root.join('tmp/spreadsheet_architect')
     FileUtils.mkdir_p(@path)
 
     @headers = ['test1', 'test2','test3']
@@ -28,10 +28,21 @@ class PostTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_csv_options
-    File.open(File.join(@path, 'options.csv'),'w+b') do |f|
-      f.write Post.to_csv(@options)
+  ['csv','ods','xlsx'].each do |format|
+    method = "to_#{format}"
+
+    test "SA #{format}" do
+      File.open(File.join(@path, "#{format}.#{format}"),'w+b') do |f|
+        f.write SpreadsheetArchitect.send(method, headers: @headers, data: @data)
+      end
     end
+
+    test "Empty SA #{format}" do
+      File.open(File.join(@path, 'empty.csv'),'w+b') do |f|
+        f.write SpreadsheetArchitect.send(method, data: [])
+      end
+    end
+
   end
 
 end

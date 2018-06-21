@@ -25,44 +25,7 @@ class CustomPostTest < ActiveSupport::TestCase
     }
   end
 
-  def test_csv
-    data = CustomPost.to_csv
-
-    File.open(File.join(@path, 'csv.csv'), 'w+b') do |f|
-      f.write data
-    end
-  end
-
-  def test_empty_ods
-    File.open(File.join(@path, 'empty.ods'),'w+b') do |f|
-      f.write CustomPost.where(id: 0).to_ods
-    end
-  end
-
-  def test_ods
-    File.open(File.join(@path, 'ods.ods'),'w+b') do |f|
-      f.write CustomPost.to_ods
-    end
-  end
-
-  def test_ods_options
-    File.open(File.join(@path, 'options.ods'),'w+b') do |f|
-      f.write CustomPost.to_ods(@options)
-    end
-  end
-
-  def test_xlsx
-    data = CustomPost.all.to_xlsx
-
-    File.open(File.join(@path, 'xlsx.xlsx'), 'w+b') do |f|
-      f.write data
-    end
-  end
-
-  def test_empty
-    File.open(File.join(@path, 'empty.xlsx'), 'w+b') do |f|
-      f.write Post.where(id: 0).to_xlsx
-    end
+  def teardown
   end
 
   def test_constants_dont_change
@@ -71,7 +34,4 @@ class CustomPostTest < ActiveSupport::TestCase
     assert_equal(x, CustomPost::SPREADSHEET_OPTIONS.to_s)
   end
 
-
-  def teardown
-  end
 end

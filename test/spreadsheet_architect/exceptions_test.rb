@@ -2,6 +2,8 @@ require 'test_helper'
 
 class ExceptionsTest < ActiveSupport::TestCase
 
+  # TODO test all exceptions in Context, that they occur when they are supposed to
+
   test "NoDataError" do
     assert SpreadsheetArchitect::Exceptions::NoDataError.new
   end

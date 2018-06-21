@@ -3,32 +3,32 @@
 <a href='https://travis-ci.org/westonganger/spreadsheet_architect' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://api.travis-ci.org/westonganger/spreadsheet_architect.svg?branch=master' border='0' alt='Build Status' /></a> 
 <a href='https://ko-fi.com/A5071NK' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
-Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data.
+Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets super easily from ActiveRecord relations, plain Ruby objects, or tabular data.
 
 Key Features:
 
 - Can generate headers & columns from ActiveRecord column_names or a Class/Model's `spreadsheet_columns` method
 - Dead simple custom spreadsheets with custom data
-- Data Sources: ActiveRecord relations, array of Ruby Objects, or 2D Array Data
+- Data Sources: ActiveRecord relations, array of Ruby object instances, or tabular 2D Array Data
 - Easily style and customize spreadsheets
 - Create multi sheet spreadsheets
 - Setting Class/Model or Project specific defaults
 - Simple to use ActionController renderers for Rails
-- Plain Ruby (without Rails) supported
+- Plain Ruby (without Rails) completely supported
 
 Spreadsheet Architect adds the following methods:
 ```ruby
-# Rails ActiveRecord Model
+# Rails ActiveRecord Relation
 Post.order(name: :asc).where(published: true).to_xlsx
 Post.order(name: :asc).where(published: true).to_ods
 Post.order(name: :asc).where(published: true).to_csv
 
-# Plain Ruby Class
+# Plain Ruby Objects
 SpreadsheetArchitect.to_xlsx(instances: posts_array)
 SpreadsheetArchitect.to_ods(instances: posts_array, headers: false)
 SpreadsheetArchitect.to_csv(instances: posts_array, headers: ['Some', 'Custom', 'Headers'])
 
-# One Time Usage
+# Tabular Data 
 headers = ['Col 1','Col 2','Col 3']
 data = [[1,2,3], [4,5,6], [7,8,9]]
 SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
@@ -38,7 +38,6 @@ SpreadsheetArchitect.to_csv(data: data, header: headers)
 
 # Install
 ```ruby
-# Gemfile
 gem 'spreadsheet_architect'
 ```
 
@@ -131,7 +130,7 @@ end
 
 ### Method 2: Save to a file manually
 ```ruby
-# Ex. with ActiveRecord relation
+### Ex. with ActiveRecord relation
 File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write Post.order(published_at: :asc).to_xlsx
 end
@@ -142,12 +141,12 @@ File.open('path/to/file.csv', 'w+b') do |f|
   f.write Post.order(published_at: :asc).to_csv
 end
 
-# Ex. with plain ruby class
+### Ex. with plain ruby objects
 File.open('path/to/file.xlsx', 'w+b') do |f|
   f.write SpreadsheetArchitect.to_xlsx(instances: posts_array)
 end
 
-# Ex. One time Usage
+### Ex. Tabular data
 File.open('path/to/file.xlsx', 'w+b') do |f|
   headers = ['Col 1','Col 2','Col 3']
   data = [[1,2,3], [4,5,6], [7,8,9]]
