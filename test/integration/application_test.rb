@@ -8,12 +8,6 @@ class ApplicationTest < ActionDispatch::IntegrationTest
     FileUtils.mkdir_p(@path)
   end
 
-  test "Renders sample xlsx action" do
-    get '/spreadsheet/xlsx', params: {format: :xlsx}
-    assert_response :success
-    assert_not @response.body.include?("<h1>Hello World!</h1>")
-  end
-
   def test_csv
     get '/spreadsheet/csv'
     assert_response :success
