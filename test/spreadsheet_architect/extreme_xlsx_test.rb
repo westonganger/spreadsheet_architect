@@ -59,7 +59,7 @@ class ExtremeXlsxTest < ActiveSupport::TestCase
       merges: merges
     })
 
-    File.open(File.join('tmp/extreme.xlsx'),'w+b') do |f|
+    File.open(Rails.root.join('tmp/extreme.xlsx'),'w+b') do |f|
       f.write file_data
     end
   end

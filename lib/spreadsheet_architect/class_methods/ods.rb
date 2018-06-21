@@ -7,8 +7,8 @@ module SpreadsheetArchitect
     end
 
     def to_rodf_spreadsheet(opts={}, spreadsheet=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-      options = SpreadsheetArchitect::Utils.get_options(opts, self)
+      opts = SpreadsheetArchitect::Utils.get_options(opts, self)
+      options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
       if !spreadsheet
         spreadsheet = RODF::Spreadsheet.new

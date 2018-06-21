@@ -8,6 +8,8 @@ CHANGELOG
   - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
   - Remove all Rails generators `spreadsheet_architect:add_default_options`
   - Major overhaul of tests, for DRYness use resursion for tests when appropriate, add tons more tests
+  - Fix bug where `SpreadsheetArchitect::Utils.check_options_types` was not checking anything
+  - Fix missing class name in error message for `SpreadsheetColumnsNotDefinedError`
 - **2.1.0** - June 20, 2018
   - PR #15 - Improved the method symbolize_keys. This method did not work properly for nested objects.
   - PR #15 - Added the ability to pass `:text_wrap` option within the `:alignment` style

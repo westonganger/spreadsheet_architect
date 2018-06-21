@@ -10,8 +10,8 @@ module SpreadsheetArchitect
     end
 
     def to_axlsx_package(opts={}, package=nil)
-      opts = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-      options = SpreadsheetArchitect::Utils.get_options(opts, self)
+      opts = SpreadsheetArchitect::Utils.get_options(opts, self)
+      options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
     
       header_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:header_style])
       row_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:row_style])
@@ -134,19 +134,24 @@ module SpreadsheetArchitect
                       sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
                     end
                   else
-                    raise SpreadsheetArchitect::Exceptions::InvalidColumnError
+                    raise SpreadsheetArchitect::Exceptions::InvalidColumnError.new(col)
                   end
                 end
-              elsif x[:columns].is_a?(Integer)
+              elsif x[:columns].is_a?(Integer) || x[:columns].is_a?(String)
                 col = x[:columns]
-                if col < max_row_length
+
+                if col.is_a?(String)
+                  col = col_names.index(col)
+                end
+
+                if col.is_a?(Integer) && col < max_row_length
                   sheet.col_style(x[:columns], style, row_offset: start_row)
 
                   if h_style
                     sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
                   end
                 else
-                  raise SpreadsheetArchitect::Exceptions::InvalidColumnError
+                  raise SpreadsheetArchitect::Exceptions::InvalidColumnError.new(col)
                 end
               end
             end

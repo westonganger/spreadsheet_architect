@@ -8,9 +8,7 @@ module SpreadsheetArchitect
       return str
     end
 
-    def self.get_cell_data(options={}, klass)
-      self.check_options_types
-
+    def self.get_cell_data(options, klass)
       if options[:data] && options[:instances]
         raise SpreadsheetArchitect::Exceptions::MultipleDataSourcesError
       end
@@ -57,7 +55,7 @@ module SpreadsheetArchitect
             elsif options[:instances].first.respond_to?(:spreadsheet_columns)
               array = options[:instances].first.spreadsheet_columns
             else
-              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, options[:instances].first.class
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(options[:instances].first.class)
             end
           end
 
@@ -78,7 +76,7 @@ module SpreadsheetArchitect
             headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
             columns = the_column_names.map{|x| x.to_sym}
           else
-            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, klass
+            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
           end
         end
 
@@ -96,7 +94,7 @@ module SpreadsheetArchitect
                 headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
                 instance_cols = the_column_names.map{|x| x.to_sym}
               else
-                raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError, instance.class
+                raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
               end
             else
               instance_cols = instance.spreadsheet_columns
@@ -127,7 +125,9 @@ module SpreadsheetArchitect
       return options.merge(headers: headers, data: data, column_types: options[:column_types])
     end
 
-    def self.get_options(options={}, klass)
+    def self.get_options(options, klass)
+      self.check_options_types(options)
+
       if options[:headers]
         if defined?(klass::SPREADSHEET_OPTIONS)
           header_style = deep_clone(SpreadsheetArchitect.default_options[:header_style]).merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
@@ -212,26 +212,28 @@ module SpreadsheetArchitect
     end
 
     def self.check_type(options, option_name, type)
-      unless options[option_name].nil?
-        valid = false
+      val = options[option_name]
+
+      unless val.nil?
+        invalid = false
 
         if type.is_a?(Array)
-          valid = type.any?{|t| options[option_name].is_a?(t)}
-        elsif options[option_name].is_a?(type)
-          valid = true
+          invalid = type.all?{|t| !val.is_a?(t) }
+        elsif !val.is_a?(type)
+          invalid = true
         end
 
-        if valid
-          raise SpreadsheetArchitect::Exceptions::IncorrectTypeError option_name
+        if invalid
+          raise SpreadsheetArchitect::Exceptions::IncorrectTypeError.new(option_name)
         end
       end
     end
 
-    def self.check_options_types(options={})
+    def self.check_options_types(options)
       self.check_type(options, :spreadsheet_columns, Array)
+      self.check_type(options, :data, Array)
       self.check_type(options, :instances, Array)
       self.check_type(options, :headers, [TrueClass, FalseClass, Array])
-      self.check_type(options, :sheet_name, String)
       self.check_type(options, :header_style, Hash)
       self.check_type(options, :row_style, Hash)
       self.check_type(options, :column_styles, Array)

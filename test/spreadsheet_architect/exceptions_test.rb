@@ -2,57 +2,167 @@ require 'test_helper'
 
 class ExceptionsTest < ActiveSupport::TestCase
 
-  # TODO test all exceptions in Context, that they occur when they are supposed to
-
   test "NoDataError" do
-    assert SpreadsheetArchitect::Exceptions::NoDataError.new
+    error = SpreadsheetArchitect::Exceptions::NoDataError
+
+    assert error.new
+
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(foo: :bar)
+    end
   end
 
   test "MultipleDataSourcesError" do
-    assert SpreadsheetArchitect::Exceptions::MultipleDataSourcesError.new
+    error = SpreadsheetArchitect::Exceptions::MultipleDataSourcesError
+
+    assert error.new
+
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(data: [], instances: [])
+    end
   end
 
   test "IncorrectTypeError" do
-    assert SpreadsheetArchitect::Exceptions::IncorrectTypeError.new
-    assert SpreadsheetArchitect::Exceptions::IncorrectTypeError.new(:foobar_option)
+    error = SpreadsheetArchitect::Exceptions::IncorrectTypeError
+
+    assert_not_equal error.new.message, error.new(:foobar_option).message
+
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(spreadsheet_columns: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(data: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(instances: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(headers: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(header_style: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(row_style: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(column_styles: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(range_styles: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(merges: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(borders: :foo)
+    end
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(column_widths: :foo)
+    end
   end
 
   test "SpreadsheetColumnsNotDefinedError" do
-    assert SpreadsheetArchitect::Exceptions::IncorrectTypeError.new
-    assert SpreadsheetArchitect::Exceptions::IncorrectTypeError.new(SpreadsheetArchitect)
+    error = SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError
+
+    assert_raise ArgumentError do
+      error.new
+    end
+
+    assert error.new(SpreadsheetArchitect)
+
+    class QuickBadClass
+      include SpreadsheetArchitect
+    end
+
+    assert_raise error do
+      QuickBadClass.to_csv(instances: [])
+    end
   end
 
   test "InvalidColumnError" do
-    assert_raise do
-      SpreadsheetArchitect::Exceptions::InvalidColumnError.new
+    error = SpreadsheetArchitect::Exceptions::InvalidColumnError
+
+    assert_raise ArgumentError do
+      error.new
     end
 
-    assert SpreadsheetArchitect::Exceptions::InvalidColumnError.new(:foobar_column)
+    assert error.new(:foobar_column)
+
+    assert_raise error do
+      SpreadsheetArchitect.to_xlsx(data: [[1]], column_styles: [{columns: 999}])
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect.to_xlsx(data: [[1]], column_styles: [{columns: 'ZZZ'}])
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect.to_xlsx(data: [[1]], column_styles: [{columns: [999]}])
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect.to_xlsx(data: [[1]], column_styles: [{columns: ('ZZX'..'ZZZ')}])
+    end
   end
 
   test "InvalidRangeStylesOptionError" do
-    assert_raise do
-      SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new
+    error = SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError
+
+    assert_raise ArgumentError do
+      error.new
     end
 
-    assert SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:foo_type, :bar_opt)
+    assert error.new(:columns, :bar_opt)
+    assert error.new(:row, :bar_opt)
+    assert error.new(:foo, :bar_opt)
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.range_hash_to_str({columns: :foo}, 1, 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.range_hash_to_str({rows: :foo}, 1, 1)
+    end
   end
 
   test "BadRangeError" do
-    assert_raise do
-      SpreadsheetArchitect::Exceptions::BadRangeError.new
+    error = SpreadsheetArchitect::Exceptions::BadRangeError
+
+    assert_raise ArgumentError do
+      error.new
     end
 
     errors = []
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:foo_type, :bar_opt)
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:columns, :bar_opt)
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:rows, :bar_opt)
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:format, :bar_opt)
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:type, :bar_opt)
-    errors.push SpreadsheetArchitect::Exceptions::BadRangeError.new(:foo_type, :bar_opt)
+    errors.push error.new(:foo_type, :bar_opt)
+    errors.push error.new(:columns, :bar_opt)
+    errors.push error.new(:rows, :bar_opt)
+    errors.push error.new(:format, :bar_opt)
+    errors.push error.new(:type, :bar_opt)
+    errors.push error.new(:foo_type, :bar_opt)
 
     assert_equal errors.count, errors.uniq.count
-    assert SpreadsheetArchitect::Exceptions::BadRangeError.new(:foo_type, :bar_opt)
+    assert error.new(:foo_type, :bar_opt)
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range(:foo, 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("foo", 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("foo:foo", 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("A1:A2", 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("@1:A2", 1)
+    end
   end
 
 end
