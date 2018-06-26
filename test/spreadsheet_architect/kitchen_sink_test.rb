@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ExtremeXlsxTest < ActiveSupport::TestCase
+class KitchenSinkTest < ActiveSupport::TestCase
 
   def setup
   end
@@ -8,7 +8,11 @@ class ExtremeXlsxTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_extreme_xlsx
+  def test_ods
+
+  end
+
+  def test_xlsx
     headers = [
       ['Latest Posts'],
       ['Title','Category','Author','Posted on','Earnings']
@@ -59,7 +63,7 @@ class ExtremeXlsxTest < ActiveSupport::TestCase
       merges: merges
     })
 
-    File.open(Rails.root.join('tmp/extreme.xlsx'),'w+b') do |f|
+    File.open(Rails.root.join('tmp/kitchen_sink.xlsx'),'w+b') do |f|
       f.write file_data
     end
   end

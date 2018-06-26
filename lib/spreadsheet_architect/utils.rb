@@ -21,7 +21,7 @@ module SpreadsheetArchitect
         headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
         headers ||= SpreadsheetArchitect.default_options[:headers]
         if headers == true
-          headers = true
+          headers = []
           needs_headers = true
         end
       elsif options[:headers].is_a?(Array)
@@ -40,26 +40,11 @@ module SpreadsheetArchitect
         end
 
         has_custom_columns = !!options[:spreadsheet_columns]
-        if !has_custom_columns && klass != SpreadsheetArchitect
-          has_custom_columns = klass.instance_methods.include?(:spreadsheet_columns)
-        end
 
         if has_custom_columns
-          headers = [] if needs_headers
           columns = []
 
-          array = options[:spreadsheet_columns]
-          if !array
-            if options[:instances].empty?
-              array = []
-            elsif options[:instances].first.respond_to?(:spreadsheet_columns)
-              array = options[:instances].first.spreadsheet_columns
-            else
-              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(options[:instances].first.class)
-            end
-          end
-
-          array.each_with_index do |x,i|
+          options[:spreadsheet_columns].each_with_index do |x,i|
             if x.is_a?(Array)
               headers.push(x[0].to_s) if needs_headers
               columns.push x[1]
@@ -68,15 +53,15 @@ module SpreadsheetArchitect
               columns.push x
             end
           end
-          needs_headers = false
-        elsif klass != SpreadsheetArchitect
-          if self.is_ar_model?(klass)
-            ignored_columns = ["id","created_at","updated_at","deleted_at"] 
-            the_column_names = (klass.column_names - ignored_columns)
-            headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
-            columns = the_column_names.map{|x| x.to_sym}
-          else
-            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
+        else
+          if klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
+            if self.is_ar_model?(klass)
+              the_column_names = klass.column_names
+              headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
+              columns = the_column_names.map{|x| x.to_sym}
+            else
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
+            end
           end
         end
 
@@ -88,22 +73,17 @@ module SpreadsheetArchitect
             row_data = []
 
             if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
-              if self.is_ar_model?
-                ignored_columns = ["id","created_at","updated_at","deleted_at"] 
-                the_column_names = (klass.column_names - ignored_columns)
-                headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
-                instance_cols = the_column_names.map{|x| x.to_sym}
-              else
-                raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
-              end
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
             else
               instance_cols = instance.spreadsheet_columns
             end
 
             instance_cols.each do |x|
               if x.is_a?(Array)
+                headers.push(x[0].to_s) if needs_headers
                 row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
               else
+                headers.push(str_humanize(x.to_s)) if needs_headers
                 row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
               end
             end
