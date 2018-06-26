@@ -9,76 +9,91 @@ Key Features:
 
 - Can generate headers & columns from ActiveRecord column_names or a Class/Model's `spreadsheet_columns` method
 - Dead simple custom spreadsheets with custom data
-- Data Sources: ActiveRecord relations, array of Ruby object instances, or tabular 2D Array Data
+- Data Sources: ActiveRecord relations, array of plain Ruby object instances, or tabular 2D Array Data
 - Easily style and customize spreadsheets
 - Create multi sheet spreadsheets
 - Setting Class/Model or Project specific defaults
 - Simple to use ActionController renderers for Rails
 - Plain Ruby (without Rails) completely supported
 
-Spreadsheet Architect adds the following methods:
-```ruby
-# Rails ActiveRecord Relation
-Post.order(name: :asc).where(published: true).to_xlsx
-Post.order(name: :asc).where(published: true).to_ods
-Post.order(name: :asc).where(published: true).to_csv
-
-# Plain Ruby Objects
-SpreadsheetArchitect.to_xlsx(instances: posts_array)
-SpreadsheetArchitect.to_ods(instances: posts_array, headers: false)
-SpreadsheetArchitect.to_csv(instances: posts_array, headers: ['Some', 'Custom', 'Headers'])
-
-# Tabular Data 
-headers = ['Col 1','Col 2','Col 3']
-data = [[1,2,3], [4,5,6], [7,8,9]]
-SpreadsheetArchitect.to_xlsx(data: data, headers: headers)
-SpreadsheetArchitect.to_ods(data: data, headers: headers)
-SpreadsheetArchitect.to_csv(data: data, header: headers)
-```
-
 # Install
 ```ruby
 gem 'spreadsheet_architect'
 ```
 
-# Basic Class/Model Setup
+# General Examples
 
-### Model
+### Tabular (Array) Data
+
 ```ruby
-class Post < ActiveRecord::Base ### Note: ActiveRecord not required
+headers = ['Col 1','Col 2','Col 3']
+data = [[1,2,3], [4,5,6], [7,8,9]]
+SpreadsheetArchitect.to_xlsx(headers: headers, data: data)
+SpreadsheetArchitect.to_ods(headers: headers, data: data)
+SpreadsheetArchitect.to_csv(headers: headers, data: data)
+```
 
-  include SpreadsheetArchitect ### required only if ActiveRecord model
+### Rails relation or an array of plain Ruby object instances
 
-  ### Required for non-ActiveRecord Model
-  ### Optional if ActiveRecord model. Defaults to the models `column_names`
+```ruby
+posts = Post.order(name: :asc).where(published: true)
+#posts = 10.times.map{|i| Post.new(number: i)}
+
+SpreadsheetArchitect.to_xlsx(instances: posts)
+SpreadsheetArchitect.to_ods(instances: posts)
+SpreadsheetArchitect.to_csv(instances: posts)
+```
+
+**(Optional)** If you would like to add the methods `to_xlsx`, `to_ods`, & `to_csv` to your class/model, you can simply include the SpreadsheetArchitect module to whichever classes you choose. A good default strategy is to simply add it to your ApplicationRecord or another parent class to have it available on all models/classes. For example:
+
+```ruby
+class ApplicationRecord < ActiveRecord::Base
+  include SpreadsheetArchitect
+end
+```
+
+Then use it on your class, models, or ActiveRecord relations
+
+```ruby
+posts = Post.order(name: :asc).where(published: true)
+posts.to_xlsx
+posts.to_ods
+posts.to_csv
+
+# Plain Ruby Objects
+posts_array = 10.times.map{|i| Post.new(number: i)}
+Post.to_xlsx(instances: posts_array)
+Post.to_ods(instances: posts_array)
+Post.to_csv(instances: posts_array)
+```
+
+# Using Instances option or ActiveRecord Relations
+
+When using the `:instances` option or on an ActiveRecord relation, Spreadsheet Architect utilizes an instance method defined on your class to generate the data. It looks for the `spreadsheet_columns` method on your model/class. If you are using on an ActiveRecord model and that method is not defined, it would fallback to the models `column_names` method (not recommended).
+
+```ruby
+class Post
+
   def spreadsheet_columns
 
-    #[[Label, Method/Statement, Type(optional) to Call on each Instance, Cell Type(optional)]....]
+    ### Column format is: [Header, Cell Data / Method (if symbol) to Call on each Instance, (optional) Cell Type]
     [
       ['Title', :title],
-      ['Content', content],
+      ['Content', content.strip],
       ['Author', (author.name if author)],
       ['Published?', (published ? 'Yes' : 'No')],
-      ['Published At', :published_at],
+      :published_at, # uses the method name as header title Ex. 'Published At'
       ['# of Views', :number_of_views, :float],
       ['Rating', :rating],
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
-
-    # OR if you want to use the method or attribute name as a label it must be a symbol ex. "Title", "Content", "Published"
-    [:title, :content, :published]
-
-    # OR a Combination of Both ex. "Title", "Content", "Author Name", "Published"
-    [:title, :content, ['Author Name',(author.name rescue nil)], ['# of Views', :number_of_views, :float], :published]
-  end
 end
 ```
 
-Note: Do not define your labels inside this method if you are going to be using custom headers in the model or project defaults.
-
-# Usage
+# Sending & Saving the Spreadsheets
 
 ### Method 1: Controller (for Rails)
+
 ```ruby
 
 class PostsController < ActionController::Base
@@ -129,34 +144,27 @@ end
 ```
 
 ### Method 2: Save to a file manually
+
 ```ruby
 ### Ex. with ActiveRecord relation
+file_data = Post.order(published_at: :asc).to_xlsx
 File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write Post.order(published_at: :asc).to_xlsx
+  f.write file_data
 end
+
+file_data = Post.order(published_at: :asc).to_ods
 File.open('path/to/file.ods', 'w+b') do |f|
-  f.write Post.order(published_at: :asc).to_ods
+  f.write file_data
 end
+
+file_data = Post.order(published_at: :asc).to_csv
 File.open('path/to/file.csv', 'w+b') do |f|
-  f.write Post.order(published_at: :asc).to_csv
-end
-
-### Ex. with plain ruby objects
-File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write SpreadsheetArchitect.to_xlsx(instances: posts_array)
-end
-
-### Ex. Tabular data
-File.open('path/to/file.xlsx', 'w+b') do |f|
-  headers = ['Col 1','Col 2','Col 3']
-  data = [[1,2,3], [4,5,6], [7,8,9]]
-  f.write SpreadsheetArchitect::to_xlsx(data: data, headers: headers)
+  f.write file_data
 end
 ```
 <br>
 
 # Methods & Options
-
 
 ## SomeClass.to_xlsx
 
@@ -239,7 +247,8 @@ end
 |**headers**<br>*Array / 2D Array*|`false`|Data for the header rows cells. Pass `false` to skip the header row.|
 
 
-# Change model default method options
+# Change class-wide default method options
+
 ```ruby
 class Post
   include SpreadsheetArchitect
@@ -265,7 +274,8 @@ class Post
 end
 ```
 
-# Change project wide default method options
+# Change project-wide default method options
+
 ```ruby
 # config/initializers/spreadsheet_architect.rb
 
@@ -304,7 +314,7 @@ I have compiled a list of all available style options for axlsx here: https://gi
 
 
 # Credits
-Created by [@westonganger](https://github.com/westonganger)
+Created & Maintained by [@westonganger](https://github.com/westonganger)
 
 For any consulting or contract work please contact me via my company website: [Solid Foundation Web Development](https://solidfoundationwebdev.com)
 
