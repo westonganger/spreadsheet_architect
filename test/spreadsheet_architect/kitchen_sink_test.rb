@@ -8,10 +8,6 @@ class KitchenSinkTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_ods
-
-  end
-
   def test_xlsx
     headers = [
       ['Latest Posts'],
@@ -66,6 +62,10 @@ class KitchenSinkTest < ActiveSupport::TestCase
     File.open(Rails.root.join('tmp/kitchen_sink.xlsx'),'w+b') do |f|
       f.write file_data
     end
+  end
+
+  def test_ods
+
   end
 
 end

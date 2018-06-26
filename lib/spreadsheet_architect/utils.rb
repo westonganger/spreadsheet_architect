@@ -11,57 +11,47 @@ module SpreadsheetArchitect
     def self.get_cell_data(options, klass)
       if options[:data] && options[:instances]
         raise SpreadsheetArchitect::Exceptions::MultipleDataSourcesError
-      end
-
-      if options[:data]
+      elsif options[:data]
         data = options[:data]
       end
 
       if options[:headers].nil?
-        headers = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
-        headers ||= SpreadsheetArchitect.default_options[:headers]
-        if headers == true
-          headers = []
-          needs_headers = true
-        end
+        options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
+        options[:headers] ||= SpreadsheetArchitect.default_options[:headers]
+      end
+
+      if options[:headers] == true
+        headers = []
+        needs_headers = true
       elsif options[:headers].is_a?(Array)
         headers = options[:headers]
       else
         headers = false
       end
 
+      if options[:column_types]
+        column_types = options[:column_types]
+      else
+        column_types = []
+        needs_column_types = true
+      end
+
       if !data
-        if !options[:instances] && self.is_ar_model?(klass) 
-          options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
-        end
-
         if !options[:instances]
-          raise SpreadsheetArchitect::Exceptions::NoDataError
+          if self.is_ar_model?(klass) 
+            options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
+          else
+            raise SpreadsheetArchitect::Exceptions::NoDataError
+          end
         end
 
-        has_custom_columns = !!options[:spreadsheet_columns]
-
-        if has_custom_columns
-          columns = []
-
-          options[:spreadsheet_columns].each_with_index do |x,i|
-            if x.is_a?(Array)
-              headers.push(x[0].to_s) if needs_headers
-              columns.push x[1]
-            else
-              headers.push(str_humanize(x.to_s)) if needs_headers
-              columns.push x
-            end
-          end
-        else
-          if klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
-            if self.is_ar_model?(klass)
-              the_column_names = klass.column_names
-              headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
-              columns = the_column_names.map{|x| x.to_sym}
-            else
-              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
-            end
+        if options[:spreadsheet_columns].nil? && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
+          if self.is_ar_model?(klass)
+            the_column_names = klass.column_names
+            headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
+            columns = the_column_names.map{|x| x.to_sym}
+          else
+            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
           end
         end
 
@@ -72,16 +62,23 @@ module SpreadsheetArchitect
           else
             row_data = []
 
-            if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
-              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
+            if options[:spreadsheet_columns].nil?
+              if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
+                raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
+              else
+                instance_cols = instance.spreadsheet_columns
+              end
             else
-              instance_cols = instance.spreadsheet_columns
+              instance_cols = options[:spreadsheet_columns].call(instance)
             end
 
-            instance_cols.each do |x|
+            instance_cols.each_with_index do |x,i|
               if x.is_a?(Array)
                 headers.push(x[0].to_s) if needs_headers
                 row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
+                if needs_column_types
+                  column_types[i] = x[2]
+                end
               else
                 headers.push(str_humanize(x.to_s)) if needs_headers
                 row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
@@ -89,20 +86,23 @@ module SpreadsheetArchitect
             end
 
             data.push row_data
+
+            needs_headers = false
+            needs_column_types = false
           end
 
         end
       end
 
-      if headers
-        if headers == true
-          headers = false
-        elsif !headers[0].is_a?(Array)
-          headers = [headers]
-        end
+      if headers && !headers[0].is_a?(Array)
+        headers = [headers]
       end
 
-      return options.merge(headers: headers, data: data, column_types: options[:column_types])
+      if column_types.compact.empty?
+        column_types = nil
+      end
+
+      return options.merge(headers: headers, data: data, column_types: column_types)
     end
 
     def self.get_options(options, klass)
@@ -210,7 +210,7 @@ module SpreadsheetArchitect
     end
 
     def self.check_options_types(options)
-      self.check_type(options, :spreadsheet_columns, Array)
+      self.check_type(options, :spreadsheet_columns, Proc)
       self.check_type(options, :data, Array)
       self.check_type(options, :instances, Array)
       self.check_type(options, :headers, [TrueClass, FalseClass, Array])
