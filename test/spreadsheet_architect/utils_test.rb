@@ -23,49 +23,47 @@ class UtilsTest < ActiveSupport::TestCase
     }
   end
 
-  def test_constants_dont_change
-    x = SpreadsheetArchitect.default_options.to_s
-    SpreadsheetArchitect.to_xlsx(headers: [[1]], data: [[1]], header_style: {b: false}, row_style: {background_color: '000000'})
-    assert_equal(x, SpreadsheetArchitect.default_options.to_s)
-  end
-
-  def test_str_humanize
-    assert_equal(SpreadsheetArchitect::Utils.str_humanize('my_project_export'), 'My Project Export')
-    assert_equal(SpreadsheetArchitect::Utils.str_humanize('My Project Export'), 'My Project Export')
-    assert_equal(SpreadsheetArchitect::Utils.str_humanize('TBS report'), 'TBS Report')
-  end
-
-  def test_get_type
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type('string'), :string)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(123.01), :float)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(BigDecimal('123.01')), :float)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(10), :integer)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(:test), :string)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(Time.now.to_date), :date)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(DateTime.now), :time)
-    assert_equal(SpreadsheetArchitect::Utils::XLSX.get_type(Time.now), :time)
-  end
-
-  def test_get_cell_data
+  test "get_cell_data" do
     SpreadsheetArchitect::Utils.get_cell_data(@options, SpreadsheetArchitect)
 
     SpreadsheetArchitect::Utils.get_cell_data(@options, Post)
   end
 
-  def test_get_options
+  test "get_options" do
     SpreadsheetArchitect::Utils.get_options(@options, SpreadsheetArchitect)
 
     SpreadsheetArchitect::Utils.get_options(@options, Post)
   end
-      
-  def test_convert_styles_to_axlsx
-    xlsx_styles = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
-    assert_equal(xlsx_styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
-  end
   
-  def test_convert_styles_to_ods
+  test "convert_styles_to_ods" do
     ods_styles = SpreadsheetArchitect::Utils.convert_styles_to_ods({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
     assert_equal(ods_styles, {'cell' => {'background-color' => '#333333'}, 'text' => {'color' => '#000000', 'align' => true, 'font-weight' => 'bold', 'font-size' => 14, 'font-style' => 'italic', 'text-underline-type' => 'single', 'text-underline-style' => 'solid'}})
+  end
+
+  test "deep_clone" do
+    skip("TODO")
+  end
+
+  test "is_ar_model" do
+    skip("TODO")
+  end
+
+  test "str_humanize" do
+    assert_equal(SpreadsheetArchitect::Utils.str_humanize('my_project_export'), 'My Project Export')
+    assert_equal(SpreadsheetArchitect::Utils.str_humanize('My Project Export'), 'My Project Export')
+    assert_equal(SpreadsheetArchitect::Utils.str_humanize('TBS report'), 'TBS Report')
+  end
+
+  test "check_type" do
+    skip("TODO")
+  end
+
+  test "check_options_types" do
+    skip("TODO")
+  end
+
+  test "stringify_keys" do
+    skip("TODO")
   end
 
   def teardown

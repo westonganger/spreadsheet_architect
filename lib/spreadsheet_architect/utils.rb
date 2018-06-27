@@ -1,13 +1,5 @@
 module SpreadsheetArchitect
   module Utils
-    def self.str_humanize(str, capitalize = true)
-      str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
-      if capitalize
-        str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
-      end
-      return str
-    end
-
     def self.get_cell_data(options, klass)
       if options[:data] && options[:instances]
         raise SpreadsheetArchitect::Exceptions::MultipleDataSourcesError
@@ -38,7 +30,7 @@ module SpreadsheetArchitect
 
       if !data
         if !options[:instances]
-          if self.is_ar_model?(klass) 
+          if is_ar_model?(klass) 
             options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
           else
             raise SpreadsheetArchitect::Exceptions::NoDataError
@@ -46,7 +38,7 @@ module SpreadsheetArchitect
         end
 
         if options[:spreadsheet_columns].nil? && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
-          if self.is_ar_model?(klass)
+          if is_ar_model?(klass)
             the_column_names = klass.column_names
             headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
             columns = the_column_names.map{|x| x.to_sym}
@@ -151,7 +143,7 @@ module SpreadsheetArchitect
 
     def self.convert_styles_to_ods(styles={})
       styles = {} unless styles.is_a?(Hash)
-      styles = self.stringify_keys(styles)
+      styles = stringify_keys(styles)
 
       property_styles = {}
 
@@ -191,6 +183,18 @@ module SpreadsheetArchitect
       Marshal.load(Marshal.dump(x))
     end
 
+    def self.is_ar_model?(klass)
+      defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
+    end
+
+    def self.str_humanize(str, capitalize = true)
+      str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
+      if capitalize
+        str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
+      end
+      return str
+    end
+
     def self.check_type(options, option_name, type)
       val = options[option_name]
 
@@ -210,17 +214,17 @@ module SpreadsheetArchitect
     end
 
     def self.check_options_types(options)
-      self.check_type(options, :spreadsheet_columns, Proc)
-      self.check_type(options, :data, Array)
-      self.check_type(options, :instances, Array)
-      self.check_type(options, :headers, [TrueClass, FalseClass, Array])
-      self.check_type(options, :header_style, Hash)
-      self.check_type(options, :row_style, Hash)
-      self.check_type(options, :column_styles, Array)
-      self.check_type(options, :range_styles, Array)
-      self.check_type(options, :merges, Array)
-      self.check_type(options, :borders, Array)
-      self.check_type(options, :column_widths, Array)
+      check_type(options, :spreadsheet_columns, Proc)
+      check_type(options, :data, Array)
+      check_type(options, :instances, Array)
+      check_type(options, :headers, [TrueClass, FalseClass, Array])
+      check_type(options, :header_style, Hash)
+      check_type(options, :row_style, Hash)
+      check_type(options, :column_styles, Array)
+      check_type(options, :range_styles, Array)
+      check_type(options, :merges, Array)
+      check_type(options, :borders, Array)
+      check_type(options, :column_widths, Array)
     end
 
     # only converts the first 2 levels
@@ -236,10 +240,6 @@ module SpreadsheetArchitect
         end
       end
       return new_hash
-    end
-
-    def self.is_ar_model?(klass)
-      defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
     end
   end
 end

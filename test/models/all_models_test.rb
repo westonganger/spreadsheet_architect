@@ -3,6 +3,11 @@ require "test_helper"
 class AllModelsTest < ActiveSupport::TestCase
 
   def setup
+    @data = [
+      ['row1', 'test1'],
+      [123.456, nil, '123'],
+      [123, Date.today, Time.now]
+    ]
   end
 
   def teardown
@@ -13,9 +18,9 @@ class AllModelsTest < ActiveSupport::TestCase
     FileUtils.mkdir_p(@path)
   end
 
-  [ActiveModelObject, PlainRubyObject, LegacyPlainRubyObject, Post, CustomPost].each do |klass|
+  [SpreadsheetArchitect, ActiveModelObject, PlainRubyObject, LegacyPlainRubyObject, Post, CustomPost].each do |klass|
     instances = 5.times.map{|i| 
-      x = klass.new
+      x = (klass == SpreadsheetArchitect ? Post : klass).new
       x.name = i
       x.content = i+2
       x.created_at = Time.now
@@ -24,16 +29,49 @@ class AllModelsTest < ActiveSupport::TestCase
 
     ['csv', 'ods', 'xlsx'].each do |format|
 
-      test "#{klass} #{format}" do
+      if klass.instance_methods.include?(:spreadsheet_columns) || klass.instance_methods.include?(:column_names)
+        test ":instances #{klass} #{format}" do
+          set_path(klass)
+          method = "to_#{format}"
+          which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+
+          data = which.send(method, instances: instances)
+
+          File.open(File.join(@path, "instances.#{format}"), 'w+b') do |f|
+            f.write data
+          end
+        end
+
+        test "Empty :instances #{klass} #{format}" do
+          set_path(klass)
+          method = "to_#{format}"
+          which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+
+          File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
+            f.write which.send(method, instances: [])
+          end
+        end
+      end
+
+      test ":data #{klass} #{format}" do
         set_path(klass)
-
         method = "to_#{format}"
-        which = (!klass.is_a?(ActiveRecord::Base) && klass.respond_to?(method)) ? klass : SpreadsheetArchitect
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
-        data = which.send(method, instances: instances)
+        data = which.send(method, data: @data)
 
-        File.open(File.join(@path, '#{format}.#{format}'), 'w+b') do |f|
+        File.open(File.join(@path, "data.#{format}"), 'w+b') do |f|
           f.write data
+        end
+      end
+
+      test "Empty :data #{klass} #{format}" do
+        set_path(klass)
+        method = "to_#{format}"
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+
+        File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
+          f.write which.send(method, data: [])
         end
       end
 

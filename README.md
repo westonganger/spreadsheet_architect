@@ -66,9 +66,9 @@ Post.to_ods(instances: posts_array)
 Post.to_csv(instances: posts_array)
 ```
 
-# Using Instances option or ActiveRecord Relations
+# Usage with Instances / ActiveRecord Relations
 
-When NOT using the `:data`, such as the `:instances` option or on an ActiveRecord relation, Spreadsheet Architect requires an instance method defined on the class to generate the data. It looks for the `spreadsheet_columns` method on the class. If you are using on an ActiveRecord model and that method is not defined, it would fallback to the models `column_names` method (not recommended). If using the `:data` option this is ignored.
+When NOT using the `:data` option, ie. on an AR Relation or using the `:instances` option, Spreadsheet Architect requires an instance method defined on the class to generate the data. It looks for the `spreadsheet_columns` method on the class. If you are using on an ActiveRecord model and that method is not defined, it would fallback to the models `column_names` method (not recommended). If using the `:data` option this is ignored.
 
 ```ruby
 class Post
@@ -92,7 +92,7 @@ end
 Alternatively, if `spreadsheet_columns` is passed as an option, this instance method does not need to be defined on the class. If defined on the class then naturally this will override it.
 
 ```ruby
-SpreadsheetArchitect.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
+Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
   [
     ['Title', :title],
     ['Content', instance.content.strip],
@@ -178,17 +178,26 @@ File.open('path/to/file.csv', 'w+b') do |f|
   f.write file_data
 end
 ```
-<br>
 
-# Methods & Options
+# Multi Sheet XLSX or ODS spreadsheets
+```ruby
+# Returns corresponding spreadsheet libraries object
+package = SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers})
+SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers}, package) # to combine two sheets to one file
 
-## to_xlsx
+spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers})
+SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreadsheet) # to combine two sheets to one file
+```
+
+# Methods
+
+### .to_xlsx(options={})
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Tabular data for the non-header row cells. Cannot be used with :instances option |
-|**instances**<br>*Array*| |Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override or define the spreadsheet columns. Cannot be used with the :data option. |
+|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
+|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
@@ -199,32 +208,34 @@ end
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
-  
-<br> 
 
-## to_ods
+### .to_ods(options={})
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Tabular data for the non-header row cells. Cannot be used with :instances option |
-|**instances**<br>*Array*| |Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override or define the spreadsheet columns. Cannot be used with the :data option. |
+|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
+|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
-|**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :time, :percent, :currency, nil = auto determine. Due to [RODF issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string |
-  
-<br>
+|**column_types**<br>*Array*||Valid types for ODS are :string, :float :percent, :currency, :date, :time,, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string |
 
-## to_csv
+### .to_csv(options={})
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Tabular data for the non-header row cells. Cannot be used with :instances option |
-|**instances**<br>*Array*| |Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Use this option to override or define the spreadsheet columns. Cannot be used with the :data option. |
+|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
+|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
+
+### .to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)
+Same options as `to_xlsx`. For more details
+
+### .to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)
+Same options as `to_ods`
 
 
 # Change class-wide default method options
@@ -274,16 +285,6 @@ SpreadsheetArchitect.default_options = {
 
 # Complex / Kitchen Sink Examples with Styling for XLSX and ODS
 See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb
-
-# Multi Sheet XLSX or ODS spreadsheets
-```ruby
-# Returns corresponding spreadsheet libraries object
-package = SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers})
-SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers}, package) # to combine two sheets to one file
-
-spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers})
-SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreadsheet) # to combine two sheets to one file
-```
 
 See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
 

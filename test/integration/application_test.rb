@@ -11,6 +11,7 @@ class ApplicationTest < ActionDispatch::IntegrationTest
   def test_csv
     get '/spreadsheet/csv'
     assert_response :success
+
     File.open(File.join(@path, 'csv.csv'), 'w+b') do |f|
       f.write @response.body
     end
@@ -28,6 +29,7 @@ class ApplicationTest < ActionDispatch::IntegrationTest
   def test_xlsx
     get '/spreadsheet/xlsx'
     assert_response :success
+
     File.open(File.join(@path, 'xlsx.xlsx'), 'w+b') do |f|
       f.write @response.body
     end
@@ -36,6 +38,7 @@ class ApplicationTest < ActionDispatch::IntegrationTest
   def test_alt_xlsx
     get '/spreadsheet/alt_xlsx', params: {format: :xlsx}
     assert_response :success
+
     File.open(File.join(@path, 'alt_xlsx.xlsx'), 'w+b') do |f|
       f.write @response.body
     end
