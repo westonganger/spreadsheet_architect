@@ -108,12 +108,18 @@ Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
 
 # Sending & Saving Spreadsheets
 
-### Method 1: Controller (for Rails)
+### Method 1: Send Data via Rails Controller
 
 ```ruby
 
 class PostsController < ActionController::Base
   respond_to :html, :xlsx, :ods, :csv
+
+  def index
+    @posts = Post.order(published_at: :asc)
+
+    render xlsx: @posts
+  end
 
   # Using respond_with
   def index
@@ -179,19 +185,33 @@ File.open('path/to/file.csv', 'w+b') do |f|
 end
 ```
 
-# Multi Sheet XLSX or ODS spreadsheets
+# Multi Sheet XLSX Spreadsheets
 ```ruby
-# Returns corresponding spreadsheet libraries object
-package = SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers})
-SpreadsheetArchitect.to_axlsx_package({data: data, headers: headers}, package) # to combine two sheets to one file
+axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data})
+axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data}, package)
 
-spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers})
-SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreadsheet) # to combine two sheets to one file
+File.open('path/to/file.xlsx', 'w+b') do |f|
+  f.write axlsx_package
+end
 ```
+
+See this file for more details: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
+
+### Multi Sheet ODS Spreadsheets
+```ruby
+ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data})
+ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data}, spreadsheet)
+
+File.open('path/to/file.ods', 'w+b') do |f|
+  f.write ods_spreadsheet
+end
+```
+
+See this file for more details: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
 
 # Methods
 
-### .to_xlsx(options={})
+## `to_xlsx(options={})`
 
 |Option|Default|Notes|
 |---|---|---|
@@ -209,7 +229,10 @@ SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreads
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 
-### .to_ods(options={})
+## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
+Same options as `to_xlsx`. For more details
+
+## `to_ods(options={})`
 
 |Option|Default|Notes|
 |---|---|---|
@@ -222,7 +245,10 @@ SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreads
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float :percent, :currency, :date, :time,, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string |
 
-### .to_csv(options={})
+## `to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)`
+Same options as `to_ods`
+
+## `to_csv(options={})`
 
 |Option|Default|Notes|
 |---|---|---|
@@ -230,12 +256,6 @@ SpreadsheetArchitect.to_rodf_spreadsheet({data: data, headers: headers}, spreads
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
 |**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
-
-### .to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)
-Same options as `to_xlsx`. For more details
-
-### .to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)
-Same options as `to_ods`
 
 
 # Change class-wide default method options
@@ -283,10 +303,8 @@ SpreadsheetArchitect.default_options = {
 }
 ```
 
-# Complex / Kitchen Sink Examples with Styling for XLSX and ODS
+# Kitchen Sink Examples with Styling for XLSX and ODS
 See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb
-
-See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
 
 # Axlsx Style Reference
 
