@@ -3,13 +3,13 @@ CHANGELOG
 
 - **3.0.0** - UNRELEASED
   - TODO: Test new instances option in all configurations
-  - TODO: Ensure all tests are robust and not just total smoke shows
   -
   - `:column_types` now considers types defined in `spreadsheet_columns` and class/project-wide defaults. Before it was incorrectly ignored.
   - Passing the `spreadsheet_columns` options now only accepts lambda/proc
   - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
   - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
   - When using on an ActiveRecord class and `spreadsheet_columns` is not defined, it now defaults to the classes `column_names` only. Previously it would use `column_names` and then remove the following columns `['id', 'created_at', 'updated_at', 'deleted_at']`
+  - XLSX column ranges now also accept letters. For example: `{columns: ('C'..'E')}`
   - Remove all Rails generators `spreadsheet_architect:add_default_options`
   - Major overhaul of tests, for DRYness use resursion for tests when appropriate, add tons more tests
   - Fix bug where `SpreadsheetArchitect::Utils.check_options_types` was not checking anything

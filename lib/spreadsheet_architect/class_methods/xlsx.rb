@@ -95,18 +95,16 @@ module SpreadsheetArchitect
         end
 
         if options[:borders] || options[:column_styles] || options[:range_styles] || options[:merges]
-          col_names = max_row_length > 675 ? Array('A'..'ZZZ') : Array('A'..'ZZ')
           num_rows = options[:data].count + (options[:headers] ? options[:headers].count : 0)
         end
 
         if options[:borders]
           options[:borders].each do |x|
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, col_names)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+            else
+              SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
-
-            SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows, col_names)
-            sheet.add_border x[:range], x[:border_styles]
           end
         end
 
@@ -121,38 +119,29 @@ module SpreadsheetArchitect
             package.workbook.styles do |s|
               style = s.add_style row_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
 
-              if x[:columns].is_a?(Array) || x[:columns].is_a?(Range) 
+              case x[:columns]
+              when Array, Range
                 x[:columns].each do |col|
-                  if col.is_a?(String)
-                    col = col_names.index(col)
-                  end
+                  SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
 
-                  if col.is_a?(Integer) && col < max_row_length
-                    sheet.col_style(col, style, row_offset: start_row)
-
-                    if h_style
-                      sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
-                    end
-                  else
-                    raise SpreadsheetArchitect::Exceptions::InvalidColumnError.new(col)
-                  end
-                end
-              elsif x[:columns].is_a?(Integer) || x[:columns].is_a?(String)
-                col = x[:columns]
-
-                if col.is_a?(String)
-                  col = col_names.index(col)
-                end
-
-                if col.is_a?(Integer) && col < max_row_length
-                  sheet.col_style(x[:columns], style, row_offset: start_row)
+                  sheet.col_style(col, style, row_offset: start_row)
 
                   if h_style
-                    sheet.add_style("#{col_names[col]}1:#{col_names[col]}#{start_row}", h_style)
+                    sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
                   end
-                else
-                  raise SpreadsheetArchitect::Exceptions::InvalidColumnError.new(col)
                 end
+              when Integer, String
+                col = x[:columns]
+
+                SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
+
+                sheet.col_style(x[:columns], style, row_offset: start_row)
+
+                if h_style
+                  sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
+                end
+              else
+                SpreadsheetArchitect::Utils::XLSX.verify_column(x[:columns], max_row_length)
               end
             end
           end
@@ -163,10 +152,11 @@ module SpreadsheetArchitect
             styles = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles])
 
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, col_names)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+            else
+              SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
 
-            SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows, col_names)
             sheet.add_style x[:range], styles
           end
         end
@@ -174,10 +164,11 @@ module SpreadsheetArchitect
         if options[:merges]
           options[:merges].each do |x|
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, col_names)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+            else
+              SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
 
-            SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows, col_names)
             sheet.merge_cells x[:range]
           end
         end

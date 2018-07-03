@@ -73,16 +73,26 @@ module SpreadsheetArchitect
         styles.delete_if{|k,v| v.nil?}
       end
 
-      def self.range_hash_to_str(hash, num_columns, num_rows, col_names=Array('A'..'ZZZ'))
+      def self.range_hash_to_str(hash, num_columns, num_rows)
         case hash[:columns]
         when Integer
-          start_col = end_col = col_names[hash[:columns]]
+          start_col = end_col = COL_NAMES[hash[:columns]]
+        when String
+          start_col = hash[:columns].first
+          end_col = hash[:columns].last
         when Range
-          start_col = col_names[hash[:columns].first]
-          end_col = col_names[hash[:columns].last]
+          start_col = hash[:columns].first
+          unless start_col.is_a?(String)
+            start_col = COL_NAMES[start_col]
+          end
+
+          end_col = hash[:columns].last
+          unless end_col.is_a?(String)
+            end_col = COL_NAMES[end_col]
+          end
         when :all
           start_col = 'A'
-          end_col = col_names[num_columns-1]
+          end_col = COL_NAMES[num_columns-1]
         else
           raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:columns, hash)
         end
@@ -100,17 +110,23 @@ module SpreadsheetArchitect
           raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:rows, hash)
         end
 
-        return "#{start_col}#{start_row}:#{end_col}#{end_row}"
+        range_str = "#{start_col}#{start_row}:#{end_col}#{end_row}"
+
+        unless hash[:columns] == :all && hash[:rows] == :all
+          verify_range(range_str, num_rows)
+        end
+
+        return range_str
       end
 
-      def self.verify_range(range, num_rows, col_names=Array('A'..'ZZZ'))
+      def self.verify_range(range, num_rows)
         if range.is_a?(String)
           if range.include?(':')
             front, back = range.split(':')
             start_col, start_row = front.scan(/\d+|\D+/)
             end_col, end_row = back.scan(/\d+|\D+/)
 
-            unless col_names.include?(start_col) && col_names.include?(end_col)
+            unless COL_NAMES.include?(start_col) && COL_NAMES.include?(end_col)
               raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:columns, range)
             end
             
@@ -125,7 +141,11 @@ module SpreadsheetArchitect
         end
       end
 
-      private
+      def self.verify_column(col, num_columns)
+        unless (col.is_a?(String) && COL_NAMES.include?(col)) || (col.is_a?(Integer) && col >= 0 && col < num_columns)
+          raise SpreadsheetArchitect::Exceptions::InvalidColumnError.new(col)
+        end
+      end
 
       def self.symbolize_keys(hash={})
         new_hash = {}
@@ -138,6 +158,9 @@ module SpreadsheetArchitect
         end
         new_hash
       end
+
+      ### Limit of 16384 columns as per Excel limitations
+      COL_NAMES = Array('A'..'XFD').freeze
 
     end
   end

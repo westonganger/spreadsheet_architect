@@ -98,7 +98,7 @@ module SpreadsheetArchitect
     end
 
     def self.get_options(options, klass)
-      self.check_options_types(options)
+      check_options_types(options)
 
       if options[:headers]
         if defined?(klass::SPREADSHEET_OPTIONS)
