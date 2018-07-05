@@ -227,14 +227,11 @@ module SpreadsheetArchitect
       check_type(options, :column_widths, Array)
     end
 
-    # only converts the first 2 levels
     def self.stringify_keys(hash={})
       new_hash = {}
       hash.each do |k,v|
         if v.is_a?(Hash)
-          v.each do |k2,v2|
-            new_hash[k2.to_s] = v2
-          end
+          new_hash[k.to_s] = self.stringify_keys(v)
         else
           new_hash[k.to_s] = v
         end

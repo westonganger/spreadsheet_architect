@@ -13,6 +13,7 @@ class UtilsTest < ActiveSupport::TestCase
       merges: [],
       borders: [],
       column_types: [],
+      column_widths: [],
 
       headers: ['test1', 'test2','test3'],
       data: [
@@ -27,28 +28,68 @@ class UtilsTest < ActiveSupport::TestCase
   end
 
   test "get_cell_data" do
-    klass.get_cell_data(@options, SpreadsheetArchitect)
+    assert_not_empty klass.get_cell_data(@options, SpreadsheetArchitect)
 
-    klass.get_cell_data(@options, Post)
+    assert_not_empty klass.get_cell_data(@options, Post)
+
+    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
+
+    skip("TODO") # step through all permutations of this method
   end
 
   test "get_options" do
-    klass.get_options(@options, SpreadsheetArchitect)
+    assert_not_empty klass.get_options(@options, SpreadsheetArchitect)
 
-    klass.get_options(@options, Post)
+    assert_not_empty klass.get_options(@options, Post)
+
+    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
+
+    skip("TODO") # step through all permutations of this method
   end
   
   test "convert_styles_to_ods" do
-    ods_styles = klass.convert_styles_to_ods({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
-    assert_equal(ods_styles, {'cell' => {'background-color' => '#333333'}, 'text' => {'color' => '#000000', 'align' => true, 'font-weight' => 'bold', 'font-size' => 14, 'font-style' => 'italic', 'text-underline-type' => 'single', 'text-underline-style' => 'solid'}})
+    ods_styles = klass.convert_styles_to_ods({
+      background_color: '333333', 
+      color: '000000', 
+      align: true, 
+      bold: true, 
+      font_size: 14, 
+      italic: true, 
+      underline: true, 
+      test: true
+    })
+
+    assert_equal(ods_styles, {
+      'cell' => {
+        'background-color' => '#333333'
+      }, 
+      'text' => {
+        'color' => '#000000', 
+        'align' => true, 
+        'font-weight' => 'bold', 
+        'font-size' => 14, 
+        'font-style' => 'italic', 
+        'text-underline-type' => 'single', 
+        'text-underline-style' => 'solid'
+      }
+    })
   end
 
   test "deep_clone" do
-    skip("TODO")
+    assert_nil klass.deep_clone(nil)
+    assert klass.deep_clone('')
+    assert klass.deep_clone(1)
+    assert klass.deep_clone(1.0)
+    assert klass.deep_clone([])
+    assert klass.deep_clone({})
+    assert klass.deep_clone({foo: :bar})
+    assert klass.deep_clone({foo: {foo: :bar}})
   end
 
   test "is_ar_model" do
-    skip("TODO")
+    assert klass.is_ar_model?(Post)
+
+    assert_not klass.is_ar_model?(SpreadsheetArchitect)
   end
 
   test "str_humanize" do
@@ -58,14 +99,45 @@ class UtilsTest < ActiveSupport::TestCase
   end
 
   test "check_type" do
-    skip("TODO")
+    klass.check_type(@options, :data, Array)
+
+    klass.check_type(@options, :foo, Array)
+
+    assert_raise SpreadsheetArchitect::Exceptions::IncorrectTypeError do
+      klass.check_type({foo: :bar}, :foo, Array)
+    end
   end
 
   test "check_options_types" do
-    skip("TODO")
+    klass.check_options_types(@options)
+
+    assert_raise SpreadsheetArchitect::Exceptions::IncorrectTypeError do
+      klass.check_options_types(@options.merge({column_widths: :foobar}))
+    end
   end
 
   test "stringify_keys" do
-    skip("TODO")
+    hash = klass.stringify_keys
+    assert_empty hash
+
+    hash = klass.stringify_keys({foo: :bar})
+    assert_nil hash[:foo]
+    assert_equal hash['foo'], :bar
+
+    hash = klass.stringify_keys({foo: :bar, 'bar' => :foo})
+    assert_nil hash[:foo]
+    assert_equal hash['foo'], :bar
+
+    hash = klass.stringify_keys({foo: {foo: :bar}})
+    assert_nil hash[:foo]
+    assert_equal hash['foo']['foo'], :bar
+
+    hash = klass.stringify_keys({foo: {foo: {foo: :bar}}})
+    assert_nil hash[:foo]
+    assert_equal hash['foo']['foo']['foo'], :bar
+
+    hash = klass.stringify_keys({foo: {foo: {foo: {foo: :bar}}}})
+    assert_nil hash[:foo]
+    assert_equal hash['foo']['foo']['foo']['foo'], :bar
   end
 end

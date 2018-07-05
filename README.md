@@ -1,7 +1,8 @@
 # Spreadsheet Architect
 
-<a href='https://travis-ci.org/westonganger/spreadsheet_architect' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://api.travis-ci.org/westonganger/spreadsheet_architect.svg?branch=master' border='0' alt='Build Status' /></a> 
-<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
+<a href="https://badge.fury.io/rb/spreadsheet_architect" target="_blank"><img height="22" style='border:0px;height:22px;' border='0' src="https://badge.fury.io/rb/spreadsheet_architect.svg" alt="Gem Version"></a>
+<a href='https://travis-ci.org/westonganger/spreadsheet_architect' target='_blank'><img height='22' style='border:0px;height:22px;' src='https://api.travis-ci.org/westonganger/spreadsheet_architect.svg?branch=master' border='0' alt='Build Status' /></a> 
+<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='23' style='border:0px;height:23px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets super easily from ActiveRecord relations, plain Ruby objects, or tabular data.
 
@@ -36,7 +37,8 @@ SpreadsheetArchitect.to_csv(headers: headers, data: data)
 
 ```ruby
 posts = Post.order(name: :asc).where(published: true)
-#posts = 10.times.map{|i| Post.new(number: i)}
+# OR
+posts = 10.times.map{|i| Post.new(number: i)}
 
 SpreadsheetArchitect.to_xlsx(instances: posts)
 SpreadsheetArchitect.to_ods(instances: posts)

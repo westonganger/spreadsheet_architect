@@ -147,6 +147,8 @@ module SpreadsheetArchitect
         end
       end
 
+      private
+
       def self.symbolize_keys(hash={})
         new_hash = {}
         hash.each do |k, v|

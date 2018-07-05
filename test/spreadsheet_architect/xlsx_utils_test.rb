@@ -8,6 +8,12 @@ class XlsxUtilsTest < ActiveSupport::TestCase
 
   def teardown
   end
+      
+  test "convert_styles_to_axlsx" do
+    xlsx_styles = klass.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
+
+    assert_equal(xlsx_styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
+  end
 
   test "get_type" do
     assert_equal(klass.get_type('string'), :string)
@@ -18,11 +24,6 @@ class XlsxUtilsTest < ActiveSupport::TestCase
     assert_equal(klass.get_type(Time.now.to_date), :date)
     assert_equal(klass.get_type(DateTime.now), :time)
     assert_equal(klass.get_type(Time.now), :time)
-  end
-      
-  test "convert_styles_to_axlsx" do
-    xlsx_styles = klass.convert_styles_to_axlsx({background_color: '333333', color: '000000', align: true, bold: true, font_size: 14, italic: true, underline: true, test: true})
-    assert_equal(xlsx_styles, {bg_color: '333333', fg_color: '000000', alignment: {horizontal: true}, b: true, sz: 14, i: true, u: true, test: true})
   end
 
   test "range_hash_to_str" do

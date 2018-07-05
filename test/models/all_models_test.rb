@@ -18,7 +18,9 @@ class AllModelsTest < ActiveSupport::TestCase
     FileUtils.mkdir_p(@path)
   end
 
-  [SpreadsheetArchitect, ActiveModelObject, PlainRubyObject, LegacyPlainRubyObject, Post, CustomPost].each do |klass|
+  models = [SpreadsheetArchitect, ActiveModelObject, PlainRubyObject, LegacyPlainRubyObject, Post, CustomPost]
+
+  models.each do |klass|
     instances = 5.times.map{|i| 
       x = (klass == SpreadsheetArchitect ? Post : klass).new
       x.name = i
@@ -30,8 +32,10 @@ class AllModelsTest < ActiveSupport::TestCase
     ['csv', 'ods', 'xlsx'].each do |format|
 
       if klass.instance_methods.include?(:spreadsheet_columns) || klass.instance_methods.include?(:column_names)
+
         test ":instances #{klass} #{format}" do
           set_path(klass)
+
           method = "to_#{format}"
           which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
@@ -44,6 +48,7 @@ class AllModelsTest < ActiveSupport::TestCase
 
         test "Empty :instances #{klass} #{format}" do
           set_path(klass)
+
           method = "to_#{format}"
           which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
@@ -55,6 +60,7 @@ class AllModelsTest < ActiveSupport::TestCase
 
       test ":data #{klass} #{format}" do
         set_path(klass)
+
         method = "to_#{format}"
         which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
@@ -67,11 +73,30 @@ class AllModelsTest < ActiveSupport::TestCase
 
       test "Empty :data #{klass} #{format}" do
         set_path(klass)
+
         method = "to_#{format}"
         which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
         File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
           f.write which.send(method, data: [])
+        end
+      end
+
+      if klass.is_a?(ActiveRecord::Base)
+        test "ActiveRecord::Relation" do
+          method = "to_#{format}"
+
+          File.open(File.join(@path, "active_record_relation.#{format}"),'w+b') do |f|
+            f.write klass.all.send(method)
+          end
+        end
+
+        test "Empty ActiveRecord::Relation" do
+          method = "to_#{format}"
+
+          File.open(File.join(@path, "empty_active_record_relation.#{format}"),'w+b') do |f|
+            f.write klass.limit(0).send(method)
+          end
         end
       end
 
