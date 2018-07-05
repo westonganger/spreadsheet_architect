@@ -1,9 +1,11 @@
 CHANGELOG
 ---------
 
+- **2.1.1** - July 4, 2018
+  - [PR #18](https://github.com/westonganger/spreadsheet_architect/pull/18) - Fix controller bug when using an non-ActiveRecord ORM only within Rails
 - **2.1.0** - June 20, 2018
-  - PR #15 - Improved the method symbolize_keys. This method did not work properly for nested objects.
-  - PR #15 - Added the ability to pass `:text_wrap` option within the `:alignment` style
+  - [PR #15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Improved the method symbolize_keys. This method did not work properly for nested objects.
+  - [PR #15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Added the ability to pass `:text_wrap` option within the `:alignment` style
   - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
   - Use `prepend` monkey patches in Ruby 2+ to avoid annoying overwrite warnings when using old `define_method` monkey patches
   - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
