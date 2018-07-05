@@ -40,7 +40,7 @@ module SpreadsheetArchitect
         if options[:spreadsheet_columns].nil? && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
           if is_ar_model?(klass)
             the_column_names = klass.column_names
-            headers = the_column_names.map{|x| str_humanize(x)} if needs_headers
+            headers = the_column_names.map{|x| str_titleize(x)} if needs_headers
             columns = the_column_names.map{|x| x.to_sym}
           else
             raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
@@ -72,7 +72,7 @@ module SpreadsheetArchitect
                   column_types[i] = x[2]
                 end
               else
-                headers.push(str_humanize(x.to_s)) if needs_headers
+                headers.push(str_titleize(x.to_s)) if needs_headers
                 row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
               end
             end
@@ -173,11 +173,12 @@ module SpreadsheetArchitect
       defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
     end
 
-    def self.str_humanize(str, capitalize = true)
-      str = str.sub(/\A_+/, '').gsub(/[_\.]/,' ').sub(' rescue nil','')
-      if capitalize
-        str = str.gsub(/(\A|\ )\w/){|x| x.upcase}
-      end
+    def self.str_titleize(str)
+      str = str.sub(/\A_+/, '')
+               .gsub(/[_\.]/,' ')
+               .sub(' rescue nil','')
+               .gsub(/(\A|\ )\w/){|x| x.upcase}
+
       return str
     end
 

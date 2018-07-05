@@ -27,6 +27,16 @@ class UtilsTest < ActiveSupport::TestCase
   def teardown
   end
 
+  test "get_cell_data" do
+    assert_not_empty klass.get_cell_data(@options, SpreadsheetArchitect)
+
+    assert_not_empty klass.get_cell_data(@options, Post)
+
+    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
+
+    skip("TODO") # step through all permutations of this method
+  end
+
   test "get_options" do
     ### Empty
     assert_not_empty klass.get_options({}, SpreadsheetArchitect)
@@ -49,16 +59,6 @@ class UtilsTest < ActiveSupport::TestCase
 
     ### sets :sheet_name if needed, using pluralized only when using Rails
     assert_equal klass.get_options({sheet_name: false}, Post)[:sheet_name], 'Posts'
-  end
-
-  test "get_cell_data" do
-    assert_not_empty klass.get_cell_data(@options, SpreadsheetArchitect)
-
-    assert_not_empty klass.get_cell_data(@options, Post)
-
-    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
-
-    skip("TODO") # step through all permutations of this method
   end
   
   test "convert_styles_to_ods" do
@@ -95,10 +95,10 @@ class UtilsTest < ActiveSupport::TestCase
     assert_not klass.is_ar_model?(SpreadsheetArchitect)
   end
 
-  test "str_humanize" do
-    assert_equal(klass.str_humanize('my_project_export'), 'My Project Export')
-    assert_equal(klass.str_humanize('My Project Export'), 'My Project Export')
-    assert_equal(klass.str_humanize('TBS report'), 'TBS Report')
+  test "str_titleize" do
+    assert_equal(klass.str_titleize('my_project_export'), 'My Project Export')
+    assert_equal(klass.str_titleize('My Project Export'), 'My Project Export')
+    assert_equal(klass.str_titleize('TBS report'), 'TBS Report')
   end
 
   test "check_option_type" do
