@@ -23,7 +23,11 @@ module SpreadsheetArchitect
   }
 
   def self.default_options=(val)
-    @default_options = val
+    if val.is_a?(Hash)
+      @default_options = val
+    else
+      raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new("SpreadsheetArchitect.default_options")
+    end
   end
 
   def self.default_options

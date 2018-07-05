@@ -127,17 +127,17 @@ module SpreadsheetArchitect
             end_col, end_row = back.scan(/\d+|\D+/)
 
             unless COL_NAMES.include?(start_col) && COL_NAMES.include?(end_col)
-              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:columns, range)
+              raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:columns, range)
             end
             
             unless start_row.to_i <= num_rows && end_row.to_i <= num_rows
-              raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:rows, range)
+              raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:rows, range)
             end
           else
-            raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:format, range)
+            raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:format, range)
           end
         else
-          raise SpreadsheetArchitect::Exceptions::BadRangeError.new(:type, range)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:type, range)
         end
       end
 

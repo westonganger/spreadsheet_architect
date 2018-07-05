@@ -22,10 +22,10 @@ class ExceptionsTest < ActiveSupport::TestCase
     end
   end
 
-  test "IncorrectTypeError" do
-    error = SpreadsheetArchitect::Exceptions::IncorrectTypeError
+  test "InvalidTypeError" do
+    error = SpreadsheetArchitect::Exceptions::InvalidTypeError
 
-    assert_not_equal error.new.message, error.new(:foobar_option).message
+    assert error.new(:foobar_option).message
 
     assert_raise error do
       SpreadsheetArchitect.to_csv(spreadsheet_columns: :foo)
@@ -126,8 +126,8 @@ class ExceptionsTest < ActiveSupport::TestCase
     end
   end
 
-  test "BadRangeError" do
-    error = SpreadsheetArchitect::Exceptions::BadRangeError
+  test "InvalidRangeError" do
+    error = SpreadsheetArchitect::Exceptions::InvalidRangeError
 
     assert_raise ArgumentError do
       error.new

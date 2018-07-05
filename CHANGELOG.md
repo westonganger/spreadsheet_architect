@@ -2,21 +2,22 @@ CHANGELOG
 ---------
 
 - **3.0.0** - UNRELEASED
-  - TODO: Test new instances option in all configurations
-  -
-  - `:column_types` now considers types defined in `spreadsheet_columns` and class/project-wide defaults. Before it was incorrectly ignored.
-  - Passing the `spreadsheet_columns` options now only accepts lambda/proc
-  - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
-  - [Issue #16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
+  - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
+  - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
+  - Fix project-wide and model-level defaults before only `header_style`, `row_style`, & `sheet_name` were being utilized.
   - When using on an ActiveRecord class and `spreadsheet_columns` is not defined, it now defaults to the classes `column_names` only. Previously it would use `column_names` and then remove the following columns `['id', 'created_at', 'updated_at', 'deleted_at']`
   - XLSX column ranges now also accept letters. For example: `{columns: ('C'..'E')}`
-  - Remove all Rails generators `spreadsheet_architect:add_default_options`
-  - Major overhaul of tests, for DRYness use resursion for tests when appropriate, add tons more tests
-  - Fix bug where `SpreadsheetArchitect::Utils.check_options_types` was not checking anything
+  - `:column_types` now considers types defined in `spreadsheet_columns` and class/project-wide defaults. Before it was incorrectly ignored.
+  - Passing the `spreadsheet_columns` options now only accepts lambda/proc
+  - More type checking and Option types are now being type checked. Option types were supposed to be properly type checked but due to a bug were being skipped.
+  - Remove all Rails generators `spreadsheet_architect:add_default_options`. No need since its just as easy to copy from the README
+  - Major overhaul of tests, add a ton more tests, for DRYness use resursion for tests when appropriate
+  - Renamed `BadRangeError` to `InvalidRangeError`
+  - Renamed `IncorrectTypeError` to `InvalidTypeError`
 - **2.1.1** - July 4, 2018
-  - [PR #18](https://github.com/westonganger/spreadsheet_architect/pull/18) - Fix controller bug when using an non-ActiveRecord ORM only within Rails
+  - [#18](https://github.com/westonganger/spreadsheet_architect/pull/18) - Fix controller bug when using an non-ActiveRecord ORM only within Rails
 - **2.1.0** - June 20, 2018
-  - [PR #15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Improved the method symbolize_keys. This method did not work properly for nested objects.
+  - [#15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Improved the method symbolize_keys. This method did not work properly for nested objects.
   - [PR #15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Added the ability to pass `:text_wrap` option within the `:alignment` style
   - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
   - Use `prepend` monkey patches in Ruby 2+ to avoid annoying overwrite warnings when using old `define_method` monkey patches

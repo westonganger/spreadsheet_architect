@@ -27,20 +27,34 @@ class UtilsTest < ActiveSupport::TestCase
   def teardown
   end
 
+  test "get_options" do
+    ### Empty
+    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
+
+    ### using SpreadsheetArchitect
+    assert_not_empty klass.get_options(@options, SpreadsheetArchitect)
+
+    ### with model defaults via SPREADSHEET_OPTIONS 
+    assert defined?(CustomPost::SPREADSHEET_OPTIONS)
+    assert klass.get_options(@options, CustomPost)
+
+    ### without model defaults via SPREADSHEET_OPTIONS 
+    assert_not_empty klass.get_options(@options, Post)
+
+    ### without :headers removes :header_style
+    assert_equal klass.get_options({header_style: false, headers: false}, SpreadsheetArchitect)[:header_style], false
+
+    ### sets :sheet_name if needed 
+    assert_equal klass.get_options({sheet_name: false}, SpreadsheetArchitect)[:sheet_name], 'Sheet1'
+
+    ### sets :sheet_name if needed, using pluralized only when using Rails
+    assert_equal klass.get_options({sheet_name: false}, Post)[:sheet_name], 'Posts'
+  end
+
   test "get_cell_data" do
     assert_not_empty klass.get_cell_data(@options, SpreadsheetArchitect)
 
     assert_not_empty klass.get_cell_data(@options, Post)
-
-    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
-
-    skip("TODO") # step through all permutations of this method
-  end
-
-  test "get_options" do
-    assert_not_empty klass.get_options(@options, SpreadsheetArchitect)
-
-    assert_not_empty klass.get_options(@options, Post)
 
     assert_not_empty klass.get_options({}, SpreadsheetArchitect)
 
@@ -75,17 +89,6 @@ class UtilsTest < ActiveSupport::TestCase
     })
   end
 
-  test "deep_clone" do
-    assert_nil klass.deep_clone(nil)
-    assert klass.deep_clone('')
-    assert klass.deep_clone(1)
-    assert klass.deep_clone(1.0)
-    assert klass.deep_clone([])
-    assert klass.deep_clone({})
-    assert klass.deep_clone({foo: :bar})
-    assert klass.deep_clone({foo: {foo: :bar}})
-  end
-
   test "is_ar_model" do
     assert klass.is_ar_model?(Post)
 
@@ -98,21 +101,21 @@ class UtilsTest < ActiveSupport::TestCase
     assert_equal(klass.str_humanize('TBS report'), 'TBS Report')
   end
 
-  test "check_type" do
-    klass.check_type(@options, :data, Array)
+  test "check_option_type" do
+    klass.check_option_type(@options, :data, Array)
 
-    klass.check_type(@options, :foo, Array)
+    klass.check_option_type(@options, :foo, Array)
 
-    assert_raise SpreadsheetArchitect::Exceptions::IncorrectTypeError do
-      klass.check_type({foo: :bar}, :foo, Array)
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidTypeError do
+      klass.check_option_type({foo: :bar}, :foo, Array)
     end
   end
 
-  test "check_options_types" do
-    klass.check_options_types(@options)
+  test "verify_option_types" do
+    klass.verify_option_types(@options)
 
-    assert_raise SpreadsheetArchitect::Exceptions::IncorrectTypeError do
-      klass.check_options_types(@options.merge({column_widths: :foobar}))
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidTypeError do
+      klass.verify_option_types(@options.merge({column_widths: :foobar}))
     end
   end
 

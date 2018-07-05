@@ -98,47 +98,37 @@ module SpreadsheetArchitect
     end
 
     def self.get_options(options, klass)
-      check_options_types(options)
-
-      if options[:headers]
-        if defined?(klass::SPREADSHEET_OPTIONS)
-          header_style = deep_clone(SpreadsheetArchitect.default_options[:header_style]).merge(klass::SPREADSHEET_OPTIONS[:header_style] || {})
-        else
-          header_style = deep_clone(SpreadsheetArchitect.default_options[:header_style])
-        end
-        
-        if options[:header_style]
-          header_style.merge!(options[:header_style])
-        elsif options[:header_style] == false
-          header_style = false
-        end
-      else
-        header_style = false
-      end
-
-      if options[:row_style] == false
-        row_style = false
-      else
-        if defined?(klass::SPREADSHEET_OPTIONS)
-          row_style = deep_clone(SpreadsheetArchitect.default_options[:row_style]).merge(klass::SPREADSHEET_OPTIONS[:row_style] || {})
-        else
-          row_style = deep_clone(SpreadsheetArchitect.default_options[:row_style])
-        end
-
-        if options[:row_style]
-          row_style.merge!(options[:row_style])
-        end
-      end
+      verify_option_types(options)
 
       if defined?(klass::SPREADSHEET_OPTIONS)
-        sheet_name = options[:sheet_name] || klass::SPREADSHEET_OPTIONS[:sheet_name] || SpreadsheetArchitect.default_options[:sheet_name]
+        if klass::SPREADSHEET_OPTIONS.is_a?(Hash)
+          options = SpreadsheetArchitect.default_options.merge(
+            klass::SPREADSHEET_OPTIONS.merge(options)
+          )
+        else
+          raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
+        end
       else
-        sheet_name = options[:sheet_name] || SpreadsheetArchitect.default_options[:sheet_name]
+        options = SpreadsheetArchitect.default_options.merge(options)
       end
 
-      sheet_name ||= (klass.name == 'SpreadsheetArchitect' ? 'Sheet1' : klass.name)
+      if !options[:headers]
+        options[:header_style] = false
+      end
 
-      return options.merge(header_style: header_style, row_style: row_style, sheet_name: sheet_name)
+      if !options[:sheet_name]
+        if klass == SpreadsheetArchitect
+          options[:sheet_name] = 'Sheet1'
+        else
+          options[:sheet_name] = klass.name
+
+          if options[:sheet_name].respond_to?(:pluralize)
+            options[:sheet_name] = options[:sheet_name].pluralize
+          end
+        end
+      end
+
+      return options
     end
 
     def self.convert_styles_to_ods(styles={})
@@ -179,10 +169,6 @@ module SpreadsheetArchitect
 
     private
 
-    def self.deep_clone(x)
-      Marshal.load(Marshal.dump(x))
-    end
-
     def self.is_ar_model?(klass)
       defined?(ActiveRecord) && klass.ancestors.include?(ActiveRecord::Base)
     end
@@ -195,12 +181,10 @@ module SpreadsheetArchitect
       return str
     end
 
-    def self.check_type(options, option_name, type)
+    def self.check_option_type(options, option_name, type)
       val = options[option_name]
 
-      unless val.nil?
-        invalid = false
-
+      if val
         if type.is_a?(Array)
           invalid = type.all?{|t| !val.is_a?(t) }
         elsif !val.is_a?(type)
@@ -208,23 +192,23 @@ module SpreadsheetArchitect
         end
 
         if invalid
-          raise SpreadsheetArchitect::Exceptions::IncorrectTypeError.new(option_name)
+          raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new(":#{option_name} option")
         end
       end
     end
 
-    def self.check_options_types(options)
-      check_type(options, :spreadsheet_columns, Proc)
-      check_type(options, :data, Array)
-      check_type(options, :instances, Array)
-      check_type(options, :headers, [TrueClass, FalseClass, Array])
-      check_type(options, :header_style, Hash)
-      check_type(options, :row_style, Hash)
-      check_type(options, :column_styles, Array)
-      check_type(options, :range_styles, Array)
-      check_type(options, :merges, Array)
-      check_type(options, :borders, Array)
-      check_type(options, :column_widths, Array)
+    def self.verify_option_types(options)
+      check_option_type(options, :spreadsheet_columns, Proc)
+      check_option_type(options, :data, Array)
+      check_option_type(options, :instances, Array)
+      check_option_type(options, :headers, [TrueClass, Array])
+      check_option_type(options, :header_style, Hash)
+      check_option_type(options, :row_style, Hash)
+      check_option_type(options, :column_styles, Array)
+      check_option_type(options, :range_styles, Array)
+      check_option_type(options, :merges, Array)
+      check_option_type(options, :borders, Array)
+      check_option_type(options, :column_widths, Array)
     end
 
     def self.stringify_keys(hash={})
