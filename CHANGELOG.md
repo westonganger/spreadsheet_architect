@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **2.1.2** - UNRELEASED
+- **2.1.2** - July 6, 2018
   - Fix bug where everything was underlined by default in Excel (LibreOffice was working correctly). For some reason, `false` in `:u` or `:underline` was incorrectly being treated as `true` but only within Excel. Now anytime `false` is encountered for either `:u` or `:underline` it is now converted to `nil`
   - Fix bug where empty xlsx spreadsheets were corrupt when trying to open with Excel (LibreOffice was working correctly). This only occured when containing no headers and empty `:data` option which resulted in a package with no sheets.
 - **2.1.1** - July 4, 2018
