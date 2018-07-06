@@ -15,3 +15,4 @@ test/dummy_app/tmp/**/*.ods
 test/dummy_app/tmp/**/*.xlsx
 test/dummy_app/**/*.log
 tmp/
+gemfiles/*.lock

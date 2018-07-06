@@ -10,22 +10,28 @@ Gem::Specification.new do |s|
   s.homepage 	= 'https://github.com/westonganger/spreadsheet_architect'
   
   s.summary     = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
-  s.description = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
+  s.description = s.summary 
+
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.test_files  = Dir.glob("{test/**/*}")
+  s.require_path = 'lib'
 
-  s.add_runtime_dependency 'axlsx', '>= 2.0'
-  s.add_runtime_dependency 'axlsx_styler', '>= 0.1.7'
-  s.add_runtime_dependency 'rodf', '>= 1.0.0'
+  s.required_ruby_version = '>= 1.9.3'
+
+  s.add_runtime_dependency 'axlsx', ['>= 2.0', '<4']
+  s.add_runtime_dependency 'axlsx_styler', ['>= 0.1.7', '<2']
+  s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'minitest-reporters'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rails', '>= 5.2'
   s.add_development_dependency 'appraisal'
-
-  s.required_ruby_version = '>= 1.9.3'
-  s.require_path = 'lib'
+  s.add_development_dependency 'sqlite3'
+  
+  if RUBY_VERSION.to_f >= 2.2
+    s.add_development_dependency 'rails', '~>5.2'
+  else
+    s.add_development_dependency 'rails', '~>4.2'
+  end
 end
