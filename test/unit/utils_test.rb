@@ -40,7 +40,7 @@ class UtilsTest < ActiveSupport::TestCase
 
     ### using Data option
     output = klass.get_cell_data(@options.merge(headers: true), SpreadsheetArchitect)
-    assert_equal [[]], output[:headers]
+    assert_equal false, output[:headers]
 
     output = klass.get_cell_data(@options.merge(column_types: nil), SpreadsheetArchitect)
     assert_nil output[:column_types]

@@ -20,8 +20,6 @@ module SpreadsheetArchitect
         package = Axlsx::Package.new
       end
 
-      return package if !options[:headers] && options[:data].empty?
-
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         max_row_length = options[:data].empty? ? 0 : options[:data].max_by{|x| x.length}.length
 

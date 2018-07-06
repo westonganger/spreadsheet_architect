@@ -28,16 +28,12 @@ module SpreadsheetArchitect
         styles = {} unless styles.is_a?(Hash)
         styles = self.symbolize_keys(styles)
 
-        if styles[:fg_color].nil?
-          if styles[:color].respond_to?(:sub) && !styles[:color].empty?
-            styles[:fg_color] = styles.delete(:color).sub('#','')
-          end
+        if styles[:fg_color].nil? && styles[:color] && styles[:color].respond_to?(:sub) && !styles[:color].empty?
+          styles[:fg_color] = styles.delete(:color).sub('#','')
         end
 
-        if styles[:bg_color].nil?
-          if styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
-            styles[:bg_color] = styles.delete(:background_color).sub('#','')
-          end
+        if styles[:bg_color].nil? && styles[:background_color] && styles[:background_color].respond_to?(:sub) && !styles[:background_color].empty?
+          styles[:bg_color] = styles.delete(:background_color).sub('#','')
         end
         
         if styles[:alignment].nil? && styles[:align]
@@ -48,26 +44,26 @@ module SpreadsheetArchitect
               wrap_text: styles[:align][:wrap_text]
             }
           else
-            styles[:alignment] = {horizontal: styles.delete(:align)}
+            styles[:alignment] = {horizontal: (styles.delete(:align) || nil) }
           end
 
           styles.delete(:align)
         end
 
         if styles[:b].nil?
-          styles[:b] = styles.delete(:bold)
+          styles[:b] = styles.delete(:bold) || nil
         end
 
         if styles[:sz].nil?
-          styles[:sz] = styles.delete(:font_size)
+          styles[:sz] = styles.delete(:font_size) || nil
         end
 
         if styles[:i].nil?
-          styles[:i] = styles.delete(:italic)
+          styles[:i] = styles.delete(:italic) || nil
         end
 
         if styles[:u].nil?
-          styles[:u] = styles.delete(:underline)
+          styles[:u] = styles.delete(:underline) || nil
         end
         
         styles.delete_if{|k,v| v.nil?}

@@ -193,7 +193,7 @@ axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: d
 axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data}, package)
 
 File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write axlsx_package
+  f.write axlsx_package.to_stream.read
 end
 ```
 

@@ -43,7 +43,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
       merges: [
         {range: "A1:C1"},
         {range: {rows: 0, columns: :all}},
-        {range: {rows: (0..1), columns: (0..3)}}
+        {range: {rows: (1..1), columns: (0..3)}}
       ],
 
       column_types: [
