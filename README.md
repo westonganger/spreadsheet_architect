@@ -265,8 +265,6 @@ Same options as `to_ods`
 
 ```ruby
 class Post
-  include SpreadsheetArchitect
-
   def spreadsheet_columns
     [:name, :content]
   end
