@@ -30,13 +30,14 @@ if post_count < 5
   end
 end
 
-if !Gem.loaded_specs['axlsx'].is_a?(Bundler::Source::Rubygems)
+axlsx_spec = Gem.loaded_specs['axlsx']
+if !axlsx_spec.source.is_a?(Bundler::Source::Rubygems)
   axlsx_version = 'axlsx-master'
 else
-  axlsx_version = Axlsx::VERSION
+  axlsx_version = axlsx_spec.version.to_s
 end
 
-VERSIONED_BASE_PATH = Rails.root.join("test/#{axlsx_version}")
+VERSIONED_BASE_PATH = Rails.root.join("tmp/#{axlsx_version}")
 
 ### Cleanup old test spreadsheets
 FileUtils.remove_dir(VERSIONED_BASE_PATH, true)

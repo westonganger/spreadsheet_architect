@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "responders"
 gem "axlsx", git: "https://github.com/randym/axlsx.git"
 
 gemspec path: "../"

@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.3'
 
-  s.add_runtime_dependency 'axlsx', ['>= 2.0', '<4']
+  s.add_runtime_dependency 'axlsx', ['>= 2', '<4']
   s.add_runtime_dependency 'axlsx_styler', ['>= 0.1.7', '<2']
   s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
   
@@ -29,5 +29,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rails'
-  s.add_development_dependency 'responders'
 end
