@@ -1,3 +1,3 @@
 module SpreadsheetArchitect
-  VERSION = "3.0.0.pre"
+  VERSION = "3.0.0"
 end
