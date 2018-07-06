@@ -28,10 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest-reporters'
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'sqlite3'
-  
-  if RUBY_VERSION.to_f >= 2.2
-    s.add_development_dependency 'rails', '~>5.2'
-  else
-    s.add_development_dependency 'rails', '~>4.2'
-  end
+  s.add_development_dependency 'rails'
 end
