@@ -42,8 +42,8 @@ class KitchenSinkTest < ActiveSupport::TestCase
 
       merges: [
         {range: "A1:C1"},
-        {range: {rows: 0, columns: :all}},
-        {range: {rows: (1..1), columns: (0..3)}}
+        {range: {rows: 2, columns: :all}},
+        {range: {rows: (3..4), columns: (0..3)}}
       ],
 
       column_types: [
@@ -58,7 +58,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(@options)
 
-    File.open(Rails.root.join('tmp/kitchen_sink.xlsx'),'w+b') do |f|
+    File.open(VERSIONED_BASE_PATH.join("kitchen_sink.xlsx"),'w+b') do |f|
       f.write file_data
     end
   end
@@ -79,7 +79,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_ods(@options)
 
-    File.open(Rails.root.join('tmp/kitchen_sink.ods'),'w+b') do |f|
+    File.open(VERSIONED_BASE_PATH.join("kitchen_sink.ods"),'w+b') do |f|
       f.write file_data
     end
   end

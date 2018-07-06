@@ -14,7 +14,7 @@ class AllModelsTest < ActiveSupport::TestCase
   end
 
   def set_path(klass)
-    @path = Rails.root.join("tmp/configurations/#{klass}")
+    @path = VERSIONED_BASE_PATH.join("models/#{klass}")
     FileUtils.mkdir_p(@path)
   end
 

@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "rails"
-gem "responders"
 gem "axlsx", "~> 2.0"
 
 gemspec path: "../"

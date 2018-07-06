@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ApplicationTest < ActionDispatch::IntegrationTest
   def setup
-    @path = Rails.root.join('tmp/integration_tests')
+    @path = VERSIONED_BASE_PATH.join("integration/")
     FileUtils.mkdir_p(@path)
   end
 

@@ -23,13 +23,21 @@ Minitest::Reporters.use!
 
 require 'custom_assertions'
 
-### Cleanup old test spreadsheets
-FileUtils.remove_dir(Rails.root.join('tmp/'), true)
-FileUtils.mkdir(Rails.root.join('tmp/'))
-
 post_count = Post.count
 if post_count < 5
   (5 - post_count).times do |i|
     Post.create!(name: "foo #{i}", content: "bar #{i}", age: i)
   end
 end
+
+if !Gem.loaded_specs['axlsx'].is_a?(Bundler::Source::Rubygems)
+  axlsx_version = 'axlsx-master'
+else
+  axlsx_version = Axlsx::VERSION
+end
+
+VERSIONED_BASE_PATH = Rails.root.join("test/#{axlsx_version}")
+
+### Cleanup old test spreadsheets
+FileUtils.remove_dir(VERSIONED_BASE_PATH, true)
+FileUtils.mkdir_p(VERSIONED_BASE_PATH)

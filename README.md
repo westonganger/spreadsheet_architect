@@ -227,7 +227,7 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb)|
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb)|
-|**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb)|
+|**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/kitchen_sink_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
@@ -312,6 +312,10 @@ See this example: https://github.com/westonganger/spreadsheet_architect/blob/mas
 # Axlsx Style Reference
 
 I have compiled a list of all available style options for axlsx here: https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md
+
+# Testing / Validating your Spreadsheets
+
+A wise word of advice, when testing your spreadsheets I recommend to use Excel instead of LibreOffice. This is because I have seen through testing, that where LibreOffice seems to just let most incorrect things just slide on through, Excel will not even open the spreadsheet as apparently it is much more strict about the spreadsheet validations. This will help you better identify any incorrect styling or customization issues.
 
 # Contributing
 
