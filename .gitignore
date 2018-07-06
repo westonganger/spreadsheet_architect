@@ -9,9 +9,8 @@ doc/
 pkg/
 spec/reports/
 test/*.sqlite3.db
-test/dummy_app/tmp/**/*.csv
-test/dummy_app/tmp/**/*.ods
-test/dummy_app/tmp/**/*.xlsx
-test/dummy_app/tmp/**/*.log
-test/dummy_app/test/*.log
+test/dummy_app/**/*.csv
+test/dummy_app/**/*.ods
+test/dummy_app/**/*.xlsx
+test/dummy_app/**/*.log
 tmp/

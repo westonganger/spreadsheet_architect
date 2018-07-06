@@ -69,6 +69,11 @@ module SpreadsheetArchitect
         if styles[:u].nil?
           styles[:u] = styles.delete(:underline)
         end
+
+        ### If `:u` is false instead of nil, it may be incorrectly rendered as true in Excel
+        if styles[:u] == false
+          styles[:u] = nil
+        end
         
         styles.delete_if{|k,v| v.nil?}
       end
