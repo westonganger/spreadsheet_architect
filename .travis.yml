@@ -2,10 +2,18 @@ language: ruby
 sudo: false
 cache: bundler
 rvm:
+  - 1.9.3
+  - 2.0
+  - 2.1
   - 2.2
   - 2.3
   - 2.4
   - 2.5
+
+gemfile:
+  - gemfiles/axlsx_master.gemfile
+  - gemfiles/axlsx_3.0.0.pre.gemfile
+  - gemfiles/axlsx_2.x.gemfile
 
 notifications:
   email: false

@@ -10,11 +10,12 @@ CHANGELOG
   - `:column_types` now considers types defined in `spreadsheet_columns` and class/project-wide defaults. Before it was incorrectly ignored.
   - Passing the `spreadsheet_columns` options now only accepts lambda/proc
   - More type checking and Option types are now being type checked. Option types were supposed to be properly type checked but due to a bug were being skipped.
-  - Remove all Rails generators `spreadsheet_architect:add_default_options`. No need since its just as easy to copy from the README
-  - Major overhaul of tests, add a ton more tests, for DRYness use resursion for tests when appropriate
   - Utilize ActiveSupport `pluralize`, if available, for default sheet names for class-based spreadsheets
   - Renamed `BadRangeError` to `InvalidRangeError`
   - Renamed `IncorrectTypeError` to `InvalidTypeError`
+  - Remove all Rails generators `spreadsheet_architect:add_default_options`. No need since its just as easy to copy from the README
+  - Major overhaul of test suite, add a ton more tests, for DRYness use resursion for tests when appropriate
+  - Use appraisal to test various `axlsx` versions
 - **2.1.1** - July 4, 2018
   - [#18](https://github.com/westonganger/spreadsheet_architect/pull/18) - Fix controller bug when using an non-ActiveRecord ORM only within Rails
 - **2.1.0** - June 20, 2018

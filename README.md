@@ -312,6 +312,12 @@ See this example: https://github.com/westonganger/spreadsheet_architect/blob/mas
 
 I have compiled a list of all available style options for axlsx here: https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md
 
+# Contributing
+
+We use the `appraisal` gem for testing multiple versions of `axlsx`. Please use the following steps to test using `appraisal`.
+
+1. `bundle exec appraisal install`
+2. `bundle exec appraisal rake test`
 
 # Credits
 

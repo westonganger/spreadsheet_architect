@@ -7,11 +7,6 @@ module SpreadsheetArchitect
         data = options[:data]
       end
 
-      if options[:headers].nil?
-        options[:headers] = klass::SPREADSHEET_OPTIONS[:headers] if defined?(klass::SPREADSHEET_OPTIONS)
-        options[:headers] ||= SpreadsheetArchitect.default_options[:headers]
-      end
-
       if options[:headers] == true
         headers = []
         needs_headers = true
@@ -37,7 +32,7 @@ module SpreadsheetArchitect
           end
         end
 
-        if options[:spreadsheet_columns].nil? && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
+        if !options[:spreadsheet_columns] && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
           if is_ar_model?(klass)
             the_column_names = klass.column_names
             headers = the_column_names.map{|x| str_titleize(x)} if needs_headers
@@ -54,7 +49,7 @@ module SpreadsheetArchitect
           else
             row_data = []
 
-            if options[:spreadsheet_columns].nil?
+            if !options[:spreadsheet_columns]
               if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
                 raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
               else

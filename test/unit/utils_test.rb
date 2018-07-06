@@ -28,13 +28,46 @@ class UtilsTest < ActiveSupport::TestCase
   end
 
   test "get_cell_data" do
-    assert_not_empty klass.get_cell_data(@options, SpreadsheetArchitect)
+    assert klass.get_cell_data(@options, SpreadsheetArchitect)
 
-    assert_not_empty klass.get_cell_data(@options, Post)
+    assert klass.get_cell_data(@options, Post)
 
-    assert_not_empty klass.get_options({}, SpreadsheetArchitect)
+    assert klass.get_options({}, SpreadsheetArchitect)
 
-    skip("TODO") # step through all permutations of this method
+    assert_raise SpreadsheetArchitect::Exceptions::MultipleDataSourcesError do
+      klass.get_cell_data(@options.merge(instances: []), SpreadsheetArchitect)
+    end
+
+    ### using Data option
+    output = klass.get_cell_data(@options.merge(headers: true), SpreadsheetArchitect)
+    assert_equal [[]], output[:headers]
+
+    output = klass.get_cell_data(@options.merge(column_types: nil), SpreadsheetArchitect)
+    assert_nil output[:column_types]
+
+    output = klass.get_cell_data(@options.merge(column_types: []), SpreadsheetArchitect)
+    assert_nil output[:column_types]
+
+    output = klass.get_cell_data(@options.merge(column_types: [:string]), SpreadsheetArchitect)
+    assert_equal output[:column_types], [:string]
+
+    headers = [[1,2,3], [3,4,5]]
+    output = klass.get_cell_data(@options.merge(headers: headers), SpreadsheetArchitect)
+    assert_equal headers, output[:headers]
+
+    ### Using instances option
+    output = klass.get_cell_data(@options.merge(data: nil), Post.all)
+    assert output[:instances].is_a?(Array)
+
+    output = klass.get_cell_data(@options.merge(data: nil), Post.limit(0))
+    assert output[:instances].is_a?(Array)
+
+    assert_raise SpreadsheetArchitect::Exceptions::NoDataError do
+      klass.get_cell_data(@options.merge(data: nil, instances: nil), SpreadsheetArchitect)
+    end
+
+    output = klass.get_cell_data(@options.merge(data: nil, instances: [PlainRubyObject.new]), SpreadsheetArchitect)
+    assert output[:instances].count == 1
   end
 
   test "get_options" do
