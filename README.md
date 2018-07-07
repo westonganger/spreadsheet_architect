@@ -233,7 +233,7 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
-Same options as `to_xlsx`. For more details
+Same options as `to_xlsx`
 
 ## `to_ods(options={})`
 
