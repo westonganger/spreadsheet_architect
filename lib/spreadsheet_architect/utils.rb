@@ -208,7 +208,7 @@ module SpreadsheetArchitect
     end
 
     def self.verify_option_types(options)
-      check_option_type(options, :spreadsheet_columns, [Proc, Symbol])
+      check_option_type(options, :spreadsheet_columns, [Proc, Symbol, String])
       check_option_type(options, :data, Array)
       check_option_type(options, :instances, Array)
       check_option_type(options, :headers, [TrueClass, Array])
