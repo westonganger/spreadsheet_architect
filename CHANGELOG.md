@@ -1,6 +1,8 @@
 CHANGELOG
 ---------
 
+- **3.1.0** - UNRELEASED
+  - Replace all usage of the legacy `instance_eval` with the proper method `send`
 - **3.0.0** - July 6, 2018
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.

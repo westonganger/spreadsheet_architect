@@ -45,7 +45,7 @@ module SpreadsheetArchitect
         data = []
         options[:instances].each do |instance|
           if columns
-            data.push columns.map{|col| col.is_a?(Symbol) ? instance.instance_eval(col.to_s) : col}
+            data.push columns.map{|col| col.is_a?(Symbol) ? instance.send(col) : col}
           else
             row_data = []
 
@@ -62,13 +62,13 @@ module SpreadsheetArchitect
             instance_cols.each_with_index do |x,i|
               if x.is_a?(Array)
                 headers.push(x[0].to_s) if needs_headers
-                row_data.push(x[1].is_a?(Symbol) ? instance.instance_eval(x[1].to_s) : x[1])
+                row_data.push(x[1].is_a?(Symbol) ? instance.send(x[1]) : x[1])
                 if needs_column_types
                   column_types[i] = x[2]
                 end
               else
                 headers.push(str_titleize(x.to_s)) if needs_headers
-                row_data.push(x.is_a?(Symbol) ? instance.instance_eval(x.to_s) : x)
+                row_data.push(x.is_a?(Symbol) ? instance.send(x) : x)
               end
             end
 
