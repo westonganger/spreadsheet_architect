@@ -44,7 +44,7 @@ module SpreadsheetArchitect
 
         row_style_index = package.workbook.styles.add_style(row_style)
 
-        options[:data].each do |row_data|
+        options[:data].each_with_index do |row_data, row_index|
           missing = max_row_length - row_data.count
           if missing > 0
             missing.times do
@@ -66,6 +66,29 @@ module SpreadsheetArchitect
           end
 
           sheet.add_row row_data, style: row_style_index, types: types
+
+          if options[:conditional_row_styles]
+            merged_conditional_styles = {}
+
+            options[:conditional_row_styles].each do |x|
+              conditional_proc = x[:if] || x[:unless]
+
+              if conditional_proc
+                if conditional_proc.call(row_data, row_index)
+                  merged_conditional_styles.merge!(x[:styles])
+                end
+              else
+                raise SpreadsheetArchitect::Exceptions::GeneralError('Must pass either :if or :unless within the each :conditonal_row_styles entry')
+              end
+            end
+            
+            unless merged_conditional_styles.empty?
+              sheet.add_style(
+                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index}", 
+                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(merged_conditional_styles)
+              )
+            end
+          end
         end
 
         options[:data].first.each_with_index do |x,i|

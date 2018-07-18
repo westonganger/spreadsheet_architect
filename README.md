@@ -227,6 +227,7 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
 |**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
+|**conditional_row_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
 |**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :boolean, nil = auto determine.|
@@ -279,6 +280,7 @@ class Post
     sheet_name: self.name,
     column_styles: [],
     range_styles: [],
+    conditional_row_styles: [],
     merges: [],
     borders: [],
     column_types: [],
@@ -298,6 +300,7 @@ SpreadsheetArchitect.default_options = {
   sheet_name: 'My Project Export',
   column_styles: [],
   range_styles: [],
+  conditional_row_styles: [],
   merges: [],
   borders: [],
   column_types: [],

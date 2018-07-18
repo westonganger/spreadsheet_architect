@@ -33,6 +33,21 @@ class KitchenSinkTest < ActiveSupport::TestCase
         {range: {rows: :all, columns: (3..4)}, styles: {color: "999999"}}
       ],
 
+      conditional_row_styles: [
+        {
+          if: Proc.new{|row_data, row_index|
+            row_index == 0 || row_data[0] == :foo
+          }, 
+          styles: {font_size: 14}
+        },
+        {
+          unless: Proc.new{|row_data, row_index|
+            row_index == 0 || row_data[0] == :foo
+          }, 
+          styles: {align: :right}
+        },
+      ],
+
       borders: [
         {range: "B2:C4"},
         {range: "D6:D7", border_styles: {style: :dashDot, color: "333333"}},

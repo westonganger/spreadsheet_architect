@@ -216,6 +216,7 @@ module SpreadsheetArchitect
       check_option_type(options, :row_style, Hash)
       check_option_type(options, :column_styles, Array)
       check_option_type(options, :range_styles, Array)
+      check_option_type(options, :conditional_row_styles, Array)
       check_option_type(options, :merges, Array)
       check_option_type(options, :borders, Array)
       check_option_type(options, :column_widths, Array)

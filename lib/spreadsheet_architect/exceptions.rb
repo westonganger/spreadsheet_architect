@@ -1,6 +1,12 @@
 module SpreadsheetArchitect
   module Exceptions
 
+    class GeneralError < StandardError
+      def initialize(msg)
+        super(msg)
+      end
+    end
+
     class InvalidRangeError < StandardError
       def initialize(type, range)
         case type
