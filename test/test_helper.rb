@@ -19,7 +19,11 @@ class ActiveSupport::TestCase
 end
 
 require 'minitest/reporters'
-Minitest::Reporters.use!
+Minitest::Reporters.use!(
+  Minitest::Reporters::DefaultReporter.new,
+  ENV,
+  Minitest.backtrace_filter
+)
 
 require 'custom_assertions'
 

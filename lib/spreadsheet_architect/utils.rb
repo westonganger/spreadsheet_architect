@@ -32,13 +32,23 @@ module SpreadsheetArchitect
           end
         end
 
-        if !options[:spreadsheet_columns] && klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
-          if is_ar_model?(klass)
-            the_column_names = klass.column_names
-            headers = the_column_names.map{|x| str_titleize(x)} if needs_headers
-            columns = the_column_names.map{|x| x.to_sym}
-          else
-            raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
+        if options[:spreadsheet_columns]
+          if [String, Symbol].any?{|x| options[:spreadsheet_columns].is_a?(x)}
+            cols_method_name = options[:spreadsheet_columns]
+
+            if klass != SpreadsheetArchitect && !klass.instance_methods.include?(cols_method_name)
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass, cols_method_name)
+            end
+          end
+        else
+          if klass != SpreadsheetArchitect && !klass.instance_methods.include?(:spreadsheet_columns)
+            if is_ar_model?(klass)
+              the_column_names = klass.column_names
+              headers = the_column_names.map{|x| str_titleize(x)} if needs_headers
+              columns = the_column_names.map{|x| x.to_sym}
+            else
+              raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(klass)
+            end
           end
         end
 
@@ -49,14 +59,18 @@ module SpreadsheetArchitect
           else
             row_data = []
 
-            if !options[:spreadsheet_columns]
+            if options[:spreadsheet_columns]
+              if cols_method_name
+                instance_cols = instance.send(cols_method_name)
+              else
+                instance_cols = options[:spreadsheet_columns].call(instance)
+              end
+            else
               if klass == SpreadsheetArchitect && !instance.respond_to?(:spreadsheet_columns)
                 raise SpreadsheetArchitect::Exceptions::SpreadsheetColumnsNotDefinedError.new(instance.class)
               else
                 instance_cols = instance.spreadsheet_columns
               end
-            else
-              instance_cols = options[:spreadsheet_columns].call(instance)
             end
 
             instance_cols.each_with_index do |x,i|
@@ -194,7 +208,7 @@ module SpreadsheetArchitect
     end
 
     def self.verify_option_types(options)
-      check_option_type(options, :spreadsheet_columns, Proc)
+      check_option_type(options, :spreadsheet_columns, [Proc, Symbol])
       check_option_type(options, :data, Array)
       check_option_type(options, :instances, Array)
       check_option_type(options, :headers, [TrueClass, Array])

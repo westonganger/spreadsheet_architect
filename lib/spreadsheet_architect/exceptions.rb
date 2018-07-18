@@ -47,8 +47,8 @@ module SpreadsheetArchitect
     end
     
     class SpreadsheetColumnsNotDefinedError < StandardError
-      def initialize(klass)
-        super("The instance method `spreadsheet_columns` is not defined on #{klass}")
+      def initialize(klass, method_name='spreadsheet_columns')
+        super("The instance method `#{method_name}` is not defined on #{klass}")
       end
     end
   end

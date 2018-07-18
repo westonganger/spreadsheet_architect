@@ -26,12 +26,8 @@ class ExceptionsTest < ActiveSupport::TestCase
     error = SpreadsheetArchitect::Exceptions::InvalidTypeError
 
     assert error.new(:foobar_option).message
-
     assert_raise error do
-      SpreadsheetArchitect.to_csv(spreadsheet_columns: :foo)
-    end
-    assert_raise error do
-      SpreadsheetArchitect.to_csv(data: :foo)
+      SpreadsheetArchitect.to_csv(data: {})
     end
     assert_raise error do
       SpreadsheetArchitect.to_csv(instances: :foo)
