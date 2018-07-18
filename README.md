@@ -90,9 +90,17 @@ class Post
       ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
     ]
 end
+
+Post.to_xlsx(instances: posts)
 ```
 
-Alternatively, if `spreadsheet_columns` is passed as an option, this instance method does not need to be defined on the class. If defined on the class then naturally this will override it.
+If you want to use a different method name then `spreadsheet_columns` you can pass a method name as a Symbol or String to the `spreadsheet_columns` option. Feel free to utilize the model-wide/project-wide defaults features if desired necessary.
+
+```ruby
+Post.to_xlsx(instances: posts, spreadsheet_columns: :my_special_columns)
+```
+
+Alternatively, you can pass a Proc/lambda to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
 
 ```ruby
 Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
@@ -220,7 +228,7 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |---|---|---|
 |**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
+|**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
@@ -241,7 +249,7 @@ Same options as `to_xlsx`
 |---|---|---|
 |**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
+|**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
@@ -257,7 +265,7 @@ Same options as `to_ods`
 |---|---|---|
 |**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
-|**spreadsheet_columns**<br>*Array*| If using the instances option or on a ActiveRecord relation, this defaults to the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If none of those then falls back to `self.column_names` for ActiveRecord models. | Cannot be used with the `:data` option.<br><br>Use this option to override or define the spreadsheet columns. |
+|**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 
 
@@ -274,6 +282,7 @@ class Post
       ['My Post Report'],
       self.column_names.map{|x| x.titleize}
     ],
+     spreadsheet_columns: :spreadsheet_columns,
     header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     row_style: {background_color: nil, color: '000000', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
     sheet_name: self.name,
@@ -293,6 +302,7 @@ end
 
 SpreadsheetArchitect.default_options = {
   headers: true,
+  spreadsheet_columns: :spreadsheet_columns,
   header_style: {background_color: 'AAAAAA', color: 'FFFFFF', align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
   row_style: {background_color: nil, color: '000000', align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false},
   sheet_name: 'My Project Export',
