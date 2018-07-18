@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **3.1.0** - UNRELEASED
-  - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option. TBD: Documentation, Tests
+  - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option.
   - Replace all usage of the legacy instance_eval with the proper method send
 - **3.0.0** - July 6, 2018
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods

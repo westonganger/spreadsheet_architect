@@ -18,7 +18,15 @@ class AllModelsTest < ActiveSupport::TestCase
     FileUtils.mkdir_p(@path)
   end
 
-  models = [SpreadsheetArchitect, ActiveModelObject, PlainRubyObject, LegacyPlainRubyObject, Post, CustomPost]
+  models = []
+
+  models_folder = File.expand_path('../../dummy_app/app/models', __FILE__)
+  Dir[File.join(models_folder, '*.rb')].each do |filename|
+    klass = filename.split('/').last.gsub('.rb', '').titleize.gsub(' ','').constantize
+    unless [ApplicationRecord].include?(klass)
+      models.push(klass)
+    end
+  end
 
   models.each do |klass|
     instances = 5.times.map{|i| 
@@ -31,30 +39,27 @@ class AllModelsTest < ActiveSupport::TestCase
 
     ['csv', 'ods', 'xlsx'].each do |format|
 
-      if klass.instance_methods.include?(:spreadsheet_columns) || klass.instance_methods.include?(:column_names)
+      test ":instances #{klass} #{format}" do
+        set_path(klass)
 
-        test ":instances #{klass} #{format}" do
-          set_path(klass)
+        method = "to_#{format}"
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
-          method = "to_#{format}"
-          which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+        data = which.send(method, instances: instances)
 
-          data = which.send(method, instances: instances)
-
-          File.open(File.join(@path, "instances.#{format}"), 'w+b') do |f|
-            f.write data
-          end
+        File.open(File.join(@path, "instances.#{format}"), 'w+b') do |f|
+          f.write data
         end
+      end
 
-        test "Empty :instances #{klass} #{format}" do
-          set_path(klass)
+      test "Empty :instances #{klass} #{format}" do
+        set_path(klass)
 
-          method = "to_#{format}"
-          which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+        method = "to_#{format}"
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
-          File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
-            f.write which.send(method, instances: [])
-          end
+        File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
+          f.write which.send(method, instances: [])
         end
       end
 
