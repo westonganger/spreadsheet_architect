@@ -15,6 +15,9 @@ if RUBY_VERSION.to_f >= 2
           @custom_width = true
           @best_fit = true
           @width = v + 5
+        else
+          @custom_width = true
+          @width = v
         end
       end
     end
