@@ -139,7 +139,7 @@ class UtilsTest < ActiveSupport::TestCase
 
     klass.check_option_type(@options, :foo, Array)
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidTypeError do
+    assert_raise SpreadsheetArchitect::Exceptions::OptionTypeError do
       klass.check_option_type({foo: :bar}, :foo, Array)
     end
   end
@@ -147,7 +147,7 @@ class UtilsTest < ActiveSupport::TestCase
   test "verify_option_types" do
     klass.verify_option_types(@options)
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidTypeError do
+    assert_raise SpreadsheetArchitect::Exceptions::OptionTypeError do
       klass.verify_option_types(@options.merge({column_widths: :foobar}))
     end
   end

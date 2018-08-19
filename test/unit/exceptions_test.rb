@@ -41,8 +41,8 @@ class ExceptionsTest < ActiveSupport::TestCase
     end
   end
 
-  test "InvalidTypeError" do
-    error = SpreadsheetArchitect::Exceptions::InvalidTypeError
+  test "OptionTypeError" do
+    error = SpreadsheetArchitect::Exceptions::OptionTypeError
 
     assert error.new(:foobar_option).message
     assert_raise error do
