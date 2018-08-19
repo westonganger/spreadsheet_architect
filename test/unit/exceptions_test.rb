@@ -2,6 +2,25 @@ require 'test_helper'
 
 class ExceptionsTest < ActiveSupport::TestCase
 
+  test "ArgumentError" do
+    error = SpreadsheetArchitect::Exceptions::ArgumentError
+
+    assert_raise error do
+      conditional_row_styles = [{}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(conditional_row_styles, true, true)
+    end
+
+    assert_raise error do
+      conditional_row_styles = [{if: true, unless: true, styles: {}}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(conditional_row_styles, true, true)
+    end
+
+    assert_raise error do
+      conditional_row_styles = [{if: true, styles: false}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(conditional_row_styles, true, true)
+    end
+  end
+
   test "NoDataError" do
     error = SpreadsheetArchitect::Exceptions::NoDataError
 

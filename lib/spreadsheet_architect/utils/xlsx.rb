@@ -148,6 +148,32 @@ module SpreadsheetArchitect
         end
       end
 
+      def self.conditional_styles_for_row(conditional_row_styles, row_index, row_data)
+        merged_conditional_styles = {}
+
+        conditional_row_styles.each do |x|
+          if x[:if] && x[:unless]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot pass both :if and :unless within the same :conditonal_row_styles entry')
+          elsif !x[:if] && !x[:unless]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass either :if or :unless within the each :conditonal_row_styles entry')
+          elsif !x[:styles]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass the :styles option within a :conditonal_row_styles entry')
+          end
+
+          conditions_met = (x[:if] || x[:unless]).call(row_data, row_index)
+
+          if x[:unless]
+            conditions_met = !conditions_met
+          end
+
+          if conditions_met
+            merged_conditional_styles.merge!(x[:styles])
+          end
+        end
+
+        return merged_conditional_styles
+      end
+
       private
 
       def self.symbolize_keys(hash={})

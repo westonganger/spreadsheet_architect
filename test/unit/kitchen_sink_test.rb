@@ -36,13 +36,13 @@ class KitchenSinkTest < ActiveSupport::TestCase
       conditional_row_styles: [
         {
           if: Proc.new{|row_data, row_index|
-            row_index == 0 || row_data[0] == :foo
+            row_index == 0 || row_data[0].to_i == 2
           }, 
-          styles: {font_size: 14}
+          styles: {font_size: 18}
         },
         {
           unless: Proc.new{|row_data, row_index|
-            row_index == 0 || row_data[0] == :foo
+            row_index <= 10 || row_data[0].to_i == 15
           }, 
           styles: {align: :right}
         },

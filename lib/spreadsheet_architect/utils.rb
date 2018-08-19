@@ -115,7 +115,7 @@ module SpreadsheetArchitect
             klass::SPREADSHEET_OPTIONS.merge(options)
           )
         else
-          raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
+          raise SpreadsheetArchitect::Exceptions::OptionTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
         end
       else
         options = SpreadsheetArchitect.default_options.merge(options)
@@ -202,7 +202,7 @@ module SpreadsheetArchitect
         end
 
         if invalid
-          raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new(":#{option_name} option")
+          raise SpreadsheetArchitect::Exceptions::OptionTypeError.new(":#{option_name} option")
         end
       end
     end

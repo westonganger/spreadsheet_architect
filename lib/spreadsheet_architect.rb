@@ -26,7 +26,7 @@ module SpreadsheetArchitect
     if val.is_a?(Hash)
       @default_options = val
     else
-      raise SpreadsheetArchitect::Exceptions::InvalidTypeError.new("SpreadsheetArchitect.default_options")
+      raise SpreadsheetArchitect::Exceptions::OptionTypeError.new("SpreadsheetArchitect.default_options")
     end
   end
 

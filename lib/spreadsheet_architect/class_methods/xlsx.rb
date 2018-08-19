@@ -20,6 +20,8 @@ module SpreadsheetArchitect
         package = Axlsx::Package.new
       end
 
+      row_index = -1
+
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
         max_row_length = options[:data].empty? ? 0 : options[:data].max_by{|x| x.length}.length
 
@@ -27,6 +29,8 @@ module SpreadsheetArchitect
           header_style_index = package.workbook.styles.add_style(header_style)
 
           options[:headers].each do |header_row|
+            row_index += 1
+
             missing = max_row_length - header_row.count
             if missing > 0
               missing.times do
@@ -35,6 +39,17 @@ module SpreadsheetArchitect
             end
 
             sheet.add_row header_row, style: header_style_index
+
+            if options[:conditional_row_styles]
+              conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, header_row)
+              
+              unless conditional_styles_for_row.empty?
+                sheet.add_style(
+                  "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}", 
+                  SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
+                )
+              end
+            end
           end
         end
 
@@ -44,7 +59,9 @@ module SpreadsheetArchitect
 
         row_style_index = package.workbook.styles.add_style(row_style)
 
-        options[:data].each_with_index do |row_data, row_index|
+        options[:data].each do |row_data|
+          row_index += 1
+
           missing = max_row_length - row_data.count
           if missing > 0
             missing.times do
@@ -68,24 +85,12 @@ module SpreadsheetArchitect
           sheet.add_row row_data, style: row_style_index, types: types
 
           if options[:conditional_row_styles]
-            merged_conditional_styles = {}
-
-            options[:conditional_row_styles].each do |x|
-              conditional_proc = x[:if] || x[:unless]
-
-              if conditional_proc
-                if conditional_proc.call(row_data, row_index)
-                  merged_conditional_styles.merge!(x[:styles])
-                end
-              else
-                raise SpreadsheetArchitect::Exceptions::GeneralError('Must pass either :if or :unless within the each :conditonal_row_styles entry')
-              end
-            end
+            conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, row_data)
             
-            unless merged_conditional_styles.empty?
+            unless conditional_styles_for_row.empty?
               sheet.add_style(
-                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index}", 
-                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(merged_conditional_styles)
+                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}", 
+                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
               )
             end
           end

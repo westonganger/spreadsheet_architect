@@ -2,10 +2,12 @@ CHANGELOG
 ---------
 
 - **3.1.0** - UNRELEASED
-  - Add new option `:conditional_row_styles` to `to_xlsx`. TBD: Tests
+  - Add new option `:conditional_row_styles` to `to_xlsx`.
   - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option.
-  - Replace all usage of the legacy instance_eval with the proper method send
+  - Replace all usage of the legacy method `instance_eval` with the proper method `send`.
   - [#23](https://github.com/westonganger/spreadsheet_architect/issues/23#issuecomment-412803761) - Fix bug where custom `columns_widths` in xlsx spreadsheets might not get set correctly.
+  - All exceptions now inherit from the appropriate ruby core exception classes
+  - `SpreadsheetArchitect::Exceptions::InvalidOptionError` renamed to `SpreadsheetArchitect::Exceptions::OptionTypeError`
 - **3.0.0** - July 6, 2018
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
