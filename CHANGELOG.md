@@ -1,7 +1,7 @@
 CHANGELOG
 ---------
 
-- **3.1.0** - UNRELEASED
+- **3.1.0** - August 19, 2018
   - Add new option `:conditional_row_styles` to `to_xlsx`.
   - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option.
   - Replace all usage of the legacy method `instance_eval` with the proper method `send`.
