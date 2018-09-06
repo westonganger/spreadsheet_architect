@@ -1,6 +1,8 @@
 CHANGELOG
 ---------
 
+- **3.1.1** - UNRELEASED
+  - Fix bug where the ActionController::Renderer `:filename` option was ignored when an AR::Relation passed directly to the renderer without first calling `to_#{format}`
 - **3.1.0** - August 19, 2018
   - Add new option `:conditional_row_styles` to `to_xlsx`.
   - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option.
