@@ -59,6 +59,9 @@ module SpreadsheetArchitect
 
         row_style_index = package.workbook.styles.add_style(row_style)
 
+        default_date_style_index = nil
+        default_time_style_index = nil
+
         options[:data].each do |row_data|
           row_index += 1
 
@@ -70,19 +73,33 @@ module SpreadsheetArchitect
           end
 
           types = []
+          styles = []
           row_data.each_with_index do |x,i|
             if (x.respond_to?(:empty) ? x.empty? : x.nil?)
               types[i] = nil
+              styles[i] = row_style_index
             else
               if options[:column_types]
                 types[i] = options[:column_types][i]
               end
 
               types[i] ||= SpreadsheetArchitect::Utils::XLSX.get_type(x)
+
+              if [:date, :time].include?(types[i])
+                if types[i] == :date
+                  default_date_style_index ||= package.workbook.styles.add_style(row_style.merge({format_code: 'yyyy-mm-dd'}))
+                  styles[i] = default_date_style_index
+                else
+                  default_time_style_index ||= package.workbook.styles.add_style(row_style.merge({format_code: 'yyyy-mm-dd h:mm AM/PM'}))
+                  styles[i] = default_time_style_index
+                end
+              else
+                styles[i] = row_style_index
+              end
             end
           end
 
-          sheet.add_row row_data, style: row_style_index, types: types
+          sheet.add_row row_data, style: styles, types: types
 
           if options[:conditional_row_styles]
             conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, row_data)
@@ -93,26 +110,6 @@ module SpreadsheetArchitect
                 SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
               )
             end
-          end
-        end
-
-        options[:data].first.each_with_index do |x,i|
-          types = []
-
-          if options[:column_types]
-            types[i] = options[:column_types][i]
-          end
-
-          types[i] ||= SpreadsheetArchitect::Utils::XLSX.get_type(x)
-
-          if [:date, :time].include?(types[i])
-            if types[i] == :date
-              format_code = 'm/d/yyyy'
-            else
-              format_code = 'yyyy/m/d h:mm AM/PM'
-            end
-
-            sheet.col_style(i, package.workbook.styles.add_style(format_code: format_code), row_offset: (options[:headers] ? options[:headers].count : 0))
           end
         end
 
@@ -142,33 +139,31 @@ module SpreadsheetArchitect
               h_style = header_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
             end
 
-            package.workbook.styles do |s|
-              style = s.add_style row_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
+            style = package.workbook.styles.add_style row_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
 
-              case x[:columns]
-              when Array, Range
-                x[:columns].each do |col|
-                  SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
-
-                  sheet.col_style(col, style, row_offset: start_row)
-
-                  if h_style
-                    sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
-                  end
-                end
-              when Integer, String
-                col = x[:columns]
-
+            case x[:columns]
+            when Array, Range
+              x[:columns].each do |col|
                 SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
 
-                sheet.col_style(x[:columns], style, row_offset: start_row)
+                sheet.col_style(col, style, row_offset: start_row)
 
                 if h_style
                   sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
                 end
-              else
-                SpreadsheetArchitect::Utils::XLSX.verify_column(x[:columns], max_row_length)
               end
+            when Integer, String
+              col = x[:columns]
+
+              SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
+
+              sheet.col_style(x[:columns], style, row_offset: start_row)
+
+              if h_style
+                sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
+              end
+            else
+              SpreadsheetArchitect::Utils::XLSX.verify_column(x[:columns], max_row_length)
             end
           end
         end

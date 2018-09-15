@@ -1,7 +1,10 @@
 CHANGELOG
 ---------
 
-- **3.1.1** - UNRELEASED
+- **3.2.0** - UNRELEASED
+  - Date / Time formatting is now set per cell instead of on the entire column.
+  - Default Date formatting for `xlsx` changed from `m/d/yyyy` to `yyyy-mm-dd`
+  - Default Time/DateTime formatting for `xlsx` changed from `yyyy/m/d h:mm AM/PM` to `yyyy-mm-dd h:mm AM/PM`
   - Fix bug where the ActionController::Renderer `:filename` option was ignored when an AR::Relation passed directly to the renderer without first calling `to_#{format}`
 - **3.1.0** - August 19, 2018
   - Add new option `:conditional_row_styles` to `to_xlsx`.

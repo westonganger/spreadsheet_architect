@@ -8,7 +8,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
         ['Latest Posts'],
         ['Title','Category','Author','Posted on','Earnings']
       ],
-      data: 50.times.map{|i| [i, i*2, i*3, i*4, i*5, i*6, i*7, i*8]},
+      data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now]},
       header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true, italic: true},
       row_style: {background_color: nil, color: "000000", align: :left, font_size: 12},
       sheet_name: 'Kitchen Sink'
@@ -22,8 +22,8 @@ class KitchenSinkTest < ActiveSupport::TestCase
     @options.merge!({
       column_styles: [
         {columns: 0, styles: {bold: true}},
-        {columns: (1..3), styles: {format_code: "$#,##0.00"}},
-        {columns: [4], include_header: true, styles: {italic: true}}
+        {columns: (1..3), styles: {color: "444444"}},
+        {columns: [4], include_header: false, styles: {italic: true}}
       ],
 
       range_styles: [
@@ -62,10 +62,12 @@ class KitchenSinkTest < ActiveSupport::TestCase
       ],
 
       column_types: [
-        :string,
         :integer,
+        :string,
         :float,
         :boolean,
+        :date,
+        :time,
         nil,
       ],
     })
