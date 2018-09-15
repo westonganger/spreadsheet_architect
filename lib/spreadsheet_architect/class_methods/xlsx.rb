@@ -133,35 +133,28 @@ module SpreadsheetArchitect
 
         if options[:column_styles]
           options[:column_styles].each do |x|
-            start_row = options[:headers] ? options[:headers].count : 0
+            start_row = (options[:headers] ? options[:headers].count : 0) + 1
 
-            if x[:include_header] && start_row > 0
-              h_style = header_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
-            end
+            x[:styles] = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles])
 
-            style = package.workbook.styles.add_style row_style.merge(SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles]))
+            add_column_style = ->(col){
+              SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
+
+              range_str = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str({rows: (start_row..num_rows), columns: col}, max_row_length, num_rows)
+              sheet.add_style range_str, x[:styles]
+
+              if x[:include_header] && start_row > 1
+                sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row-1}", x[:styles])
+              end
+            }
 
             case x[:columns]
             when Array, Range
               x[:columns].each do |col|
-                SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
-
-                sheet.col_style(col, style, row_offset: start_row)
-
-                if h_style
-                  sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
-                end
+                add_column_style.call(col)
               end
             when Integer, String
-              col = x[:columns]
-
-              SpreadsheetArchitect::Utils::XLSX.verify_column(col, max_row_length)
-
-              sheet.col_style(x[:columns], style, row_offset: start_row)
-
-              if h_style
-                sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row}", h_style)
-              end
+              add_column_style.call(x[:columns])
             else
               SpreadsheetArchitect::Utils::XLSX.verify_column(x[:columns], max_row_length)
             end

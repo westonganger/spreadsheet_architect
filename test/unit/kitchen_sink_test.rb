@@ -9,7 +9,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
         ['Title','Category','Author','Posted on','Earnings']
       ],
       data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now]},
-      header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true, italic: true},
+      header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true},
       row_style: {background_color: nil, color: "000000", align: :left, font_size: 12},
       sheet_name: 'Kitchen Sink'
     }
@@ -29,7 +29,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
       range_styles: [
         {range: "B2:C4", styles: {background_color: "CCCCCC"}},
         {range: {rows: 1, columns: :all}, styles: {bold: true}},
-        {range: {rows: (0..5), columns: (1..4)}, styles: {italic: true}},
+        {range: {rows: (20..25), columns: (1..4)}, styles: {italic: true}},
         {range: {rows: :all, columns: (3..4)}, styles: {color: "999999"}}
       ],
 

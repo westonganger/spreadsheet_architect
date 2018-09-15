@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 - **3.2.0** - UNRELEASED
+  - Change implementation of `:column_styles` option to utilize `axlsx_styler` instead of the built-in axlsx `col_style` method. The reason for the switch is that `col_style` would overwrite all previously set styles. `axlsx_styler` already has the ability to add onto existing styles and is what is currently utilized by `range_styles`.
   - Date / Time formatting is now set per cell instead of on the entire column.
   - Default Date formatting for `xlsx` changed from `m/d/yyyy` to `yyyy-mm-dd`
   - Default Time/DateTime formatting for `xlsx` changed from `yyyy/m/d h:mm AM/PM` to `yyyy-mm-dd h:mm AM/PM`
