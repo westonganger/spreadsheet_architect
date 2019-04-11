@@ -144,7 +144,8 @@ module SpreadsheetArchitect
               sheet.add_style range_str, x[:styles]
 
               if x[:include_header] && start_row > 1
-                sheet.add_style("#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}1:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col]}#{start_row-1}", x[:styles])
+                range_str = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str({rows: (1..start_row-1), columns: col}, max_row_length, num_rows)
+                sheet.add_style(range_str, x[:styles])
               end
             }
 
