@@ -40,7 +40,7 @@ module SpreadsheetArchitect
 
             sheet.add_row header_row, style: header_style_index
 
-            if options[:header_style][:fixed_top_left]
+            if options[:header_style] && options[:header_style][:fixed_top_left]
               # Fix the position of the first row and column
               # so that they do not scroll.
               sheet.sheet_view.pane do |pane|
