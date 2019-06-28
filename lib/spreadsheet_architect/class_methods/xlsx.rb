@@ -12,7 +12,7 @@ module SpreadsheetArchitect
     def to_axlsx_package(opts={}, package=nil)
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
-    
+
       header_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:header_style])
       row_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:row_style])
 
@@ -40,12 +40,24 @@ module SpreadsheetArchitect
 
             sheet.add_row header_row, style: header_style_index
 
+            if options[:header_style][:fixed_top_left]
+              # Fix the position of the first row and column
+              # so that they do not scroll.
+              sheet.sheet_view.pane do |pane|
+                pane.top_left_cell  = "B2"
+                pane.state          = :frozen_split
+                pane.y_split        = 1
+                pane.x_split        = 1
+                pane.active_pane    = :bottom_right
+              end
+            end
+
             if options[:conditional_row_styles]
               conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, header_row)
-              
+
               unless conditional_styles_for_row.empty?
                 sheet.add_style(
-                  "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}", 
+                  "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
                   SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
                 )
               end
@@ -103,10 +115,10 @@ module SpreadsheetArchitect
 
           if options[:conditional_row_styles]
             conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, row_data)
-            
+
             unless conditional_styles_for_row.empty?
               sheet.add_style(
-                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}", 
+                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
                 SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
               )
             end
