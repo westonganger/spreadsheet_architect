@@ -194,6 +194,48 @@ module SpreadsheetArchitect
             sheet.merge_cells x[:range]
           end
         end
+
+
+        if options[:freeze]
+          if options[:freeze].is_a?(String)
+            freeze_cell = options[:freeze]
+          else
+            if !options[:freeze][:row]
+              options[:freeze][:row] = num_rows-1
+            end
+
+            ### TODO
+            if !options[:freeze][:column]
+              options[:freeze][:column] = SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]
+            elsif options[:freeze][:column].is_a?(String)
+              options[:freeze][:column] = SpreadsheetArchitect::Utils::XLSX::COL_NAMES.index([options[:freeze][:column])
+            end
+
+            freeze_cell = "#{options[:freeze][:column]}#{options[:freeze][:row]}"
+          end
+
+          sheet.sheet_view.pane do |pane|
+            pane.top_left_cell = freeze_cell
+            pane.state = :frozen_split
+            pane.active_pane = :bottom_right
+
+            if options[:freeze][:row]
+              pane.y_split = options[:freeze][:row]
+            end
+
+            if options[:freeze][:column]
+              ### TODO
+              pane.x_split = options[:freeze][:column]
+            end
+          end
+        elsif options[:freeze_headers]
+          sheet.sheet_view.pane do |pane|
+            pane.top_left_cell = "A1"
+            pane.state = :frozen_split
+            pane.active_pane = :bottom_right
+            pane.y_split = options[:headers].count
+          end
+        end
       end
 
       return package

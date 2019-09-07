@@ -27,8 +27,6 @@ Minitest::Reporters.use!(
   Minitest.backtrace_filter
 )
 
-require 'custom_assertions'
-
 post_count = Post.count
 if post_count < 5
   (5 - post_count).times do |i|

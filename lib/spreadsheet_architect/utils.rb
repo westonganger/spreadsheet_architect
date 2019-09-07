@@ -13,7 +13,7 @@ module SpreadsheetArchitect
       elsif options[:headers].is_a?(Array)
         headers = options[:headers]
       else
-        headers = false
+        headers = []
       end
 
       if options[:column_types]
@@ -109,6 +109,10 @@ module SpreadsheetArchitect
     def self.get_options(options, klass)
       verify_option_types(options)
 
+      if options[:freeze] && options[:freeze_headers]
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot use both :freeze and :freeze_headers options at the same time')
+      end
+
       if defined?(klass::SPREADSHEET_OPTIONS)
         if klass::SPREADSHEET_OPTIONS.is_a?(Hash)
           options = SpreadsheetArchitect.default_options.merge(
@@ -135,6 +139,10 @@ module SpreadsheetArchitect
             options[:sheet_name] = options[:sheet_name].pluralize
           end
         end
+      end
+
+      if options[:freeze].is_a?(Hash) && (!options[:freeze][:row] && !options[:freeze][:column])
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :row or :column key when passing a hash to the :freeze option')
       end
 
       return options
@@ -221,6 +229,8 @@ module SpreadsheetArchitect
       check_option_type(options, :borders, Array)
       check_option_type(options, :column_widths, Array)
       check_option_type(options, :column_types, Array)
+      check_option_type(options, :freeze_headers, [TrueClass, FalseClass])
+      check_option_type(options, :freeze, [String, Hash])
     end
 
     def self.stringify_keys(hash={})

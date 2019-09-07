@@ -240,6 +240,8 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
+|**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll. Requires the Axlsx v3.0.0 which is unrelease, use the master branch in the meantime.|
+|**freeze**<br>*String or Hash*|`B2` or `{row: 2, column: 2}`|Make all cells before the specified one frozen/fixed so they do not scroll. Requires the Axlsx v3.0.0 which is unrelease, use the master branch in the meantime.|
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
 Same options as `to_xlsx`

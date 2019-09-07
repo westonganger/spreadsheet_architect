@@ -11,7 +11,8 @@ class KitchenSinkTest < ActiveSupport::TestCase
       data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now]},
       header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true},
       row_style: {background_color: nil, color: "000000", align: :left, font_size: 12},
-      sheet_name: 'Kitchen Sink'
+      sheet_name: 'Kitchen Sink',
+      freeze_headers: true,
     }
   end
 

@@ -19,6 +19,15 @@ class ExceptionsTest < ActiveSupport::TestCase
       conditional_row_styles = [{if: true, styles: false}]
       SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(conditional_row_styles, true, true)
     end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils.get_options({freeze: "A1", freeze_headers: true}, SpreadsheetArchitect)
+    end
+
+    assert_nothing_raised do
+      SpreadsheetArchitect.default_options = {freeze_headers: true}
+      SpreadsheetArchitect::Utils.get_options({freeze: "A1"}, SpreadsheetArchitect)
+    end
   end
 
   test "NoDataError" do
