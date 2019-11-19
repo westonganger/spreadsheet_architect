@@ -48,21 +48,16 @@ module SpreadsheetArchitect
         options[:data].each_with_index do |row_data, index|
           row do 
             row_data.each_with_index do |val, i|
-              if options[:types]
-                type = options[:types][i]
+              if options[:column_types]
+                type = options[:column_types][i]
               end
 
-              if type
-                if [:date, :time].include?(type)
-                  type = :string
-                  val = val.to_s
-                end
-              elsif val.respond_to?(:strftime)
+              if (type && [:date, :time].include?(type)) || val.respond_to?(:strftime)
                 type = :string
                 val = val.to_s 
               end
 
-              cell val, style: :row_style, type: (options[:types][i] if options[:types])
+              cell val, style: :row_style, type: type
             end
           end
         end

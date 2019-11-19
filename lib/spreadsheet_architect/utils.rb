@@ -211,7 +211,7 @@ module SpreadsheetArchitect
       check_option_type(options, :spreadsheet_columns, [Proc, Symbol, String])
       check_option_type(options, :data, Array)
       check_option_type(options, :instances, Array)
-      check_option_type(options, :headers, [TrueClass, Array])
+      check_option_type(options, :headers, [TrueClass, FalseClass, Array])
       check_option_type(options, :header_style, Hash)
       check_option_type(options, :row_style, Hash)
       check_option_type(options, :column_styles, Array)
@@ -220,6 +220,7 @@ module SpreadsheetArchitect
       check_option_type(options, :merges, Array)
       check_option_type(options, :borders, Array)
       check_option_type(options, :column_widths, Array)
+      check_option_type(options, :column_types, Array)
     end
 
     def self.stringify_keys(hash={})

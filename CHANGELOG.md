@@ -1,6 +1,9 @@
 CHANGELOG
 ---------
 
+- **Unreleased**
+  - Fix column type support for ODS spreadsheets
+  - Fix bug when passing `false` to `:headers` option
 - **3.2.1** - April 10, 2019
   - Fix bug when using `column_style` option with `include_header: true` & letter based column numbering
 - **3.2.0** - September 14, 2018
