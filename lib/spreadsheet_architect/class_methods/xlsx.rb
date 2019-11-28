@@ -134,6 +134,8 @@ module SpreadsheetArchitect
             else
               SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
+
+            sheet.add_border x[:range], (x[:border_styles] || x[:styles])
           end
         end
 

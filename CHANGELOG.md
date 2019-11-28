@@ -2,9 +2,10 @@ CHANGELOG
 ---------
 
 - **Unreleased**
-  - Fix `:column_types` support for ODS spreadsheets
-  - Raise error when unsupported column type passed
+  - Fix `:borders` option, was broken in v3.2.1
   - Fix bug when passing `false` to `:headers` option
+  - Raise error when unsupported column type is passed
+  - Remove claimed support for `:currency` and `:percent` for ODS spreadsheets as they were not working. PR Wanted.
 - **3.2.1** - April 10, 2019
   - Fix bug when using `column_style` option with `include_header: true` & letter based column numbering
 - **3.2.0** - September 14, 2018
