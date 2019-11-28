@@ -2,6 +2,8 @@ CHANGELOG
 ---------
 
 - **Unreleased**
+  - Nothing Yet
+- **3.3.0**
   - Fix `:borders` option, was broken in v3.2.1
   - Fix bug when passing `false` to `:headers` option
   - Raise error when unsupported column type is passed
