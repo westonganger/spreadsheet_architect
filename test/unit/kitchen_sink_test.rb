@@ -6,7 +6,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     @options = {
       headers: [
         ['Latest Posts'],
-        ['Title','Category','Author','Posted on','Earnings']
+        ['Title','Category','Author','Posted on','Posted At','Earnings']
       ],
       data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now]},
       header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true},
@@ -82,11 +82,16 @@ class KitchenSinkTest < ActiveSupport::TestCase
 
   def test_ods
     @options.merge!({
+      headers: [
+        ['Latest Posts'],
+        ['Title','Category','Author','Boolean','Posted on','Posted At']
+      ],
+      data: 50.times.map{|i| [i, "foobar-#{i}", (5.4*i), true, Date.today, Time.now]},
       column_types: [
         :string,
         :float,
-        :percent,
-        :currency,
+        :float, 
+        :boolean,
         :date,
         :time,
         nil

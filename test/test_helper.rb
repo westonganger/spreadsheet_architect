@@ -43,7 +43,7 @@ else
   axlsx_version = axlsx_spec.version.to_s
 end
 
-VERSIONED_BASE_PATH = Rails.root.join("tmp/#{axlsx_version}")
+VERSIONED_BASE_PATH = Rails.root.join("../../tmp/#{axlsx_version}")
 
 ### Cleanup old test spreadsheets
 FileUtils.remove_dir(VERSIONED_BASE_PATH, true)

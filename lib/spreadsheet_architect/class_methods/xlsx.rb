@@ -4,6 +4,8 @@ require 'axlsx_styler'
 require 'spreadsheet_architect/monkey_patches/axlsx_column_width'
 
 module SpreadsheetArchitect
+  XLSX_COLUMN_TYPES = [:string, :integer, :float, :boolean].freeze
+
   module ClassMethods
     def to_xlsx(opts={})
       return to_axlsx_package(opts).to_stream.read
@@ -12,6 +14,10 @@ module SpreadsheetArchitect
     def to_axlsx_package(opts={}, package=nil)
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
+
+      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::XLSX_COLUMN_TYPES).empty?
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid XLSX values are #{SpreadsheetArchitect::XLSX_COLUMN_TYPES}")
+      end
     
       header_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:header_style])
       row_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:row_style])

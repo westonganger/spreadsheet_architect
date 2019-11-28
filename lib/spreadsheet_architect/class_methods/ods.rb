@@ -10,6 +10,10 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
+      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::ODS_COLUMN_TYPES).empty?
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid ODS values are #{SpreadsheetArchitect::ODS_COLUMN_TYPES}")
+      end
+
       if !spreadsheet
         spreadsheet = RODF::Spreadsheet.new
       end

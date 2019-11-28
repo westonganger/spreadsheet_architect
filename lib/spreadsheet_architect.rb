@@ -10,6 +10,7 @@ require 'spreadsheet_architect/class_methods/ods'
 require 'spreadsheet_architect/class_methods/xlsx'
 
 module SpreadsheetArchitect
+
   def self.included(base)
     base.send(:extend, ClassMethods)
   end
@@ -33,4 +34,8 @@ module SpreadsheetArchitect
   def self.default_options
     @default_options
   end
+
+  XLSX_COLUMN_TYPES = [:string, :integer, :float, :date, :time, :boolean].freeze
+  ODS_COLUMN_TYPES = [:string, :float, :date, :time, :boolean].freeze
+
 end
