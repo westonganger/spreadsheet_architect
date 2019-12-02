@@ -2,6 +2,7 @@ require 'csv'
 
 module SpreadsheetArchitect
   module ClassMethods
+
     def to_csv(opts={})
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
@@ -18,5 +19,6 @@ module SpreadsheetArchitect
         end
       end
     end
+
   end
 end

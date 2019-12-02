@@ -4,9 +4,8 @@ require 'axlsx_styler'
 require 'spreadsheet_architect/monkey_patches/axlsx_column_width'
 
 module SpreadsheetArchitect
-  XLSX_COLUMN_TYPES = [:string, :integer, :float, :boolean].freeze
-
   module ClassMethods
+
     def to_xlsx(opts={})
       return to_axlsx_package(opts).to_stream.read
     end
@@ -199,5 +198,6 @@ module SpreadsheetArchitect
 
       return package
     end
+
   end
 end

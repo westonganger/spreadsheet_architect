@@ -2,6 +2,7 @@ require 'rodf'
 
 module SpreadsheetArchitect
   module ClassMethods
+
     def to_ods(opts={})
       return to_rodf_spreadsheet(opts).bytes
     end

@@ -3,6 +3,8 @@ CHANGELOG
 
 - **Unreleased**
   - Nothing Yet
+- **3.3.1**
+  - [Issue #30](https://github.com/westonganger/spreadsheet_architect/issues/30) - Fix duplicate constant warning for XLSX_COLUMN_TYPES
 - **3.3.0**
   - Fix `:borders` option, was broken in v3.2.1
   - Fix bug when passing `false` to `:headers` option
