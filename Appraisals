@@ -1,11 +1,11 @@
-appraise "axlsx master" do
-  gem "axlsx", git: "https://github.com/randym/axlsx.git"
+appraise "caxlsx" do
+  gem "caxlsx" # Ruby 2.3+
 end
 
-appraise "axlsx 3.0.0.pre" do
-  gem "axlsx", "3.0.0.pre"
+appraise "caxlsx 3.0.0" do
+  gem "caxlsx", "3.0.0" # Ruby 1.9.3+
 end
 
-appraise "axlsx 2.x" do
-  gem "axlsx", "~> 2.0"
+appraise "caxlsx 2.0.2" do
+  gem "caxlsx", "2.0.2" # Legacy Axlsx Support
 end

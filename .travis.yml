@@ -14,9 +14,9 @@ jobs:
   - rvm: ruby-head
 
 gemfile:
-  - gemfiles/axlsx_master.gemfile
-  - gemfiles/axlsx_3.0.0.pre.gemfile
-  - gemfiles/axlsx_2.x.gemfile
+  - gemfiles/caxlsx.gemfile
+  - gemfiles/caxlsx_3.0.0.gemfile
+  - gemfiles/caxlsx_2.0.2.gemfile
 
 notifications:
   email: false

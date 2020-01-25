@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.test_files  = Dir.glob("{test/**/*}")
   s.require_path = 'lib'
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency 'axlsx', ['>= 2', '<4']
-  s.add_runtime_dependency 'axlsx_styler', ['>= 0.1.7', '<2']
+  s.add_runtime_dependency 'caxlsx', ['>= 2.0.2', '<4']
+  s.add_runtime_dependency 'axlsx_styler', ['>= 1.0.0', '<2']
   s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
   
   s.add_development_dependency 'rake'
