@@ -196,44 +196,37 @@ module SpreadsheetArchitect
         end
 
 
-        if options[:freeze]
-          if options[:freeze].is_a?(String)
-            freeze_cell = options[:freeze]
-          else
-            if !options[:freeze][:row]
-              options[:freeze][:row] = num_rows-1
-            end
-
-            ### TODO
-            if !options[:freeze][:column]
-              options[:freeze][:column] = SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]
-            elsif options[:freeze][:column].is_a?(String)
-              options[:freeze][:column] = SpreadsheetArchitect::Utils::XLSX::COL_NAMES.index([options[:freeze][:column])
-            end
-
-            freeze_cell = "#{options[:freeze][:column]}#{options[:freeze][:row]}"
-          end
-
-          sheet.sheet_view.pane do |pane|
-            pane.top_left_cell = freeze_cell
-            pane.state = :frozen_split
-            pane.active_pane = :bottom_right
-
-            if options[:freeze][:row]
-              pane.y_split = options[:freeze][:row]
-            end
-
-            if options[:freeze][:column]
-              ### TODO
-              pane.x_split = options[:freeze][:column]
-            end
-          end
-        elsif options[:freeze_headers]
+        if options[:freeze_headers]
           sheet.sheet_view.pane do |pane|
             pane.top_left_cell = "A1"
             pane.state = :frozen_split
             pane.active_pane = :bottom_right
             pane.y_split = options[:headers].count
+          end
+        elsif options[:freeze]
+          sheet.sheet_view.pane do |pane|
+            pane.state = :frozen_split
+            pane.active_pane = :bottom_right
+
+            if !options[:freeze][:columns] || options[:freeze][:columns] == :all
+              freeze_cell = "A"
+            elsif options[:freeze][:columns].is_a?(Range)
+              freeze_cell = "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[options[:freeze][:columns].first]}"
+              pane.y_split = options[:freeze][:columns].count
+            else
+              freeze_cell = "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[options[:freeze][:columns]]}"
+              pane.y_split = 1
+            end
+
+            if options[:freeze][:rows].is_a?(Range)
+              freeze_cell += "#{options[:freeze][:rows].first}"
+              pane.x_split = options[:freeze][:rows].count
+            else
+              freeze_cell += "#{options[:freeze][:rows]}"
+              pane.x_split = 1
+            end
+
+            pane.top_left_cell = freeze_cell
           end
         end
       end

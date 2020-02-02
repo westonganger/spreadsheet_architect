@@ -3,7 +3,7 @@ appraise "caxlsx" do
 end
 
 appraise "caxlsx 3.0.0" do
-  gem "caxlsx", "3.0.0" # Ruby 1.9.3+
+  gem "caxlsx", "3.0.0" # Legacy Axlsx Support
 end
 
 appraise "caxlsx 2.0.2" do

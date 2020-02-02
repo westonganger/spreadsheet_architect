@@ -141,8 +141,8 @@ module SpreadsheetArchitect
         end
       end
 
-      if options[:freeze].is_a?(Hash) && (!options[:freeze][:row] && !options[:freeze][:column])
-        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :row or :column key when passing a hash to the :freeze option')
+      if options[:freeze] && options[:freeze].is_a?(Hash) && !options[:freeze][:rows]
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :rows key when passing a hash to the :freeze option')
       end
 
       return options
@@ -230,7 +230,7 @@ module SpreadsheetArchitect
       check_option_type(options, :column_widths, Array)
       check_option_type(options, :column_types, Array)
       check_option_type(options, :freeze_headers, [TrueClass, FalseClass])
-      check_option_type(options, :freeze, [String, Hash])
+      check_option_type(options, :freeze, Hash)
     end
 
     def self.stringify_keys(hash={})
