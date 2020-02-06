@@ -113,27 +113,6 @@ class XlsxUtilsTest < ActiveSupport::TestCase
     #end
   end
 
-  test "symbolize_keys" do
-    hash = klass.symbolize_keys
-    assert_empty hash
-
-    hash = klass.symbolize_keys({'foo' => :bar})
-    assert_nil hash['foo']
-    assert_equal hash[:foo], :bar
-
-    hash = klass.symbolize_keys({'foo' => :bar, bar: :foo})
-    assert_nil hash['foo']
-    assert_equal hash[:foo], :bar
-
-    hash = klass.symbolize_keys({'foo' => {'foo' => :bar}})
-    assert_nil hash['foo']
-    assert_equal hash[:foo][:foo], :bar
-
-    hash = klass.symbolize_keys({'foo' => {'foo' => {'foo' => :bar}}})
-    assert_nil hash['foo']
-    assert_equal hash[:foo][:foo][:foo], :bar
-  end
-
   test "constants" do
     assert_equal klass::COL_NAMES.count, 16384
     assert_equal klass::COL_NAMES.first, 'A'

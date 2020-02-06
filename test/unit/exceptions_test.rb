@@ -23,11 +23,6 @@ class ExceptionsTest < ActiveSupport::TestCase
     assert_raise error do
       SpreadsheetArchitect::Utils.get_options({freeze: {rows: 1}, freeze_headers: true}, SpreadsheetArchitect)
     end
-
-    assert_nothing_raised do
-      SpreadsheetArchitect.default_options = {freeze_headers: true}
-      SpreadsheetArchitect::Utils.get_options({freeze: {rows: 1}}, SpreadsheetArchitect)
-    end
   end
 
   test "NoDataError" do

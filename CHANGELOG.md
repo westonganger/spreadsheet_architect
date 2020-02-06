@@ -4,7 +4,9 @@ CHANGELOG
 - **Unreleased**
   - Switch to the `caxlsx` gem (Community Axlsx) from the legacy unmaintained `axlsx` gem. Axlsx has had a long history of being poorly maintained so this community gem improves the situation.
   - Require Ruby 2.3+
-  - Add options `:freeze` and `:freeze_headers` for XLSX spreadsheets
+  - Ensure all options using Hash are automatically converted to symbol only hashes
+  - Add XLSX option `:freeze` to freeze custom sections of your spreadsheet
+  - Add XLSX option `:freeze_headers` to freeze the headers of your spreadsheet
 - **3.3.1**
   - [Issue #30](https://github.com/westonganger/spreadsheet_architect/issues/30) - Fix duplicate constant warning for XLSX_COLUMN_TYPES
 - **3.3.0**

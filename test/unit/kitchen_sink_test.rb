@@ -20,7 +20,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
   end
 
   def test_xlsx
-    @options.merge!({
+    opts = @options.merge({
       column_styles: [
         {columns: 0, styles: {bold: true}},
         {columns: (1..3), styles: {color: "444444"}},
@@ -74,7 +74,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     })
 
     # Using Array Data
-    file_data = SpreadsheetArchitect.to_xlsx(@options)
+    file_data = SpreadsheetArchitect.to_xlsx(opts)
 
     File.open(VERSIONED_BASE_PATH.join("kitchen_sink.xlsx"),'w+b') do |f|
       f.write file_data
@@ -82,7 +82,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
   end
 
   def test_ods
-    @options.merge!({
+    opts = @options.merge({
       headers: [
         ['Latest Posts'],
         ['Title','Category','Author','Boolean','Posted on','Posted At']
@@ -100,7 +100,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     })
 
     # Using Array Data
-    file_data = SpreadsheetArchitect.to_ods(@options)
+    file_data = SpreadsheetArchitect.to_ods(opts)
 
     File.open(VERSIONED_BASE_PATH.join("kitchen_sink.ods"),'w+b') do |f|
       f.write file_data

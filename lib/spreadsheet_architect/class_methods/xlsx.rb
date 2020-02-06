@@ -107,6 +107,8 @@ module SpreadsheetArchitect
           sheet.add_row row_data, style: styles, types: types
 
           if options[:conditional_row_styles]
+            options[:conditional_row_styles] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:conditional_row_styles])
+
             conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, row_data)
             
             unless conditional_styles_for_row.empty?
@@ -127,6 +129,8 @@ module SpreadsheetArchitect
         end
 
         if options[:borders]
+          options[:borders] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:borders])
+
           options[:borders].each do |x|
             if x[:range].is_a?(Hash)
               x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
@@ -139,6 +143,8 @@ module SpreadsheetArchitect
         end
 
         if options[:column_styles]
+          options[:column_styles] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:column_styles])
+
           options[:column_styles].each do |x|
             start_row = (options[:headers] ? options[:headers].count : 0) + 1
 
@@ -170,6 +176,8 @@ module SpreadsheetArchitect
         end
 
         if options[:range_styles]
+          options[:range_styles] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:range_styles])
+
           options[:range_styles].each do |x|
             styles = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles])
 
@@ -184,6 +192,8 @@ module SpreadsheetArchitect
         end
 
         if options[:merges]
+          options[:merges] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:merges])
+
           options[:merges].each do |x|
             if x[:range].is_a?(Hash)
               x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
@@ -195,38 +205,41 @@ module SpreadsheetArchitect
           end
         end
 
-
         if options[:freeze_headers]
           sheet.sheet_view.pane do |pane|
-            pane.top_left_cell = "A1"
-            pane.state = :frozen_split
-            pane.active_pane = :bottom_right
+            pane.state = :frozen
             pane.y_split = options[:headers].count
           end
-        elsif options[:freeze]
-          sheet.sheet_view.pane do |pane|
-            pane.state = :frozen_split
-            pane.active_pane = :bottom_right
 
-            if !options[:freeze][:columns] || options[:freeze][:columns] == :all
-              freeze_cell = "A"
-            elsif options[:freeze][:columns].is_a?(Range)
-              freeze_cell = "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[options[:freeze][:columns].first]}"
-              pane.y_split = options[:freeze][:columns].count
+        elsif options[:freeze]
+          options[:freeze] = SpreadsheetArchitect::Utils.symbolize_keys(options[:freeze])
+
+          sheet.sheet_view.pane do |pane|
+            pane.state = :frozen
+
+            ### Currently not working
+            #if options[:freeze][:active_pane]
+            #  Axlsx.validate_pane_type(options[:freeze][:active_pane])
+            #  pane.active_pane = options[:freeze][:active_pane]
+            #else
+            #  pane.active_pane = :bottom_right
+            #end
+
+            if !options[:freeze][:rows]
+              raise SpreadsheetArchitect::Exceptions::ArgumentError.new("The :rows key must be specified in the :freeze option hash")
+            elsif options[:freeze][:rows].is_a?(Range)
+              pane.y_split = options[:freeze][:rows].count
             else
-              freeze_cell = "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[options[:freeze][:columns]]}"
               pane.y_split = 1
             end
 
-            if options[:freeze][:rows].is_a?(Range)
-              freeze_cell += "#{options[:freeze][:rows].first}"
-              pane.x_split = options[:freeze][:rows].count
-            else
-              freeze_cell += "#{options[:freeze][:rows]}"
-              pane.x_split = 1
+            if options[:freeze][:columns] && options[:freeze][:columns] != :all
+              if options[:freeze][:columns].is_a?(Range)
+                pane.x_split = options[:freeze][:columns].count
+              else
+                pane.x_split = 1
+              end
             end
-
-            pane.top_left_cell = freeze_cell
           end
         end
       end

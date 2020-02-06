@@ -216,6 +216,8 @@ module SpreadsheetArchitect
     end
 
     def self.verify_option_types(options)
+      options = self.symbolize_keys(options, shallow: true)
+
       check_option_type(options, :spreadsheet_columns, [Proc, Symbol, String])
       check_option_type(options, :data, Array)
       check_option_type(options, :instances, Array)
@@ -233,8 +235,9 @@ module SpreadsheetArchitect
       check_option_type(options, :freeze, Hash)
     end
 
-    def self.stringify_keys(hash={})
+    def self.stringify_keys(hash)
       new_hash = {}
+
       hash.each do |k,v|
         if v.is_a?(Hash)
           new_hash[k.to_s] = self.stringify_keys(v)
@@ -242,7 +245,33 @@ module SpreadsheetArchitect
           new_hash[k.to_s] = v
         end
       end
+
       return new_hash
     end
+
+    def self.symbolize_keys(hash, shallow: false)
+      new_hash = {}
+
+      hash.each do |k,v|
+        if v.is_a?(Hash)
+          new_hash[k.to_sym] = shallow ? v : self.symbolize_keys(v)
+        else
+          new_hash[k.to_sym] = v
+        end
+      end
+
+      return new_hash
+    end
+
+    def self.hash_array_symbolize_keys(array)
+      new_array = []
+
+      array.each_with_index do |x,i|
+        new_array[i] = x.is_a?(Hash) ? self.symbolize_keys(x) : x
+      end
+
+      return new_array
+    end
+
   end
 end

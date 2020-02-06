@@ -153,7 +153,7 @@ class UtilsTest < ActiveSupport::TestCase
   end
 
   test "stringify_keys" do
-    hash = klass.stringify_keys
+    hash = klass.stringify_keys({})
     assert_empty hash
 
     hash = klass.stringify_keys({foo: :bar})
@@ -176,4 +176,35 @@ class UtilsTest < ActiveSupport::TestCase
     assert_nil hash[:foo]
     assert_equal hash['foo']['foo']['foo']['foo'], :bar
   end
+
+  test "symbolize_keys" do
+    hash = klass.symbolize_keys({})
+    assert_empty hash
+
+    hash = klass.symbolize_keys({'foo' => :bar})
+    assert_nil hash['foo']
+    assert_equal hash[:foo], :bar
+
+    hash = klass.symbolize_keys({'foo' => :bar, bar: :foo})
+    assert_nil hash['foo']
+    assert_equal hash[:foo], :bar
+
+    hash = klass.symbolize_keys({'foo' => {'foo' => :bar}})
+    assert_nil hash['foo']
+    assert_equal hash[:foo][:foo], :bar
+
+    hash = klass.symbolize_keys({'foo' => {'foo' => {'foo' => :bar}}})
+    assert_nil hash['foo']
+    assert_equal hash[:foo][:foo][:foo], :bar
+  end
+
+  test "hash_array_symbolize_keys" do
+    array = klass.hash_array_symbolize_keys([])
+    assert_empty array
+
+    array = klass.hash_array_symbolize_keys([{'foo' => :bar}])
+    assert_nil array[0]['foo']
+    assert_equal array[0][:foo], :bar
+  end
+
 end

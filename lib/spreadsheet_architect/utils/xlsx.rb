@@ -26,7 +26,8 @@ module SpreadsheetArchitect
 
       def self.convert_styles_to_axlsx(styles={})
         styles = {} unless styles.is_a?(Hash)
-        styles = self.symbolize_keys(styles)
+
+        styles = SpreadsheetArchitect::Utils.symbolize_keys(styles)
 
         if styles[:fg_color].nil? && styles[:color] && styles[:color].respond_to?(:sub) && !styles[:color].empty?
           styles[:fg_color] = styles.delete(:color).sub('#','')
@@ -175,18 +176,6 @@ module SpreadsheetArchitect
       end
 
       private
-
-      def self.symbolize_keys(hash={})
-        new_hash = {}
-        hash.each do |k, v|
-          if v.is_a?(Hash)
-            new_hash[k.to_sym] = self.symbolize_keys(v)
-          else
-            new_hash[k.to_sym] = v
-          end
-        end
-        new_hash
-      end
 
       ### Limit of 16384 columns as per Excel limitations
       COL_NAMES = Array('A'..'XFD').freeze
