@@ -1,7 +1,7 @@
 require 'axlsx'
 require 'axlsx_styler'
 
-require 'spreadsheet_architect/monkey_patches/axlsx_column_width'
+require 'spreadsheet_architect/axlsx_string_width_patch'
 
 module SpreadsheetArchitect
   module ClassMethods
