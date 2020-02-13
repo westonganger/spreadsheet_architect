@@ -26,6 +26,8 @@ gem 'spreadsheet_architect'
 
 ### Tabular (Array) Data
 
+The simplest and preffered usage is to simply create the data array yourself. 
+
 ```ruby
 headers = ['Col 1','Col 2','Col 3']
 data = [[1,2,3], [4,5,6], [7,8,9]]
@@ -34,23 +36,38 @@ SpreadsheetArchitect.to_ods(headers: headers, data: data)
 SpreadsheetArchitect.to_csv(headers: headers, data: data)
 ```
 
-### Rails relation or an array of plain Ruby object instances
+Using this style will allow you to utilize any custom performance optimizations during your data generation process. This will come in handy when the spreadsheets get large and things start to get slow. One of my favourites for Rails is [light_record](https://github.com/Paxa/light_record)
+
+### Rails Relations or an Array of plain Ruby object instances
+
+If you would like to add the methods `to_xlsx`, `to_ods`, `to_csv`, `to_axlsx_package`, `to_rodf_spreadsheet` to some class, you can simply include the SpreadsheetArchitect module to whichever classes you choose. A good default strategy is to simply add it to the ApplicationRecord or another parent class to have it available on all appropriate classes. For example:
 
 ```ruby
-posts = Post.order(name: :asc).where(published: true)
-# OR
-posts = 10.times.map{|i| Post.new(number: i)}
-
-SpreadsheetArchitect.to_xlsx(instances: posts)
-SpreadsheetArchitect.to_ods(instances: posts)
-SpreadsheetArchitect.to_csv(instances: posts)
+class Post < ApplicationRecord
+  include SpreadsheetArchitect
+end
 ```
 
-**(Optional)** If you would like to add the methods `to_xlsx`, `to_ods`, `to_csv`, `to_axlsx_package`, `to_rodf_spreadsheet` to some class, you can simply include the SpreadsheetArchitect module to whichever classes you choose. A good default strategy is to simply add it to the ApplicationRecord or another parent class to have it available on all appropriate classes. For example:
+When using on an AR Relation or using the `:instances` option, SpreadsheetArchitect requires an instance method to be defined on the class to generate the data. By default it looks for the `spreadsheet_columns` method on the class. If you are using on an ActiveRecord model and that method is not defined, it would fallback to the models `column_names` method. If using the `:data` option this is completely ignored.
 
 ```ruby
-class ApplicationRecord < ActiveRecord::Base
+class Post
   include SpreadsheetArchitect
+
+  def spreadsheet_columns
+    ### Column format is: [Header, Cell Data / Method (if symbol) to Call on each Instance, (optional) Cell Type]
+    [
+      ['Title', :title],
+      ['Content', content.strip],
+      ['Author', (author.name if author)],
+      ['Published?', (published ? 'Yes' : 'No')],
+      :published_at, # uses the method name as header title Ex. 'Published At'
+      ['# of Views', :number_of_views, :float],
+      ['Rating', :rating],
+      ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
+    ]
+  end
+
 end
 ```
 
@@ -69,35 +86,10 @@ Post.to_ods(instances: posts_array)
 Post.to_csv(instances: posts_array)
 ```
 
-# Usage with Instances / ActiveRecord Relations
-
-When NOT using the `:data` option, ie. on an AR Relation or using the `:instances` option, Spreadsheet Architect requires an instance method defined on the class to generate the data. It looks for the `spreadsheet_columns` method on the class. If you are using on an ActiveRecord model and that method is not defined, it would fallback to the models `column_names` method (not recommended). If using the `:data` option this is ignored.
+If you want to use a different method name then `spreadsheet_columns` you can pass a method name to the `:spreadsheet_columns` option.
 
 ```ruby
-class Post
-
-  def spreadsheet_columns
-
-    ### Column format is: [Header, Cell Data / Method (if symbol) to Call on each Instance, (optional) Cell Type]
-    [
-      ['Title', :title],
-      ['Content', content.strip],
-      ['Author', (author.name if author)],
-      ['Published?', (published ? 'Yes' : 'No')],
-      :published_at, # uses the method name as header title Ex. 'Published At'
-      ['# of Views', :number_of_views, :float],
-      ['Rating', :rating],
-      ['Category/Tags', "#{category.name} - #{tags.collect(&:name).join(', ')}"]
-    ]
-end
-
-Post.to_xlsx(instances: posts)
-```
-
-If you want to use a different method name then `spreadsheet_columns` you can pass a method name as a Symbol or String to the `spreadsheet_columns` option. Feel free to utilize the model-wide/project-wide defaults features if desired necessary.
-
-```ruby
-Post.to_xlsx(instances: posts, spreadsheet_columns: :my_special_columns)
+Post.to_xlsx(instances: posts, spreadsheet_columns: :my_special_method)
 ```
 
 Alternatively, you can pass a Proc/lambda to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
@@ -119,10 +111,19 @@ Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
 
 # Sending & Saving Spreadsheets
 
-### Method 1: Send Data via Rails Controller
+### Method 1: Save to a file manually
 
 ```ruby
+file_data = SpreadsheetArchitect.to_xlsx(headers: headers, data: data)
 
+File.open('path/to/file.xlsx', 'w+b') do |f|
+  f.write file_data
+end
+```
+
+### Method 2: Send Data via Rails Controller
+
+```ruby
 class PostsController < ActionController::Base
   respond_to :html, :xlsx, :ods, :csv
 
@@ -173,26 +174,6 @@ class PostsController < ActionController::Base
       format.csv{ render csv: @posts.to_csv(headers: false), file_name: 'articles' }
     end
   end
-end
-```
-
-### Method 2: Save to a file manually
-
-```ruby
-### Ex. with ActiveRecord relation
-file_data = Post.order(published_at: :asc).to_xlsx
-File.open('path/to/file.xlsx', 'w+b') do |f|
-  f.write file_data
-end
-
-file_data = Post.order(published_at: :asc).to_ods
-File.open('path/to/file.ods', 'w+b') do |f|
-  f.write file_data
-end
-
-file_data = Post.order(published_at: :asc).to_csv
-File.open('path/to/file.csv', 'w+b') do |f|
-  f.write file_data
 end
 ```
 
@@ -278,7 +259,9 @@ Same options as `to_ods`
 # Change class-wide default method options
 
 ```ruby
-class Post
+class Post < ApplicationRecord
+  include SpreadsheetArchitect
+
   def spreadsheet_columns
     [:name, :content]
   end
