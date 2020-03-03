@@ -1,4 +1,4 @@
-if Axlsx::VERSION.to_f < 3 && (Axlsx::VERSION.to_s.split('.')[2].to_i < 2)
+if Axlsx::VERSION.to_f < 3.1
 
   Axlsx::Cell.class_eval do
     private
