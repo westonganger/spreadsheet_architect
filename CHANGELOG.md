@@ -2,6 +2,8 @@ CHANGELOG
 ---------
 
 - **Unreleased**
+  - Nothing yet
+- **4.0.0**
   - Switch to the `caxlsx` gem (Community Axlsx) from the legacy unmaintained `axlsx` gem. Axlsx has had a long history of being poorly maintained so this community gem improves the situation.
   - Require Ruby 2.3+
   - Ensure all options using Hash are automatically converted to symbol only hashes
