@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased**
-  - Nothing yet
+  - Fix Bug for older version of `caxlsx` v2.0.2
 - **4.0.0**
   - Switch to the `caxlsx` gem (Community Axlsx) from the legacy unmaintained `axlsx` gem. Axlsx has had a long history of being poorly maintained so this community gem improves the situation.
   - Require Ruby 2.3+
