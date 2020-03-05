@@ -183,7 +183,7 @@ end
 
 ```ruby
 axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data})
-axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data}, package)
+axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data}, axlsx_package)
 
 File.open('path/to/multi_sheet_file.xlsx', 'w+b') do |f|
   f.write axlsx_package.to_stream.read
@@ -195,7 +195,7 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 ### ODS
 ```ruby
 ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data})
-ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data}, spreadsheet)
+ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data}, ods_spreadsheet)
 
 File.open('path/to/multi_sheet_file.ods', 'w+b') do |f|
   f.write ods_spreadsheet
