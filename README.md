@@ -10,7 +10,7 @@ Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV s
 Key Features:
 
 - Dead simple custom spreadsheets with custom data
-- Data Sources: ActiveRecord relations, array of plain Ruby object instances, or tabular 2D Array Data
+- Data Sources: Tabular 2D Array Data, ActiveRecord relations, or array of plain Ruby object instances
 - Easily style and customize spreadsheets
 - Create multi sheet spreadsheets
 - Setting Class/Model or Project specific defaults
@@ -40,7 +40,7 @@ Using this style will allow you to utilize any custom performance optimizations 
 
 ### Rails Relations or an Array of plain Ruby object instances
 
-If you would like to add the methods `to_xlsx`, `to_ods`, `to_csv`, `to_axlsx_package`, `to_rodf_spreadsheet` to some class, you can simply include the SpreadsheetArchitect module to whichever classes you choose. A good default strategy is to simply add it to the ApplicationRecord or another parent class to have it available on all appropriate classes. For example:
+If you would like to add the methods `to_xlsx`, `to_ods`, `to_csv`, `to_axlsx_package`, `to_rodf_spreadsheet` to some class, you can simply include the SpreadsheetArchitect module to whichever classes you choose. For example:
 
 ```ruby
 class Post < ApplicationRecord
