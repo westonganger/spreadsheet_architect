@@ -3,7 +3,7 @@
 <a href="https://badge.fury.io/rb/spreadsheet_architect" target="_blank"><img height="21" style='border:0px;height:21px;' border='0' src="https://badge.fury.io/rb/spreadsheet_architect.svg" alt="Gem Version"></a>
 <a href='https://travis-ci.com/westonganger/spreadsheet_architect' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://api.travis-ci.org/westonganger/spreadsheet_architect.svg?branch=master' border='0' alt='Build Status' /></a>
 <a href='https://rubygems.org/gems/spreadsheet_architect' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://ruby-gem-downloads-badge.herokuapp.com/spreadsheet_architect?label=rubygems&type=total&total_label=downloads&color=brightgreen' border='0' alt='RubyGems Downloads' /></a>
-<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='22' style='border:0px;height:22px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a> 
+<a href='https://ko-fi.com/A5071NK' target='_blank'><img height='22' style='border:0px;height:22px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=a' border='0' alt='Buy Me a Coffee' /></a>
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets super easily from ActiveRecord relations, plain Ruby objects, or tabular data.
 
@@ -22,11 +22,11 @@ Key Features:
 gem 'spreadsheet_architect'
 ```
 
-# General Usage 
+# General Usage
 
 ### Tabular (Array) Data
 
-The simplest and preffered usage is to simply create the data array yourself. 
+The simplest and preffered usage is to simply create the data array yourself.
 
 ```ruby
 headers = ['Col 1','Col 2','Col 3']
@@ -215,8 +215,8 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
-|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_styles_reference.md)|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)|
 |**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
 |**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
 |**conditional_row_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
