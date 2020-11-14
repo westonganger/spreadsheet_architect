@@ -7,13 +7,16 @@ module SpreadsheetArchitect
         data = options[:data]
       end
 
-      if !options[:data] && options[:headers] == true
+      if options[:headers] == true
         headers = []
-        needs_headers = true
+
+        if !options[:data]
+          needs_headers = true
+        end
       elsif options[:headers].is_a?(Array)
         headers = options[:headers]
       else
-        headers = []
+        headers = false
       end
 
       if options[:column_types]
