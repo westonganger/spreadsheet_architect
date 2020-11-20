@@ -221,21 +221,15 @@ module SpreadsheetArchitect
     def self.verify_option_types(options)
       options = self.symbolize_keys(options, shallow: true)
 
-      check_option_type(options, :spreadsheet_columns, [Proc, Symbol, String])
-      check_option_type(options, :data, Array)
-      check_option_type(options, :instances, Array)
-      check_option_type(options, :headers, [TrueClass, FalseClass, Array])
-      check_option_type(options, :header_style, Hash)
-      check_option_type(options, :row_style, Hash)
-      check_option_type(options, :column_styles, Array)
-      check_option_type(options, :range_styles, Array)
-      check_option_type(options, :conditional_row_styles, Array)
-      check_option_type(options, :merges, Array)
-      check_option_type(options, :borders, Array)
-      check_option_type(options, :column_widths, Array)
-      check_option_type(options, :column_types, Array)
-      check_option_type(options, :freeze_headers, [TrueClass, FalseClass])
-      check_option_type(options, :freeze, Hash)
+      bad_keys = options.keys - ALLOWED_OPTIONS.keys
+
+      if bad_keys.any?
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid options provided: #{bad_keys}")
+      end
+
+      ALLOWED_OPTIONS.each do |key, allowed_types|
+        check_option_type(options, key, allowed_types)
+      end
     end
 
     def self.stringify_keys(hash)
@@ -275,6 +269,26 @@ module SpreadsheetArchitect
 
       return new_array
     end
+
+    ALLOWED_OPTIONS = {
+      borders: Array,
+      column_styles: Array,
+      conditional_row_styles: Array,
+      column_widths: Array,
+      column_types: Array,
+      data: Array,
+      freeze_headers: [TrueClass, FalseClass],
+      freeze: Hash,
+      headers: [TrueClass, FalseClass, Array],
+      header_style: Hash,
+      instances: Array,
+      merges: Array,
+      range_styles: Array,
+      row_style: Hash,
+      sheet_name: String,
+      spreadsheet_columns: [Proc, Symbol, String],
+    }.freeze
+
 
   end
 end

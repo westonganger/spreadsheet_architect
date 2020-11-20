@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased**
-  - Nothing yet
+  - Raise ArgumentError when invalid option names are given
 - **4.0.1**
   - Fix bug with `headers: false` where a blank header row is still added 
   - Fix Bug for older version of `caxlsx` v2.0.2

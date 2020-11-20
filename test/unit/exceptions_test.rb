@@ -23,6 +23,10 @@ class ExceptionsTest < ActiveSupport::TestCase
     assert_raise error do
       SpreadsheetArchitect::Utils.get_options({freeze: {rows: 1}, freeze_headers: true}, SpreadsheetArchitect)
     end
+
+    assert_raise error do
+      SpreadsheetArchitect.to_csv(foo: :bar)
+    end
   end
 
   test "NoDataError" do
@@ -31,7 +35,7 @@ class ExceptionsTest < ActiveSupport::TestCase
     assert error.new
 
     assert_raise error do
-      SpreadsheetArchitect.to_csv(foo: :bar)
+      SpreadsheetArchitect.to_csv(headers: [])
     end
   end
 
