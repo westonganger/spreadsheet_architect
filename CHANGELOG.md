@@ -2,6 +2,8 @@ CHANGELOG
 ---------
 
 - **Unreleased**
+  - Nothing yet
+- **4.1.0**
   - Raise ArgumentError when invalid option names are given
 - **4.0.1**
   - Fix bug with `headers: false` where a blank header row is still added 
