@@ -190,7 +190,7 @@ File.open('path/to/multi_sheet_file.xlsx', 'w+b') do |f|
 end
 ```
 
-See this file for more details: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
+See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/multi_sheet_test.rb)
 
 ### ODS
 ```ruby
@@ -202,7 +202,7 @@ File.open('path/to/multi_sheet_file.ods', 'w+b') do |f|
 end
 ```
 
-See this file for more details: https://github.com/westonganger/spreadsheet_architect/blob/master/test/spreadsheet_architect/multi_sheet_test.rb
+See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/multi_sheet_test.rb)
 
 # Methods
 
@@ -215,13 +215,13 @@ See this file for more details: https://github.com/westonganger/spreadsheet_arch
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
-|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md)|
-|**column_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
-|**range_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
-|**conditional_row_styles**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
-|**merges**<br>*Array*||Merge cells. [See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
-|**borders**<br>*Array*||[See this example for usage](https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb)|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](./docs/axlsx_style_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](./docs/axlsx_style_reference.md)|
+|**column_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
+|**range_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
+|**conditional_row_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
+|**merges**<br>*Array*||Merge cells. [See this example for usage](./test/unit/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
+|**borders**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 |**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll.|
@@ -306,11 +306,11 @@ SpreadsheetArchitect.default_options = {
 ```
 
 # Kitchen Sink Examples with Styling for XLSX and ODS
-See this example: https://github.com/westonganger/spreadsheet_architect/blob/master/test/unit/kitchen_sink_test.rb
+See this example: [test/unit/kitchen_sink_test.rb](./test/unit/kitchen_sink_test.rb)
 
 # Axlsx Style Reference
 
-I have compiled a list of all available style options for axlsx here: https://github.com/westonganger/spreadsheet_architect/blob/master/docs/axlsx_style_reference.md
+I have compiled a list of all available style options for axlsx here: [docs/axlsx_style_reference.md](./docs/axlsx_style_reference.md)
 
 # Testing / Validating your Spreadsheets
 
