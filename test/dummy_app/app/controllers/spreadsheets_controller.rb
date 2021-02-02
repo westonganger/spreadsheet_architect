@@ -15,8 +15,11 @@ class SpreadsheetsController < ApplicationController
   end
 
   def alt_xlsx
-    @posts = Post.all
-    respond_with @posts
+    if Rails::VERSION::MAJOR >= 5
+      @posts = Post.all
+
+      respond_with @posts
+    end
   end
   
   def test_xlsx

@@ -3,8 +3,7 @@
 source "https://rubygems.org"
 
 gem "responders"
-gem "rails"
+gem "rails", "~> 5.1.7"
 gem "sqlite3"
-gem "caxlsx", "3.0.0"
 
 gemspec path: "../"
