@@ -6,7 +6,7 @@
 - `bg_color` (String) - Cell background color - Ex: `CCCCCC`
 - `alignment` (Hash) - Text alignment. 
     - Available sub-options are `:horizontal`, `:vertical`, `:wrap_text`. 
-    - Example:  `alignment: {horizontal: true, vertical: true, wrap_text: false}`
+    - Example:  `alignment: {horizontal: :left, vertical: true, wrap_text: false}`
 - `strike` (Boolean) - Indicates if the text should be rendered with a strikethrough
 - `outline` (Boolean) - Indicates if the text should be rendered with a shadow
 - `sz` (Integer) - Font Size
@@ -89,7 +89,7 @@ I wanted a better and generic set of options for use between `xlsx` and `ods` so
 - `underline` (Boolean) - Same as `u`
 - `color` (String) - Same as `fg_color`
 - `background_color` (String) - Same as `bg_color`
-- `align` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: true, vertical: false, wrap_text: false}`
+- `align` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: :center, vertical: false, wrap_text: false}`
 - `font_size` (Integer) - Same as `sz`
 
 Note: If both an original axlsx style option and alias style option are both provided in the style the original axlsx style option will take precedence.
