@@ -118,15 +118,19 @@ module SpreadsheetArchitect
 
       if defined?(klass::SPREADSHEET_OPTIONS)
         if klass::SPREADSHEET_OPTIONS.is_a?(Hash)
-          options = SpreadsheetArchitect.default_options.merge(
-            klass::SPREADSHEET_OPTIONS.merge(options)
-          )
+          defaults = SpreadsheetArchitect.default_options.merge(klass::SPREADSHEET_OPTIONS)
         else
           raise SpreadsheetArchitect::Exceptions::OptionTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
         end
       else
-        options = SpreadsheetArchitect.default_options.merge(options)
+        defaults = SpreadsheetArchitect.default_options
       end
+
+      if options[:remove_default_styles]
+        defaults = defaults.except(:header_style, :row_style)
+      end
+
+      options = defaults.merge(options)
 
       if !options[:headers]
         options[:header_style] = false
@@ -284,6 +288,7 @@ module SpreadsheetArchitect
       instances: Array,
       merges: Array,
       range_styles: Array,
+      remove_default_styles: [TrueClass, FalseClass],
       row_style: Hash,
       sheet_name: String,
       spreadsheet_columns: [Proc, Symbol, String],

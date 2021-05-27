@@ -224,7 +224,8 @@ See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/mult
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, nil = auto determine.|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 |**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll.|
-|**freeze**<br>* Hash*|`{rows: (1..4), columns: :all}`|Make all specified rows and columns frozen/fixed so they do not scroll.|
+|**freeze**<br>*Hash*|`{rows: (1..4), columns: :all}`|Make all specified rows and columns frozen/fixed so they do not scroll.|
+|**remove_default_styles**<br>*Boolean*|`false`|Removes default `header_style` and `row_style`. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
 Same options as `to_xlsx`
@@ -241,6 +242,7 @@ Same options as `to_xlsx`
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :time, :boolean, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string |
+|**remove_default_styles**<br>*Boolean*|`false`|Removes default `header_style` and `row_style`. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
 
 ## `to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)`
 Same options as `to_ods`
