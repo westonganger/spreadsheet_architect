@@ -97,11 +97,11 @@ class UtilsTest < ActiveSupport::TestCase
     assert_equal klass.get_options({sheet_name: false}, Post)[:sheet_name], 'Posts'
 
     ### removes default styles
-    assert_equal klass.get_options({remove_default_styles: true}, SpreadsheetArchitect)[:header_style], nil
-    assert_equal klass.get_options({remove_default_styles: true}, Post)[:header_style], nil
+    assert_nil klass.get_options({remove_default_styles: true}, SpreadsheetArchitect)[:header_style]
+    assert_nil klass.get_options({remove_default_styles: true}, Post)[:header_style]
 
-    assert_not_equal klass.get_options({remove_default_styles: false}, SpreadsheetArchitect)[:header_style], nil
-    assert_not_equal klass.get_options({remove_default_styles: false}, Post)[:header_style], {headers: true}, nil
+    assert_not_nil klass.get_options({remove_default_styles: false}, SpreadsheetArchitect)[:header_style]
+    assert_not_nil klass.get_options({remove_default_styles: false}, Post)[:header_style]
   end
   
   test "convert_styles_to_ods" do
