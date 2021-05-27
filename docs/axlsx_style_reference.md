@@ -89,7 +89,9 @@ I wanted a better and generic set of options for use between `xlsx` and `ods` so
 - `underline` (Boolean) - Same as `u`
 - `color` (String) - Same as `fg_color`
 - `background_color` (String) - Same as `bg_color`
-- `align` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: :center, vertical: :top, wrap_text: false}`
 - `font_size` (Integer) - Same as `sz`
+- `align` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: true, vertical: options[:valign], wrap_text: options[:wrap_text]}`
+- `valign` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: options[:align], vertical: true, wrap_text: options[:wrap_text]}`
+- `wrap_text` (Boolean) - Similar to `alignment`. Example `align: true` is the same as `alignment: {horizontal: options[:align] vertical: options[:valign], wrap_text: true}`
 
 Note: If both an original axlsx style option and alias style option are both provided in the style the original axlsx style option will take precedence.
