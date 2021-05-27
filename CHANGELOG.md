@@ -1,14 +1,14 @@
 CHANGELOG
 ---------
 
-- **Unreleased**
-  - Nothing yet
-- **4.1.0**
+- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...master)
+  - Fix bug where styles werent being un-applied when using the `false` value.
+- **4.1.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.1...v4.1.0)
   - Raise ArgumentError when invalid option names are given
-- **4.0.1**
+- **4.0.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.0...v4.0.1)
   - Fix bug with `headers: false` where a blank header row is still added 
   - Fix Bug for older version of `caxlsx` v2.0.2
-- **4.0.0**
+- **4.0.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.3.1...v4.0.0)
   - Switch to the `caxlsx` gem (Community Axlsx) from the legacy unmaintained `axlsx` gem. Axlsx has had a long history of being poorly maintained so this community gem improves the situation.
   - Require Ruby 2.3+
   - Ensure all options using Hash are automatically converted to symbol only hashes
@@ -16,29 +16,29 @@ CHANGELOG
   - Add XLSX option `:freeze_headers` to freeze the headers of your spreadsheet
   - Remove old Axlsx patch for column width
   - Backport new code for `string_width` calculations to Axlsx 3.0.1 and below.
-- **3.3.1**
+- **3.3.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.3.0...v3.3.1)
   - [Issue #30](https://github.com/westonganger/spreadsheet_architect/issues/30) - Fix duplicate constant warning for XLSX_COLUMN_TYPES
-- **3.3.0**
+- **3.3.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.2.1...v3.3.0)
   - Fix `:borders` option, was broken in v3.2.1
   - Fix bug when passing `false` to `:headers` option
   - Raise error when unsupported column type is passed
   - Remove claimed support for `:currency` and `:percent` for ODS spreadsheets as they were not working. PR Wanted.
-- **3.2.1** - April 10, 2019
+- **3.2.1** - April 10, 2019 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.2.0...v3.2.1)
   - Fix bug when using `column_style` option with `include_header: true` & letter based column numbering
-- **3.2.0** - September 14, 2018
+- **3.2.0** - September 14, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.1.0...v3.2.0)
   - Change implementation of `:column_styles` option to utilize `axlsx_styler` instead of the built-in axlsx `col_style` method. The reason for the switch is that `col_style` would overwrite all previously set styles. `axlsx_styler` already has the ability to add onto existing styles and is what is currently utilized by `range_styles`.
   - Date / Time formatting is now set per cell instead of on the entire column.
   - Default Date formatting for `xlsx` changed from `m/d/yyyy` to `yyyy-mm-dd`
   - Default Time/DateTime formatting for `xlsx` changed from `yyyy/m/d h:mm AM/PM` to `yyyy-mm-dd h:mm AM/PM`
   - Fix bug where the ActionController::Renderer `:filename` option was ignored when an AR::Relation passed directly to the renderer without first calling `to_#{format}`
-- **3.1.0** - August 19, 2018
+- **3.1.0** - August 19, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.0.0...v3.1.0)
   - Add new option `:conditional_row_styles` to `to_xlsx`.
   - Add ability to pass an alternative method name as a Symbol/String to the `:spreadsheet_columns` option.
   - Replace all usage of the legacy method `instance_eval` with the proper method `send`.
   - [#23](https://github.com/westonganger/spreadsheet_architect/issues/23#issuecomment-412803761) - Fix bug where custom `columns_widths` in xlsx spreadsheets might not get set correctly.
   - All exceptions now inherit from the appropriate ruby core exception classes
   - `SpreadsheetArchitect::Exceptions::InvalidOptionError` renamed to `SpreadsheetArchitect::Exceptions::OptionTypeError`
-- **3.0.0** - July 6, 2018
+- **3.0.0** - July 6, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.1.2...v3.0.0)
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Add ability to pass :instances option to SpreadsheetArchitect class methods
   - [#16](https://github.com/westonganger/spreadsheet_architect/issues/16) - Remove Plain Ruby syntax `Post.to_xlsx(instances: posts_array)` in favor of `SpreadsheetArchitect.to_xlsx(instance: posts_array)`. However, it may still work at this time if configured correctly.
   - Fix project-wide and model-level defaults before only `header_style`, `row_style`, & `sheet_name` were being utilized.
@@ -53,12 +53,12 @@ CHANGELOG
   - Remove all Rails generators `spreadsheet_architect:add_default_options`. No need since its just as easy to copy from the README
   - Major overhaul of test suite, add a ton more tests, for DRYness use resursion for tests when appropriate
   - Use appraisal to test various `axlsx` versions
-- **2.1.2** - July 6, 2018
+- **2.1.2** - July 6, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.1.1...v2.1.2)
   - Fix bug where everything was underlined by default in Excel (LibreOffice was working correctly). For some reason, `false` in `:u` or `:underline` was incorrectly being treated as `true` but only within Excel. Now anytime `false` is encountered for either `:u` or `:underline` it is now converted to `nil`
   - Fix bug where empty xlsx spreadsheets were corrupt when trying to open with Excel (LibreOffice was working correctly). This only occured when containing no headers and empty `:data` option which resulted in a package with no sheets.
-- **2.1.1** - July 4, 2018
+- **2.1.1** - July 4, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.1.0...v2.1.1)
   - [#18](https://github.com/westonganger/spreadsheet_architect/pull/18) - Fix controller bug when using an non-ActiveRecord ORM only within Rails
-- **2.1.0** - June 20, 2018
+- **2.1.0** - June 20, 2018 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.0.2...v2.1.0)
   - [#15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Improved the method symbolize_keys. This method did not work properly for nested objects.
   - [PR #15](https://github.com/westonganger/spreadsheet_architect/pull/15) - Added the ability to pass `:text_wrap` option within the `:alignment` style
   - Make axlsx styles higher precendence over Spreadsheet Architect style aliases
@@ -66,14 +66,14 @@ CHANGELOG
   - Due to [RODF bug](https://github.com/thiagoarrais/rodf/issues/19) convert all Date and Time cells to String in ODS spreadsheets
   - Improve test suite
   - Dont test against Ruby versions that Rails no longer supports. Gem code should remain compatible with Ruby 1.9.3.
-- **2.0.2** - July 14 2017
+- **2.0.2** - July 14 2017 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.0.1...v2.0.2)
   - Fix bug with range styles rows option not counting headers
   - Fix bug with range styles rows :all option
-- **2.0.1** - February 16 2017
+- **2.0.1** - February 16 2017 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v2.0.0...v2.0.1)
   - Fix bug where `SpreadsheetArchitect.default_options` and `SPREADSHEET_OPTIONS` were being overwritten
   - Fix bug where col_styles ignored previous styles on header when using `include_header` option
   - Errors now try to provide which value is the cause
-- **2.0.0** - January 28 2017
+- **2.0.0** - January 28 2017 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v1.4.8...v2.0.0)
   - Add to xlsx: `merges`, `column_styles`, `range_styles`, `borders`, `column_widths` multi-row headers, date/time default format_code
   - Add `column_types` option for xlsx and ods
   - Add ability to make multi-sheet spreadsheets in XLSX & ODS

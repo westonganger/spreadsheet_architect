@@ -25,9 +25,29 @@ module SpreadsheetArchitect
       end
 
       def self.convert_styles_to_axlsx(styles={})
-        styles = {} unless styles.is_a?(Hash)
+        if styles.nil?
+          return {}
+        end
 
         styles = SpreadsheetArchitect::Utils.symbolize_keys(styles)
+
+        ### BOOLEAN VALUES
+        if styles[:b].nil? && styles.has_key?(:bold)
+          styles[:b] = !!styles.delete(:bold)
+        end
+
+        if styles[:i].nil? && styles.has_key?(:italic)
+          styles[:i] = !!styles.delete(:italic)
+        end
+
+        if styles[:u].nil? && styles.has_key?(:underline)
+          styles[:u] = !!styles.delete(:underline)
+        end
+
+        ### OTHER VALUES
+        if styles[:sz].nil? && !styles[:font_size].nil?
+          styles[:sz] = styles.delete(:font_size)
+        end
 
         if styles[:fg_color].nil? && styles[:color] && styles[:color].respond_to?(:sub) && !styles[:color].empty?
           styles[:fg_color] = styles.delete(:color).sub('#','')
@@ -37,7 +57,7 @@ module SpreadsheetArchitect
           styles[:bg_color] = styles.delete(:background_color).sub('#','')
         end
         
-        if styles[:alignment].nil? && styles[:align]
+        if styles[:alignment].nil? && [:align, :valign, :wrap_text].any?{|k| styles.has_key?(k) }
           if styles[:align].is_a?(Hash)
             styles[:alignment] = {
               horizontal: styles[:align][:horizontal], 
@@ -45,34 +65,22 @@ module SpreadsheetArchitect
               wrap_text: styles[:align][:wrap_text]
             }
           else
-            styles[:alignment] = {horizontal: (styles.delete(:align) || nil) }
+            styles[:alignment] = {horizontal: styles.delete(:align), vertical: styles.delete(:valign), wrap_text: styles.delete(:wrap_text) }.compact
           end
-
-          styles.delete(:align)
         end
 
-        if styles[:b].nil?
-          styles[:b] = styles.delete(:bold) || nil
-        end
-
-        if styles[:sz].nil?
-          styles[:sz] = styles.delete(:font_size) || nil
-        end
-
-        if styles[:i].nil?
-          styles[:i] = styles.delete(:italic) || nil
-        end
-
-        if styles[:u].nil?
-          styles[:u] = styles.delete(:underline) || nil
-        end
-
+        ### COMMENT SEEMS WRONG, TO BE RECONFIRMED
         ### If `:u` is false instead of nil, it may be incorrectly rendered as true in Excel
-        if styles[:u] == false
-          styles[:u] = nil
+        #if styles[:u] == false
+        #  styles[:u] = nil
+        #end
+        
+        ### ENSURE CLEANUP OF ALL ALIAS KEYS
+        [:bold, :font_size, :italic, :underline, :align, :valign, :wrap_text, :color, :background_color].each do |k|
+          styles.delete(k)
         end
         
-        styles.delete_if{|k,v| v.nil?}
+        return styles
       end
 
       def self.range_hash_to_str(hash, num_columns, num_rows)
