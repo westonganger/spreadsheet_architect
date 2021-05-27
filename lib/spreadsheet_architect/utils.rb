@@ -112,28 +112,22 @@ module SpreadsheetArchitect
     def self.get_options(options, klass)
       verify_option_types(options)
 
-      if options[:freeze] && options[:freeze_headers]
-        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot use both :freeze and :freeze_headers options at the same time')
-      end
-
-      if defined?(klass::SPREADSHEET_OPTIONS)
-        if klass::SPREADSHEET_OPTIONS.is_a?(Hash)
-          defaults = SpreadsheetArchitect.default_options.merge(klass::SPREADSHEET_OPTIONS)
+      if !options[:skip_defaults]
+        if defined?(klass::SPREADSHEET_OPTIONS)
+          if klass::SPREADSHEET_OPTIONS.is_a?(Hash)
+            defaults = SpreadsheetArchitect.default_options.merge(klass::SPREADSHEET_OPTIONS)
+          else
+            raise SpreadsheetArchitect::Exceptions::OptionTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
+          end
         else
-          raise SpreadsheetArchitect::Exceptions::OptionTypeError.new("#{klass}::SPREADSHEET_OPTIONS constant")
+          defaults = SpreadsheetArchitect.default_options
         end
-      else
-        defaults = SpreadsheetArchitect.default_options
-      end
 
-      if options[:remove_default_styles]
-        defaults = defaults.except(:header_style, :row_style)
+        options = defaults.merge(options)
       end
-
-      options = defaults.merge(options)
 
       if !options[:headers]
-        options[:header_style] = false
+        options.delete(:header_style)
       end
 
       if !options[:sheet_name]
@@ -148,8 +142,12 @@ module SpreadsheetArchitect
         end
       end
 
-      if options[:freeze] && options[:freeze].is_a?(Hash) && !options[:freeze][:rows]
-        raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :rows key when passing a hash to the :freeze option')
+      if options[:freeze]
+        if options[:freeze_headers]
+          raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot use both :freeze and :freeze_headers options at the same time')
+        elsif options[:freeze].is_a?(Hash) && !options[:freeze][:rows]
+          raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :rows key when passing a hash to the :freeze option')
+        end
       end
 
       return options
@@ -288,7 +286,7 @@ module SpreadsheetArchitect
       instances: Array,
       merges: Array,
       range_styles: Array,
-      remove_default_styles: [TrueClass, FalseClass],
+      skip_defaults: [TrueClass, FalseClass],
       row_style: Hash,
       sheet_name: String,
       spreadsheet_columns: [Proc, Symbol, String],

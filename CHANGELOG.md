@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...master)
-  - Add option `:remove_default_styles` which removes the default `header_style` and `row_style`. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
+  - Add option `:skip_defaults` which removes the defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
   - Fix bug where styles werent being un-applied when using the `false` value.
   - Add style aliases for `:valign` and `:wrap_text`
   - Fix error with `headers: false`, previously had to use `headers: []`
