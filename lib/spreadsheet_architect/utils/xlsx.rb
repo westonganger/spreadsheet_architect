@@ -25,7 +25,7 @@ module SpreadsheetArchitect
       end
 
       def self.convert_styles_to_axlsx(styles={})
-        if styles.nil?
+        if [nil, false, true].include?(styles)
           return {}
         end
 

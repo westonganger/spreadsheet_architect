@@ -3,6 +3,7 @@ CHANGELOG
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...master)
   - Fix bug where styles werent being un-applied when using the `false` value.
+  - Fix error with `headers: false`, previously had to use `headers: []`
 - **4.1.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.1...v4.1.0)
   - Raise ArgumentError when invalid option names are given
 - **4.0.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.0...v4.0.1)
