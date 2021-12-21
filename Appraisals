@@ -11,6 +11,12 @@ appraise "caxlsx_2.0.2" do
 end
 
 ["sqlite3"].each do |db_gem|
+  appraise "rails_7.0.#{db_gem}" do
+    gem "rails", "~> 7.0.0"
+    gem 'responders'
+    gem db_gem
+  end
+
   appraise "rails_6.1.#{db_gem}" do
     gem "rails", "~> 6.1.1"
     gem 'responders'

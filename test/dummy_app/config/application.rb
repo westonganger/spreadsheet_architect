@@ -39,14 +39,6 @@ module Dummy
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    # Enable the asset pipeline
-    config.assets.enabled = true
-
-    config.assets.quiet = true
-
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-
     config.generators.test_framework = false
     config.generators.helper = false
     config.generators.stylesheets = false
