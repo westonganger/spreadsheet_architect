@@ -43,7 +43,7 @@ module SpreadsheetArchitect
               end
             end
 
-            sheet.add_row header_row, style: header_style_index
+            sheet.add_row header_row, style: header_style_index, escape_formulas: true
 
             if options[:conditional_row_styles]
               conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, header_row)
