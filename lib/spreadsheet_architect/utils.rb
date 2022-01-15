@@ -150,6 +150,10 @@ module SpreadsheetArchitect
         end
       end
 
+      unless options[:escape_formulas].class.in?[TrueClass, FalseClass, Array]
+        options[:escape_formulas] = true
+      end
+
       return options
     end
 

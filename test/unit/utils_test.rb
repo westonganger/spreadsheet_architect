@@ -102,6 +102,12 @@ class UtilsTest < ActiveSupport::TestCase
 
     assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1"}
     assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts"}
+
+    ### sets :escape_formulas if not given in a valid way
+    assert_equal klass.get_options({}, SpreadsheetArchitect)[:escape_formulas], true
+    assert_equal klass.get_options({escape_formulas: true}, SpreadsheetArchitect)[:escape_formulas], true
+    assert_equal klass.get_options({escape_formulas: false}, SpreadsheetArchitect)[:escape_formulas], false
+    assert_equal klass.get_options({escape_formulas: [true, false]}, SpreadsheetArchitect)[:escape_formulas], [true, false]
   end
   
   test "convert_styles_to_ods" do
