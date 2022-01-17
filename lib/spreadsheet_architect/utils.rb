@@ -154,6 +154,10 @@ module SpreadsheetArchitect
         options[:escape_formulas] = true
       end
 
+      if options[:use_zero_based_row_index].nil?
+        options[:use_zero_based_row_index] = false
+      end
+
       return options
     end
 
@@ -294,9 +298,9 @@ module SpreadsheetArchitect
       row_style: Hash,
       sheet_name: String,
       spreadsheet_columns: [Proc, Symbol, String],
-      escape_formulas: [TrueClass, FalseClass, Array]
+      escape_formulas: [TrueClass, FalseClass, Array],
+      use_zero_based_row_index: [TrueClass, FalseClass],
     }.freeze
-
 
   end
 end

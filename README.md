@@ -227,6 +227,7 @@ See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/mult
 |**freeze**<br>*Hash*|`{rows: (1..4), columns: :all}`|Make all specified rows and columns frozen/fixed so they do not scroll.|
 |**skip_defaults**<br>*Boolean*|`false`|Removes defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
 |**escape_formulas**<br>*Boolean* or *Array*|`true`|Pass a single boolean to apply to all cells, or an array of booleans to control column-by-column. Advisable to be set true when involved with untrusted user input. See [an example of the underlying functionality](https://github.com/caxlsx/caxlsx/blob/master/examples/escape_formula_example.md). NOTE: Header row cells are not escaped. |
+|**use_zero_based_row_index**<br>*Boolean*|`false`|Allows you to use zero-based row indexes when defining `range_styles`, `merges`, etc. Recomended to set this option for the whole project rather than per call. The original reason it was designed to be 1-based is because spreadsheet row numbers actually start with 1.|
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
 Same options as `to_xlsx`
@@ -304,6 +305,7 @@ SpreadsheetArchitect.default_options = {
   merges: [],
   borders: [],
   column_types: [],
+  use_zero_based_row_index: false,
 }
 ```
 

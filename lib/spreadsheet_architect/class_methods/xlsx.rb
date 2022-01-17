@@ -133,7 +133,7 @@ module SpreadsheetArchitect
 
           options[:borders].each do |x|
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, use_zero_based_row_index: options[:use_zero_based_row_index])
             else
               SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
@@ -182,7 +182,7 @@ module SpreadsheetArchitect
             styles = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(x[:styles])
 
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, use_zero_based_row_index: options[:use_zero_based_row_index])
             else
               SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
@@ -196,7 +196,7 @@ module SpreadsheetArchitect
 
           options[:merges].each do |x|
             if x[:range].is_a?(Hash)
-              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows)
+              x[:range] = SpreadsheetArchitect::Utils::XLSX.range_hash_to_str(x[:range], max_row_length, num_rows, use_zero_based_row_index: options[:use_zero_based_row_index])
             else
               SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end

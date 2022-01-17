@@ -88,7 +88,7 @@ class UtilsTest < ActiveSupport::TestCase
     assert_not_empty klass.get_options(@options, Post)
 
     ### without :headers removes :header_style
-    assert_equal klass.get_options({header_style: false, headers: false}, SpreadsheetArchitect)[:header_style], nil
+    assert_nil klass.get_options({header_style: false, headers: false}, SpreadsheetArchitect)[:header_style]
 
     ### sets :sheet_name if needed 
     assert_equal klass.get_options({sheet_name: false}, SpreadsheetArchitect)[:sheet_name], 'Sheet1'
@@ -96,15 +96,17 @@ class UtilsTest < ActiveSupport::TestCase
     ### sets :sheet_name if needed, using pluralized only when using Rails
     assert_equal klass.get_options({sheet_name: false}, Post)[:sheet_name], 'Posts'
 
-    ### removes default styles
-    assert_equal klass.get_options({skip_defaults: true}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true}
-    assert_equal klass.get_options({skip_defaults: true}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true}
-
-    assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true}
-    assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true}
-
     ### sets :escape_formulas if not given
     assert_equal klass.get_options({}, SpreadsheetArchitect)[:escape_formulas], true
+
+    assert_equal klass.get_options({}, SpreadsheetArchitect)[:use_zero_based_row_index], false
+
+    ### removes default styles
+    assert_equal klass.get_options({skip_defaults: true}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true, use_zero_based_row_index: false}
+    assert_equal klass.get_options({skip_defaults: true}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true, use_zero_based_row_index: false}
+
+    assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true, use_zero_based_row_index: false}
+    assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true, use_zero_based_row_index: false}
   end
   
   test "convert_styles_to_ods" do
