@@ -142,11 +142,15 @@ module SpreadsheetArchitect
         end
       end
 
+      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::XLSX_COLUMN_TYPES).empty?
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid XLSX values are #{SpreadsheetArchitect::XLSX_COLUMN_TYPES}")
+      end
+
       if options[:freeze]
+        options[:freeze] = SpreadsheetArchitect::Utils.symbolize_keys(options[:freeze])
+
         if options[:freeze_headers]
           raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot use both :freeze and :freeze_headers options at the same time')
-        elsif options[:freeze].is_a?(Hash) && !options[:freeze][:rows]
-          raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must provide a :rows key when passing a hash to the :freeze option')
         end
       end
 
