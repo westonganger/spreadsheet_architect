@@ -294,6 +294,7 @@ module SpreadsheetArchitect
       row_style: Hash,
       sheet_name: String,
       spreadsheet_columns: [Proc, Symbol, String],
+      escape_formulas: [TrueClass, FalseClass, Array]
     }.freeze
 
 
