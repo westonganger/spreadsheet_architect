@@ -1,8 +1,8 @@
 CHANGELOG
 ---------
 
-- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...master)
-  - Nothing yet
+- **5.0.0 - Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...master)
+  - **Breaking Change** - [PR #38](https://github.com/westonganger/spreadsheet_architect/pull/38) - Add `escape_formulas` option for xlsx spreadsheets. This is a breaking change because we default to `escape_formulas: true` whereas before there was no formula escaping at all. The reasoning for this breaking change is that creating spreadsheets where many of the fields contain direct user input are a large majority compared to use cases that involve formulas.
 
 - **4.2.0** - May 27, 2021 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...v4.2.0)
   - Add option `:skip_defaults` which removes the defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
