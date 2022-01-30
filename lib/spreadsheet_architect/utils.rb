@@ -150,6 +150,10 @@ module SpreadsheetArchitect
         end
       end
 
+      if options[:escape_formulas].nil?
+        options[:escape_formulas] = true
+      end
+
       return options
     end
 
@@ -290,6 +294,7 @@ module SpreadsheetArchitect
       row_style: Hash,
       sheet_name: String,
       spreadsheet_columns: [Proc, Symbol, String],
+      escape_formulas: [TrueClass, FalseClass, Array]
     }.freeze
 
 

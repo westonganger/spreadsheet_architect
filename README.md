@@ -226,6 +226,7 @@ See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/mult
 |**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll.|
 |**freeze**<br>*Hash*|`{rows: (1..4), columns: :all}`|Make all specified rows and columns frozen/fixed so they do not scroll.|
 |**skip_defaults**<br>*Boolean*|`false`|Removes defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
+|**escape_formulas**<br>*Boolean* or *Array*|`true`|Pass a single boolean to apply to all cells, or an array of booleans to control column-by-column. Advisable to be set true when involved with untrusted user input. See [an example of the underlying functionality](https://github.com/caxlsx/caxlsx/blob/master/examples/escape_formula_example.md). NOTE: Header row cells are not escaped. |
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
 Same options as `to_xlsx`

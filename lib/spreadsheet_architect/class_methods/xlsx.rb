@@ -104,7 +104,7 @@ module SpreadsheetArchitect
             end
           end
 
-          sheet.add_row row_data, style: styles, types: types
+          sheet.add_row row_data, style: styles, types: types, escape_formulas: options[:escape_formulas]
 
           if options[:conditional_row_styles]
             options[:conditional_row_styles] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:conditional_row_styles])

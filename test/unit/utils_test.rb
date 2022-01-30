@@ -97,11 +97,14 @@ class UtilsTest < ActiveSupport::TestCase
     assert_equal klass.get_options({sheet_name: false}, Post)[:sheet_name], 'Posts'
 
     ### removes default styles
-    assert_equal klass.get_options({skip_defaults: true}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1"}
-    assert_equal klass.get_options({skip_defaults: true}, Post), {skip_defaults: true, sheet_name: "Posts"}
+    assert_equal klass.get_options({skip_defaults: true}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true}
+    assert_equal klass.get_options({skip_defaults: true}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true}
 
-    assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1"}
-    assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts"}
+    assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true}
+    assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true}
+
+    ### sets :escape_formulas if not given
+    assert_equal klass.get_options({}, SpreadsheetArchitect)[:escape_formulas], true
   end
   
   test "convert_styles_to_ods" do
