@@ -14,17 +14,27 @@ module SpreadsheetArchitect
     end
 
     class InvalidRangeError < ArgumentError
-      def initialize(type, range)
-        case type
-        when :columns, :rows
-          super("Invalid range `#{range}` passed. Some of the #{type} specified were greater than the total number of #{type}")
-        when :format
-          super("Invalid range `#{range}` passed. Format must be as follows: A1:D4")
-        when :type
-          super("Invalid range type `#{range}`. Valid types are String and Hash")
-        else
-          super("Invalid range `#{range}` passed.")
+      def initialize(type, range, message: nil)
+        default_msg = "Invalid range `#{range}` passed"
+
+        if message.nil?
+          case type
+          when :missing_range_keys
+            message = "Missing :rows or :columns key"
+          when :format
+            message = "Format must be as follows: A1:D4"
+          when :type
+            message = "Valid types are Hash and String"
+          end
         end
+
+        super([default_msg, message].compact.join(". "))
+      end
+    end
+
+    class InvalidRangeValue < ArgumentError
+      def initialize(type, range)
+        default_msg = "Invalid range `#{range}` passed. Some of the :#{type} specified are either an invalid value or are greater than the total number of #{type}"
       end
     end
 
@@ -34,9 +44,16 @@ module SpreadsheetArchitect
       end
     end
 
-    class InvalidRangeStylesOptionError < ArgumentError
-      def initialize(type, opt)
-        super("Invalid or missing :#{type} option for `#{opt}`. :#{type} can be an integer, range, or :all")
+    class InvalidRangeOptionError < ArgumentError
+      def initialize(key, opt)
+        default_msg = "Invalid :#{key} option for `#{opt}`"
+
+        case key
+        when :columns, :rows
+          message = ":#{key} can be an integer, range, or :all"
+        end
+
+        super([default_msg, message].compact.join(". "))
       end
     end
 

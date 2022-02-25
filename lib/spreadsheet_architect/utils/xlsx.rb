@@ -84,6 +84,10 @@ module SpreadsheetArchitect
       end
 
       def self.range_hash_to_str(hash, num_columns, num_rows, use_zero_based_row_index: false)
+        if !hash.has_key?(:rows) && !hash.has_key?(:columns)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:missing_range_keys, hash)
+        end
+
         case hash[:columns]
         when Integer
           start_col = end_col = COL_NAMES[hash[:columns]]
@@ -100,11 +104,11 @@ module SpreadsheetArchitect
           unless end_col.is_a?(String)
             end_col = COL_NAMES[end_col]
           end
-        when :all
+        when :all, nil
           start_col = 'A'
           end_col = COL_NAMES[num_columns-1]
         else
-          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:columns, hash)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeOptionError.new(:columns, hash)
         end
 
         case hash[:rows]
@@ -123,11 +127,11 @@ module SpreadsheetArchitect
             start_row += 1
             end_row += 1
           end
-        when :all
+        when :all, nil
           start_row = 1
           end_row = num_rows
         else
-          raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError.new(:rows, hash)
+          raise SpreadsheetArchitect::Exceptions::InvalidRangeOptionError.new(:rows, hash)
         end
 
         range_str = "#{start_col}#{start_row}:#{end_col}#{end_row}"
@@ -147,11 +151,11 @@ module SpreadsheetArchitect
             end_col, end_row = back.scan(/\d+|\D+/)
 
             unless COL_NAMES.include?(start_col) && COL_NAMES.include?(end_col)
-              raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:columns, range)
+              raise SpreadsheetArchitect::Exceptions::InvalidRangeValue.new(:columns, range)
             end
             
             unless start_row.to_i <= num_rows && end_row.to_i <= num_rows
-              raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:rows, range)
+              raise SpreadsheetArchitect::Exceptions::InvalidRangeValue.new(:rows, range)
             end
           else
             raise SpreadsheetArchitect::Exceptions::InvalidRangeError.new(:format, range)

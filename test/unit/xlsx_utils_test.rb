@@ -30,25 +30,21 @@ class XlsxUtilsTest < ActiveSupport::TestCase
     num_columns = 26
     num_rows = 10
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError do
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeError do
       klass.range_hash_to_str({}, num_columns, num_rows)
     end
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError do
-      klass.range_hash_to_str({columns: 1}, num_columns, num_rows)
-    end
-
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError do
-      klass.range_hash_to_str({rows: 1}, num_columns, num_rows)
-    end
-
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError do
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeOptionError do
       klass.range_hash_to_str({columns: [1,2,3], rows: 1}, num_columns, num_rows)
     end
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError do
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeOptionError do
       klass.range_hash_to_str({columns: 1, rows: [1,2,3]}, num_columns, num_rows)
     end
+
+    assert_equal klass.range_hash_to_str({columns: 1}, num_columns, num_rows), "B1:B10"
+
+    assert_equal klass.range_hash_to_str({rows: 1}, num_columns, num_rows), "A1:Z1"
 
     assert_equal klass.range_hash_to_str({columns: 0, rows: 1}, num_columns, num_rows), "A1:A1"
 
@@ -58,7 +54,7 @@ class XlsxUtilsTest < ActiveSupport::TestCase
 
     assert_equal klass.range_hash_to_str({columns: :all, rows: :all}, num_columns, num_rows), "A1:Z10"
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeError do
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeValue do
       assert_equal klass.range_hash_to_str({columns: ('foobar'..'asd'), rows: (1..3)}, num_columns, num_rows), "foobar1:asd3"
     end
   end
@@ -76,13 +72,11 @@ class XlsxUtilsTest < ActiveSupport::TestCase
       klass.verify_range("A1Z10", num_rows)
     end
 
-    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeError do
-      klass.verify_range("A1:A11", num_rows)
+    assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeValue do
+      klass.verify_range("A1:A#{num_rows+1}", num_rows)
     end
 
-    #assert_raise SpreadsheetArchitect::Exceptions::InvalidRangeError do
-      klass.verify_range("A1:AAA1", num_rows)
-    #end
+    klass.verify_range("A1:AAA1", num_rows)
   end
 
   test "verify_column" do
@@ -108,9 +102,7 @@ class XlsxUtilsTest < ActiveSupport::TestCase
       klass.verify_column([], num_columns)
     end
 
-    #assert_raise SpreadsheetArchitect::Exceptions::InvalidColumnError do
-      klass.verify_column("ZZ", num_columns)
-    #end
+    klass.verify_column("ZZ", num_columns)
   end
 
   test "constants" do

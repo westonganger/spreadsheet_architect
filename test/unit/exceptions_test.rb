@@ -129,8 +129,8 @@ class ExceptionsTest < ActiveSupport::TestCase
     end
   end
 
-  test "InvalidRangeStylesOptionError" do
-    error = SpreadsheetArchitect::Exceptions::InvalidRangeStylesOptionError
+  test "InvalidRangeOptionError" do
+    error = SpreadsheetArchitect::Exceptions::InvalidRangeOptionError
 
     assert_raise ArgumentError do
       error.new
@@ -146,6 +146,22 @@ class ExceptionsTest < ActiveSupport::TestCase
 
     assert_raise error do
       SpreadsheetArchitect::Utils::XLSX.range_hash_to_str({rows: :foo}, 1, 1)
+    end
+  end
+
+  test "InvalidRangeValue" do
+    error = SpreadsheetArchitect::Exceptions::InvalidRangeValue
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("foo:foo", 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("@1:A2", 1)
+    end
+
+    assert_raise error do
+      SpreadsheetArchitect::Utils::XLSX.verify_range("A1:A2", 1)
     end
   end
 
@@ -173,18 +189,6 @@ class ExceptionsTest < ActiveSupport::TestCase
 
     assert_raise error do
       SpreadsheetArchitect::Utils::XLSX.verify_range("foo", 1)
-    end
-
-    assert_raise error do
-      SpreadsheetArchitect::Utils::XLSX.verify_range("foo:foo", 1)
-    end
-
-    assert_raise error do
-      SpreadsheetArchitect::Utils::XLSX.verify_range("A1:A2", 1)
-    end
-
-    assert_raise error do
-      SpreadsheetArchitect::Utils::XLSX.verify_range("@1:A2", 1)
     end
   end
 
