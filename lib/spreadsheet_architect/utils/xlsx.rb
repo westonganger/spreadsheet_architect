@@ -83,7 +83,7 @@ module SpreadsheetArchitect
         return styles
       end
 
-      def self.range_hash_to_str(hash, num_columns, num_rows)
+      def self.range_hash_to_str(hash, num_columns, num_rows, use_zero_based_row_index: false)
         case hash[:columns]
         when Integer
           start_col = end_col = COL_NAMES[hash[:columns]]
@@ -110,9 +110,19 @@ module SpreadsheetArchitect
         case hash[:rows]
         when Integer
           start_row = end_row = hash[:rows]
+
+          if use_zero_based_row_index
+            start_row += 1
+            end_row += 1
+          end
         when Range
           start_row = hash[:rows].first
           end_row = hash[:rows].last
+
+          if use_zero_based_row_index
+            start_row += 1
+            end_row += 1
+          end
         when :all
           start_row = 1
           end_row = num_rows
