@@ -14,10 +14,6 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
-      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::XLSX_COLUMN_TYPES).empty?
-        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid XLSX values are #{SpreadsheetArchitect::XLSX_COLUMN_TYPES}")
-      end
-
       header_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:header_style])
       row_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:row_style])
 
@@ -212,33 +208,62 @@ module SpreadsheetArchitect
           end
 
         elsif options[:freeze]
-          options[:freeze] = SpreadsheetArchitect::Utils.symbolize_keys(options[:freeze])
+          case options[:freeze][:type].to_s
+          when "split_panes"
+            options[:freeze][:state] == "split"
+          when "frozen", "freeze"
+            options[:freeze][:state] == "frozen"
+          end
+
+          if options[:freeze][:rows]
+            options[:freeze][:row] ||= options[:freeze][:rows]
+          end
+
+          if options[:freeze][:columns]
+            options[:freeze][:column] ||= options[:freeze][:columns]
+          end
+
+          if options[:freeze][:row] == :all
+            options[:freeze][:row] = nil
+          elsif options[:freeze][:row].is_a?(Range)
+            options[:freeze][:row] = options[:freeze][:row].last
+          end
+
+          if options[:freeze][:column] == :all
+            options[:freeze][:column] = nil
+          elsif options[:freeze][:column].is_a?(Range)
+            options[:freeze][:column] = options[:freeze][:column].last
+          end
+
+          if !options[:freeze][:row] && !options[:freeze][:column]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Missing required :row or :column value in the :freeze option hash")
+          elsif options[:freeze][:row] && !options[:freeze][:row].is_a?(Integer)
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid :row value provided for in :freeze option hash, must be an Integer")
+          elsif options[:freeze][:column] && !options[:freeze][:column].is_a?(Integer)
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid :column value provided for in :freeze option hash, must be an Integer")
+          end
 
           sheet.sheet_view.pane do |pane|
-            pane.state = :frozen
+            pane.state = (options[:freeze][:state] || :frozen).to_sym ### Other options are :split and :frozen_split
 
-            ### Currently not working
-            #if options[:freeze][:active_pane]
-            #  Axlsx.validate_pane_type(options[:freeze][:active_pane])
-            #  pane.active_pane = options[:freeze][:active_pane]
-            #else
-            #  pane.active_pane = :bottom_right
-            #end
-
-            if !options[:freeze][:rows]
-              raise SpreadsheetArchitect::Exceptions::ArgumentError.new("The :rows key must be specified in the :freeze option hash")
-            elsif options[:freeze][:rows].is_a?(Range)
-              pane.y_split = options[:freeze][:rows].count
-            else
-              pane.y_split = 1
+            if options[:freeze][:active_pane]
+              pane.active_pane = options[:freeze][:active_pane].to_sym
             end
 
-            if options[:freeze][:columns] && options[:freeze][:columns] != :all
-              if options[:freeze][:columns].is_a?(Range)
-                pane.x_split = options[:freeze][:columns].count
-              else
-                pane.x_split = 1
+            if options[:freeze][:top_left_cell]
+              pane.top_left_cell = options[:freeze][:top_left_cell]
+            end
+
+            if options[:freeze][:row]
+              if options[:use_zero_based_row_index]
+                options[:freeze][:row] += 1
               end
+
+              pane.y_split = options[:freeze][:row]
+            end
+
+            if options[:freeze][:column]
+              pane.x_split = options[:freeze][:column]
             end
           end
         end

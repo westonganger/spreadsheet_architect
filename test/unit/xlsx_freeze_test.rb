@@ -2,6 +2,12 @@ require "test_helper"
 
 class XlsxFreezeTest < ActiveSupport::TestCase
 
+  def base_path
+    path = VERSIONED_BASE_PATH.join("xlsx/freeze/")
+    FileUtils.mkdir_p(path)
+    return path
+  end
+
   def setup
     @options = {
       headers: [
@@ -15,7 +21,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_1
+  def test_basic
     opts = @options.merge({
       freeze: {rows: 1, columns: 1},
     })
@@ -23,12 +29,12 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(VERSIONED_BASE_PATH.join("freeze_test_1.xlsx"),'w+b') do |f|
+    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
       f.write file_data
     end
   end
 
-  def test_2
+  def test_using_ranges
     opts = @options.merge({
       freeze: {rows: (2..4), columns: (2..4)},
     })
@@ -36,7 +42,52 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(VERSIONED_BASE_PATH.join("freeze_test_2.xlsx"),'w+b') do |f|
+    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
+      f.write file_data
+    end
+  end
+
+  def test_using_legacy_arguments
+    opts = @options.merge({
+      freeze: {rows: :all, columns: 2},
+    })
+
+    # Using Array Data
+    file_data = SpreadsheetArchitect.to_xlsx(opts)
+
+    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
+      f.write file_data
+    end
+  end
+
+  def test_freeze_type
+    opts = @options.merge({
+      freeze: {row: (@options[:data].size-2), column: 16, type: "split_panes"},
+    })
+
+    # Using Array Data
+    file_data = SpreadsheetArchitect.to_xlsx(opts)
+
+    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
+      f.write file_data
+    end
+  end
+
+  def test_panes_all_axlsx_options
+    opts = @options.merge({
+      freeze: {
+        row: (@options[:data].size-2),
+        column: 16, 
+        state: "split", 
+        #active_pane: "top_right", 
+        #top_left_cell: "A2",
+      },
+    })
+
+    # Using Array Data
+    file_data = SpreadsheetArchitect.to_xlsx(opts)
+
+    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
       f.write file_data
     end
   end
