@@ -34,7 +34,7 @@ module SpreadsheetArchitect
 
     class InvalidRangeValue < ArgumentError
       def initialize(type, range)
-        default_msg = "Invalid range `#{range}` passed. Some of the :#{type} specified are either an invalid value or are greater than the total number of #{type}"
+        super("Invalid range `#{range}` passed. Some of the :#{type} specified are either an invalid value or are greater than the total number of #{type}")
       end
     end
 
