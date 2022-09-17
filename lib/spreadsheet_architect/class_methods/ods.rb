@@ -54,15 +54,21 @@ module SpreadsheetArchitect
           row do 
             row_data.each_with_index do |val, i|
               if options[:column_types]
-                type = options[:column_types][i]
+                provided_column_type = options[:column_types][i]
               end
 
-              if (type && [:date, :time].include?(type)) || val.respond_to?(:strftime)
-                type = :string
-                val = val.to_s 
+              type = SpreadsheetArchitect::Utils.get_ods_cell_type(val, provided_column_type) 
+
+              cell_opts = {
+                style: :row_style, 
+                type: type,
+              }
+
+              if provided_column_type == :hyperlink
+                cell_opts[:url] = val
               end
 
-              cell val, style: :row_style, type: type
+              cell(val, **cell_opts)
             end
           end
         end

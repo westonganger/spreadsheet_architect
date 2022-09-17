@@ -35,7 +35,7 @@ module SpreadsheetArchitect
     @default_options
   end
 
-  XLSX_COLUMN_TYPES = [:string, :integer, :float, :date, :time, :boolean].freeze
-  ODS_COLUMN_TYPES = [:string, :float, :date, :time, :boolean].freeze
+  XLSX_COLUMN_TYPES = [:string, :integer, :float, :date, :time, :boolean, :hyperlink].freeze
+  ODS_COLUMN_TYPES = [:string, :float, :date, :time, :boolean, :hyperlink].freeze
 
 end

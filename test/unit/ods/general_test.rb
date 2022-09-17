@@ -40,4 +40,35 @@ class OdsGeneralTest < ActiveSupport::TestCase
     save_file("ods/kitchen_sink.ods", file_data)
   end
 
+  describe "hyperlinks" do
+    test "shows the text and have the correct attributes" do
+      url = "https://github.com/westonganger/spreadsheet_architect"
+
+      data = [
+        [1,2,3],
+        [1, url, "https://github.com/caxlsx/caxlsx"],
+      ]
+
+      ss = SpreadsheetArchitect.to_rodf_spreadsheet(data: data, column_types: [:string, :hyperlink, :string])
+
+      doc = parse_ods_spreadsheet(ss)
+
+      cells = doc.xpath("//table:table-cell")
+      hyperlinks = doc.xpath("//text:a")
+
+      assert_equal 6, cells.size
+      assert_equal 2, hyperlinks.size
+
+      cell = cells[1]
+      assert_equal "2", cell.text
+      assert_equal "2", cell.at_xpath(".//text:a").attributes["href"].value
+
+      cell = cells[4]
+      assert_equal url, cell.text
+      assert_equal url, cell.at_xpath(".//text:a").attributes["href"].value
+
+      save_file("ods/hyperlinks.ods", ss)
+    end
+  end
+
 end

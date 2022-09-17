@@ -203,6 +203,30 @@ module SpreadsheetArchitect
       return property_styles
     end
 
+    def self.get_ods_cell_type(value, type=nil)
+      if type && !type.empty?
+        case type
+        when :hyperlink
+          return :string
+        when :date, :time
+          return :string
+        end
+
+        return type unless (type.respond_to?(:empty?) ? type.empty? : type.nil?)
+      end
+      
+      if value.is_a?(Numeric)
+        type = :float
+      elsif value.respond_to?(:strftime)
+        type = :string
+      else
+        type = :string
+      end
+
+      return type
+    end
+
+
     private
 
     def self.is_ar_model?(klass)
