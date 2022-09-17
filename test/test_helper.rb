@@ -1,5 +1,7 @@
 ENV["RAILS_ENV"] = "test"
 
+require 'pry'
+
 begin
   require 'warning'
 
