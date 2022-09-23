@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OptionsTest < ActiveSupport::TestCase
+class XlsxOptionsTest < ActiveSupport::TestCase
 
   test "header: false" do
     spreadsheet = SpreadsheetArchitect.to_xlsx(headers: false, data: [[1]])

@@ -27,9 +27,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'minitest-reporters'
+  s.add_development_dependency 'minitest-spec-rails'
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rails'
+  s.add_development_dependency 'pry'
 
   if RUBY_VERSION.to_f >= 2.4
     s.add_development_dependency 'warning'
