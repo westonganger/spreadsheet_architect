@@ -10,7 +10,9 @@ module SpreadsheetArchitect
       if options[:headers] == true
         headers = []
 
-        if !options[:data]
+        if options[:data]
+          headers = false
+        else
           needs_headers = true
         end
       elsif options[:headers].is_a?(Array)
