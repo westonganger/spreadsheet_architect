@@ -1,9 +1,12 @@
 name: Tests
+
 on:
   push:
-    branches: ['*']
+    branches:
+      - master
   pull_request:
-    branches: ['*']
+    branches:
+      - '*'
 
 jobs:
   test_sqlite:
