@@ -23,7 +23,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
+    save_file("xlsx/freeze_basic.xlsx", file_data)
   end
 
   test "using_ranges" do
@@ -34,7 +34,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
+    save_file("xlsx/freeze_using_ranges.xlsx", file_data)
   end
 
   test "using_legacy_arguments" do
@@ -45,7 +45,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
+    save_file("xlsx/freeze_using_legacy_arguments.xlsx", file_data)
   end
 
   test "freeze_type" do
@@ -56,7 +56,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
+    save_file("xlsx/freeze_type.xlsx", file_data)
   end
 
   test "panes_all_axlsx_options" do
@@ -73,7 +73,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
+    save_file("xlsx/freeze_panes_all_axlsx_options.xlsx", file_data)
   end
 
 end
