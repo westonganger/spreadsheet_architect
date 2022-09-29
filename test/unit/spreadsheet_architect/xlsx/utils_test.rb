@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class XlsxUtilsTest < ActiveSupport::TestCase
+class SpreadsheetArchitectXlsxUtilsTest < ActiveSupport::TestCase
   klass = SpreadsheetArchitect::Utils::XLSX
 
   def setup

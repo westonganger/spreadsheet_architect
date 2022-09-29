@@ -47,9 +47,7 @@ class AllModelsTest < ActiveSupport::TestCase
 
         data = which.send(method, instances: instances)
 
-        File.open(File.join(@path, "instances.#{format}"), 'w+b') do |f|
-          f.write data
-        end
+        save_file("models/#{klass}/instances.#{format}", data)
       end
 
       test "Empty :instances #{klass} #{format}" do
@@ -58,9 +56,9 @@ class AllModelsTest < ActiveSupport::TestCase
         method = "to_#{format}"
         which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
-        File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
-          f.write which.send(method, instances: [])
-        end
+        data = which.send(method, instances: [])
+
+        save_file("models/#{klass}/empty.#{format}", data)
       end
 
       test ":data #{klass} #{format}" do
@@ -71,9 +69,7 @@ class AllModelsTest < ActiveSupport::TestCase
 
         data = which.send(method, data: @data)
 
-        File.open(File.join(@path, "data.#{format}"), 'w+b') do |f|
-          f.write data
-        end
+        save_file("models/#{klass}/data.#{format}", data)
       end
 
       test "Empty :data #{klass} #{format}" do
@@ -82,26 +78,26 @@ class AllModelsTest < ActiveSupport::TestCase
         method = "to_#{format}"
         which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
 
-        File.open(File.join(@path, "empty.#{format}"),'w+b') do |f|
-          f.write which.send(method, data: [])
-        end
+        data = which.send(method, data: [])
+
+        save_file("models/#{klass}/empty.#{format}", data)
       end
 
       if klass.is_a?(ActiveRecord::Base)
         test "ActiveRecord::Relation" do
           method = "to_#{format}"
 
-          File.open(File.join(@path, "active_record_relation.#{format}"),'w+b') do |f|
-            f.write klass.all.send(method)
-          end
+          data = klass.all.send(method)
+
+          save_file("models/#{klass}/active_record_relation.#{format}", data)
         end
 
         test "Empty ActiveRecord::Relation" do
           method = "to_#{format}"
 
-          File.open(File.join(@path, "empty_active_record_relation.#{format}"),'w+b') do |f|
-            f.write klass.limit(0).send(method)
-          end
+          data = klass.limit(0).send(method)
+
+          save_file("models/#{klass}/empty_active_record_relation.#{format}", data)
         end
       end
 
