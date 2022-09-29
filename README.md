@@ -189,19 +189,15 @@ File.open('path/to/multi_sheet_file.xlsx', 'w+b') do |f|
 end
 ```
 
-See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/multi_sheet_test.rb)
-
 ### ODS
 ```ruby
 ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data})
 ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data}, ods_spreadsheet)
 
 File.open('path/to/multi_sheet_file.ods', 'w+b') do |f|
-  f.write ods_spreadsheet
+  f.write ods_spreadsheet.bytes
 end
 ```
-
-See this file for more details: [test/unit/multi_sheet_test.rb](./test/unit/multi_sheet_test.rb)
 
 # Methods
 

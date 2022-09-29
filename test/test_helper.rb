@@ -39,6 +39,8 @@ Minitest::Reporters.use!(
   Minitest.backtrace_filter
 )
 
+require 'minitest-spec-rails'
+
 post_count = Post.count
 if post_count < 5
   (5 - post_count).times do |i|
@@ -51,3 +53,19 @@ TMP_PATH = Rails.root.join("../../tmp/")
 ### Cleanup old test spreadsheets
 FileUtils.remove_dir(TMP_PATH, true)
 FileUtils.mkdir_p(TMP_PATH)
+
+def save_file(path, file_data)
+  if file_data.is_a?(Axlsx::Package)
+    file_data = file_data.to_stream.read
+  elsif file_data.is_a?(RODF::Spreadsheet)
+    file_data = file_data.bytes
+  end
+
+  path = Rails.root.join("../../tmp/", path)
+
+  FileUtils.mkdir_p(File.dirname(path))
+
+  File.open(TMP_PATH.join(path), "w+b") do |f|
+    f.write file_data
+  end
+end

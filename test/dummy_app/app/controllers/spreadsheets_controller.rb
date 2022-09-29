@@ -14,7 +14,7 @@ class SpreadsheetsController < ApplicationController
     render xlsx: Post.to_xlsx, filename: 'Posts'
   end
 
-  def alt_xlsx
+  def test_respond_with
     if Rails::VERSION::MAJOR >= 5
       @posts = Post.all
 

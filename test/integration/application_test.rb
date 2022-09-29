@@ -9,38 +9,30 @@ class ApplicationTest < ActionDispatch::IntegrationTest
   end
 
   def test_csv
-    get '/spreadsheets/csv', params: {format: :csv}
+    get '/spreadsheets/csv'
     assert_response :success
 
-    File.open(File.join(@path, 'csv.csv'), 'w+b') do |f|
-      f.write @response.body
-    end
+    save_file('integration/test.csv', @response.body)
   end
 
   def test_ods
     get '/spreadsheets/ods'
     assert_response :success
 
-    File.open(File.join(@path, 'ods.ods'), 'w+b') do |f|
-      f.write @response.body
-    end
+    save_file('integration/test.ods', @response.body)
   end
 
   def test_xlsx
     get '/spreadsheets/xlsx'
     assert_response :success
 
-    File.open(File.join(@path, 'xlsx.xlsx'), 'w+b') do |f|
-      f.write @response.body
-    end
+    save_file('integration/test.xlsx', @response.body)
   end
 
-  def test_alt_xlsx
-    get '/spreadsheets/alt_xlsx', params: {format: :xlsx}
+  def test_respond_with
+    get '/spreadsheets/test_respond_with', params: {format: :xlsx}
     assert_response :success
 
-    File.open(File.join(@path, 'alt_xlsx.xlsx'), 'w+b') do |f|
-      f.write @response.body
-    end
+    save_file('integration/test_respond_with.xlsx', @response.body)
   end
 end

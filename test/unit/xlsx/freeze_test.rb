@@ -2,12 +2,6 @@ require "test_helper"
 
 class XlsxFreezeTest < ActiveSupport::TestCase
 
-  def base_path
-    path = TMP_PATH.join("xlsx/freeze/")
-    FileUtils.mkdir_p(path)
-    return path
-  end
-
   def setup
     @options = {
       headers: [
@@ -29,9 +23,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
   end
 
   test "using_ranges" do
@@ -42,9 +34,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
   end
 
   test "using_legacy_arguments" do
@@ -55,9 +45,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
   end
 
   test "freeze_type" do
@@ -68,9 +56,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
   end
 
   test "panes_all_axlsx_options" do
@@ -87,9 +73,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(base_path.join("freeze_#{__method__}.xlsx"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("xlsx/freeze_#{__method__}.xlsx", file_data)
   end
 
 end

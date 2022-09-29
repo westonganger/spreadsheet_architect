@@ -1,9 +1,19 @@
 require "test_helper"
 
-class OdsKitchenSinkTest < ActiveSupport::TestCase
+class OdsGeneralTest < ActiveSupport::TestCase
 
-  def setup
-    @options = {
+  test "multisheet" do
+    test_data = [[1,2,3], [4,5,6], [7,8,9]]
+
+    spreadsheet = Post.to_rodf_spreadsheet
+    spreadsheet = CustomPost.to_rodf_spreadsheet({sheet_name: 'Latest Projects'}, spreadsheet)
+    spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({data: test_data, sheet_name: 'Another Sheet'}, spreadsheet)
+
+    save_file("ods/multi_sheet.ods", spreadsheet.bytes)
+  end
+
+  test "kitchen sink" do
+    options = {
       headers: [
         ['Latest Posts'],
         ['Title','Category','Author','Posted on','Posted At','Earnings']
@@ -13,19 +23,6 @@ class OdsKitchenSinkTest < ActiveSupport::TestCase
       row_style: {background_color: nil, color: "000000", align: :left, font_size: 12},
       sheet_name: 'Kitchen Sink',
       freeze_headers: true,
-    }
-  end
-
-  def teardown
-  end
-
-  test "kitchen sink" do
-    opts = @options.merge({
-      headers: [
-        ['Latest Posts'],
-        ['Title','Category','Author','Boolean','Posted on','Posted At']
-      ],
-      data: 50.times.map{|i| [i, "foobar-#{i}", (5.4*i), true, Date.today, Time.now]},
       column_types: [
         :string,
         :float,
@@ -35,14 +32,12 @@ class OdsKitchenSinkTest < ActiveSupport::TestCase
         :time,
         nil
       ],
-    })
+    }
 
     # Using Array Data
-    file_data = SpreadsheetArchitect.to_ods(opts)
+    file_data = SpreadsheetArchitect.to_ods(options)
 
-    File.open(TMP_PATH.join("kitchen_sink.ods"),'w+b') do |f|
-      f.write file_data
-    end
+    save_file("ods/kitchen_sink.ods", file_data)
   end
 
 end
