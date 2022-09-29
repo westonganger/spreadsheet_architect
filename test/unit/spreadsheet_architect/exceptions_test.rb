@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExceptionsTest < ActiveSupport::TestCase
+class SpreadsheetArchitectExceptionsTest < ActiveSupport::TestCase
 
   test "ArgumentError" do
     error = SpreadsheetArchitect::Exceptions::ArgumentError
