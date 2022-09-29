@@ -14,7 +14,7 @@ class AllModelsTest < ActiveSupport::TestCase
   end
 
   def set_path(klass)
-    @path = VERSIONED_BASE_PATH.join("models/#{klass}")
+    @path = TMP_PATH.join("models/#{klass}")
     FileUtils.mkdir_p(@path)
   end
 

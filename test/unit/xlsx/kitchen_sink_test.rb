@@ -76,7 +76,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
     # Using Array Data
     file_data = SpreadsheetArchitect.to_xlsx(opts)
 
-    File.open(VERSIONED_BASE_PATH.join("kitchen_sink.xlsx"),'w+b') do |f|
+    File.open(TMP_PATH.join("kitchen_sink.xlsx"),'w+b') do |f|
       f.write file_data
     end
   end

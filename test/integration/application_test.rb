@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ApplicationTest < ActionDispatch::IntegrationTest
   def setup
-    @path = VERSIONED_BASE_PATH.join("integration")
+    @path = TMP_PATH.join("integration")
     FileUtils.mkdir_p(@path)
   end
 

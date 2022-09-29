@@ -3,7 +3,7 @@ require "test_helper"
 class XlsxFreezeTest < ActiveSupport::TestCase
 
   def base_path
-    path = VERSIONED_BASE_PATH.join("xlsx/freeze/")
+    path = TMP_PATH.join("xlsx/freeze/")
     FileUtils.mkdir_p(path)
     return path
   end
