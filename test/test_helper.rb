@@ -12,6 +12,8 @@ rescue LoadError
   # Do nothing
 end
 
+require 'pry'
+
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
 migration_path = Rails.root.join('db/migrate')
@@ -31,6 +33,8 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 end
+
+require 'minitest-spec-rails' ### for describe blocks
 
 require 'minitest/reporters'
 Minitest::Reporters.use!(
@@ -68,4 +72,16 @@ def save_file(path, file_data)
   File.open(TMP_PATH.join(path), "w+b") do |f|
     f.write file_data
   end
+end
+
+def parse_ods_spreadsheet(spreadsheet)
+  Nokogiri::XML(spreadsheet.xml)
+end
+
+def parse_axlsx_package(package)
+  Nokogiri::XML(package.workbook.worksheets.first.to_xml_string)
+end
+
+def parse_axlsx_worksheet(worksheet)
+  Nokogiri::XML(worksheet.to_xml_string)
 end

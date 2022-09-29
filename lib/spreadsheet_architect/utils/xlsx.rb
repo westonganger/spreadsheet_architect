@@ -3,7 +3,14 @@ module SpreadsheetArchitect
     module XLSX
 
       def self.get_type(value, type=nil)
-        return type unless (type.respond_to?(:empty?) ? type.empty? : type.nil?)
+        if type && !type.empty?
+          case type
+          when :hyperlink
+            return :string
+          end
+
+          return type unless (type.respond_to?(:empty?) ? type.empty? : type.nil?)
+        end
         
         if value.is_a?(Numeric)
           if value.is_a?(Float) || value.is_a?(BigDecimal)

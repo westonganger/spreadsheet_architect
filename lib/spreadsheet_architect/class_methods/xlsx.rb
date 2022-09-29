@@ -75,16 +75,23 @@ module SpreadsheetArchitect
 
           types = []
           styles = []
+          hyperlink_cell_indexes = []
+
           row_data.each_with_index do |x,i|
             if (x.respond_to?(:empty) ? x.empty? : x.nil?)
               types[i] = nil
               styles[i] = row_style_index
             else
               if options[:column_types]
-                types[i] = options[:column_types][i]
+                provided_column_type = options[:column_types][i]
               end
 
-              types[i] ||= SpreadsheetArchitect::Utils::XLSX.get_type(x)
+              if provided_column_type == :hyperlink
+                hyperlink_cell_indexes << i
+                row_data[i] = x.to_s
+              end
+
+              types[i] = SpreadsheetArchitect::Utils::XLSX.get_type(x, provided_column_type)
 
               if [:date, :time].include?(types[i])
                 if types[i] == :date
@@ -101,6 +108,11 @@ module SpreadsheetArchitect
           end
 
           sheet.add_row row_data, style: styles, types: types, escape_formulas: options[:escape_formulas]
+
+          hyperlink_cell_indexes.each do |cell_index|
+            cell_ref = "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[cell_index]}#{row_index+1}"
+            sheet.add_hyperlink location: row_data[cell_index], ref: cell_ref
+          end
 
           if options[:conditional_row_styles]
             options[:conditional_row_styles] = SpreadsheetArchitect::Utils.hash_array_symbolize_keys(options[:conditional_row_styles])

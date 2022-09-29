@@ -7,6 +7,7 @@ CHANGELOG
   - Improve argument handling for freeze option and add support for all Axlsx supported options for panes using the `:freeze` hash. See test case for example (./test/unit/xlsx_freeze_test.rb)
   - Improve exceptions and messages regarding invalid ranges
   - For `to_xlsx`, dont add empty header row when `header: true`
+  - Add support for hyperlinks in XLSX and ODS
 
 - **4.2.0** - May 27, 2021 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...v4.2.0)
   - Add option `:skip_defaults` which removes the defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
