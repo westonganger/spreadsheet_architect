@@ -1,6 +1,6 @@
 require "test_helper"
 
-class KitchenSinkTest < ActiveSupport::TestCase
+class OdsKitchenSinkTest < ActiveSupport::TestCase
 
   def setup
     @options = {
@@ -19,7 +19,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_ods
+  test "kitchen sink" do
     opts = @options.merge({
       headers: [
         ['Latest Posts'],

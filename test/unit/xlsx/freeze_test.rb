@@ -21,7 +21,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_basic
+  test "basic" do
     opts = @options.merge({
       freeze: {rows: 1, columns: 1},
     })
@@ -34,7 +34,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     end
   end
 
-  def test_using_ranges
+  test "using_ranges" do
     opts = @options.merge({
       freeze: {rows: (2..4), columns: (2..4)},
     })
@@ -47,7 +47,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     end
   end
 
-  def test_using_legacy_arguments
+  test "using_legacy_arguments" do
     opts = @options.merge({
       freeze: {rows: :all, columns: 2},
     })
@@ -60,7 +60,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     end
   end
 
-  def test_freeze_type
+  test "freeze_type" do
     opts = @options.merge({
       freeze: {row: (@options[:data].size-2), column: 16, type: "split_panes"},
     })
@@ -73,7 +73,7 @@ class XlsxFreezeTest < ActiveSupport::TestCase
     end
   end
 
-  def test_panes_all_axlsx_options
+  test "panes_all_axlsx_options" do
     opts = @options.merge({
       freeze: {
         row: (@options[:data].size-2),

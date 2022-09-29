@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SpreadsheetArchitect::UtilsTest < ActiveSupport::TestCase
+class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
   klass = SpreadsheetArchitect::Utils
 
   def setup

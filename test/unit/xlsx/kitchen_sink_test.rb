@@ -1,6 +1,6 @@
 require "test_helper"
 
-class KitchenSinkTest < ActiveSupport::TestCase
+class XlsxKitchenSinkTest < ActiveSupport::TestCase
 
   def setup
     @options = {
@@ -19,7 +19,7 @@ class KitchenSinkTest < ActiveSupport::TestCase
   def teardown
   end
 
-  def test_xlsx
+  test "kitchen sink" do
     opts = @options.merge({
       column_styles: [
         {columns: 0, styles: {bold: true}},
