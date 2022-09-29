@@ -5,7 +5,7 @@ class XlsxOptionsTest < ActiveSupport::TestCase
   test "header: false" do
     spreadsheet = SpreadsheetArchitect.to_xlsx(headers: false, data: [[1]])
     
-    File.open(VERSIONED_BASE_PATH.join("headers_false_test.xlsx"), 'w+b') do |f|
+    File.open(TMP_PATH.join("headers_false_test.xlsx"), 'w+b') do |f|
       f.write(spreadsheet)
     end
   end
@@ -35,7 +35,7 @@ class XlsxOptionsTest < ActiveSupport::TestCase
 
     ### TODO Verify contents
     
-    File.open(VERSIONED_BASE_PATH.join("use_zero_based_row_index_test.xlsx"), 'w+b') do |f|
+    File.open(TMP_PATH.join("use_zero_based_row_index_test.xlsx"), 'w+b') do |f|
       f.write(spreadsheet)
     end
   end

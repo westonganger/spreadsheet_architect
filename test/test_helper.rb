@@ -46,15 +46,8 @@ if post_count < 5
   end
 end
 
-caxlsx_spec = Gem.loaded_specs['caxlsx']
-if caxlsx_spec.source.is_a?(Bundler::Source::Rubygems)
-  caxlsx_version = caxlsx_spec.version.to_s
-else
-  caxlsx_version = 'caxlsx-master'
-end
-
-VERSIONED_BASE_PATH = Rails.root.join("../../tmp/#{caxlsx_version}")
+TMP_PATH = Rails.root.join("../../tmp/")
 
 ### Cleanup old test spreadsheets
-FileUtils.remove_dir(VERSIONED_BASE_PATH, true)
-FileUtils.mkdir_p(VERSIONED_BASE_PATH)
+FileUtils.remove_dir(TMP_PATH, true)
+FileUtils.mkdir_p(TMP_PATH)

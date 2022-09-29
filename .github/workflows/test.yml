@@ -24,14 +24,6 @@ jobs:
           - ruby: "3.0" ### must be quoted otherwise will be treated as "3" which resolves to latest 3.x version
           - ruby: 3.1
 
-          ### CAXLSX VERSION TESTING
-          - ruby: 2.6
-            gemfile: gemfiles/caxlsx.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/caxlsx_2.0.2.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/caxlsx_3.0.0.gemfile
-
           ### RAILS VERSION TESTING
           - ruby: 2.6
             gemfile: gemfiles/rails_5.0.sqlite3.gemfile
@@ -50,17 +42,13 @@ jobs:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: "${{ matrix.ruby }}"
-
-    - name: Bundle
-      run: |
-        gem install bundler
-        bundle install
+        bundler-cache: true
 
     - name: Run tests
       run: |
