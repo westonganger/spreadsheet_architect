@@ -4,6 +4,7 @@ require 'spreadsheet_architect/action_controller_renderers'
 require 'spreadsheet_architect/exceptions'
 require 'spreadsheet_architect/utils'
 require 'spreadsheet_architect/utils/xlsx'
+require 'spreadsheet_architect/utils/ods'
 
 require 'spreadsheet_architect/class_methods/csv'
 require 'spreadsheet_architect/class_methods/ods'

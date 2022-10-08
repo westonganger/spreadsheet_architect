@@ -108,34 +108,6 @@ class SpreadsheetArchitectUtilsTest < ActiveSupport::TestCase
     assert_not_equal klass.get_options({skip_defaults: false}, SpreadsheetArchitect), {skip_defaults: true, sheet_name: "Sheet1", escape_formulas: true, use_zero_based_row_index: false}
     assert_not_equal klass.get_options({skip_defaults: false}, Post), {skip_defaults: true, sheet_name: "Posts", escape_formulas: true, use_zero_based_row_index: false}
   end
-  
-  test "convert_styles_to_ods" do
-    ods_styles = klass.convert_styles_to_ods({
-      background_color: '333333', 
-      color: '000000', 
-      align: true, 
-      bold: true, 
-      font_size: 14, 
-      italic: true, 
-      underline: true, 
-      test: true
-    })
-
-    assert_equal(ods_styles, {
-      'cell' => {
-        'background-color' => '#333333'
-      }, 
-      'text' => {
-        'color' => '#000000', 
-        'align' => true, 
-        'font-weight' => 'bold', 
-        'font-size' => 14, 
-        'font-style' => 'italic', 
-        'text-underline-type' => 'single', 
-        'text-underline-style' => 'solid'
-      }
-    })
-  end
 
   test "is_ar_model" do
     assert klass.is_ar_model?(Post)

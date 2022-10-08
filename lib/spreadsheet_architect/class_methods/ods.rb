@@ -21,7 +21,7 @@ module SpreadsheetArchitect
 
       spreadsheet.office_style :header_style, family: :cell do
         if options[:header_style]
-          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:header_style]).each do |prop, styles|
+          SpreadsheetArchitect::Utils::ODS.convert_styles(options[:header_style]).each do |prop, styles|
             styles.each do |k,v|
               property prop.to_sym, k => v
             end
@@ -31,7 +31,7 @@ module SpreadsheetArchitect
 
       spreadsheet.office_style :row_style, family: :cell do
         if options[:row_style]
-          SpreadsheetArchitect::Utils.convert_styles_to_ods(options[:row_style]).each do |prop, styles|
+          SpreadsheetArchitect::Utils::ODS.convert_styles(options[:row_style]).each do |prop, styles|
             styles.each do |k,v|
               property prop.to_sym, k => v
             end
@@ -57,7 +57,7 @@ module SpreadsheetArchitect
                 provided_column_type = options[:column_types][i]
               end
 
-              type = SpreadsheetArchitect::Utils.get_ods_cell_type(val, provided_column_type) 
+              type = SpreadsheetArchitect::Utils::ODS.get_cell_type(val, provided_column_type) 
 
               cell_opts = {
                 style: :row_style, 
