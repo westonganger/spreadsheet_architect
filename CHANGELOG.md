@@ -2,13 +2,13 @@ CHANGELOG
 ---------
 
 - **5.0.0 - Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...master)
-  - **Breaking Change** - [PR #38](https://github.com/westonganger/spreadsheet_architect/pull/38) - Add `escape_formulas` option for xlsx spreadsheets. This is a breaking change because we default to `escape_formulas: true` whereas before there was no formula escaping at all. The reasoning for this breaking change is that creating spreadsheets where many of the fields contain direct user input are a large majority compared to use cases that involve formulas.
-  - Add option `use_zero_based_row_index: true` (Default `false`) which allows you to use zero-based row indexes instead of the default 1-based row indexes. Recomended to set this option for the whole project. The original reason it was designed to be 1-based is because spreadsheet row numbers literally start with 1. However this tends to be unituitive for the developer because columns use zero based indexes because they use letter-based notation instead.
-  - Improve argument handling for freeze option and add support for all Axlsx supported options for panes using the `:freeze` hash. See test case for example (./test/unit/xlsx_freeze_test.rb)
-  - Improve exceptions and messages regarding invalid ranges
-  - For `to_xlsx`, dont add empty header row when `header: true`
-  - Add support for hyperlinks in XLSX and ODS
-  - [#xx](https://github.com/westonganger/spreadsheet_architect/pulls/xx) - Extracted some ODS methods from `SpreadsheetArchitect::Utils` to `SpreadsheetArchitect::Utils::ODS`
+  - [#38](https://github.com/westonganger/spreadsheet_architect/pull/38) - **Breaking Change**  - Add `escape_formulas` option for xlsx spreadsheets. This is a breaking change because we default to `escape_formulas: true` whereas before there was no formula escaping at all. The reasoning for this breaking change is that creating spreadsheets where many of the fields contain direct user input are a large majority compared to use cases that involve formulas.
+  - [#39](https://github.com/westonganger/spreadsheet_architect/pull/39) - Add option `use_zero_based_row_index: true` (Default `false`) which allows you to use zero-based row indexes instead of the default 1-based row indexes. Recomended to set this option for the whole project. The original reason it was designed to be 1-based is because spreadsheet row numbers literally start with 1. However this tends to be unituitive for the developer because columns use zero based indexes because they use letter-based notation instead.
+  - [#40](https://github.com/westonganger/spreadsheet_architect/pull/40) - Improve argument handling for freeze option and add support for all Axlsx supported options for panes using the `:freeze` hash. See test case for example (./test/unit/xlsx_freeze_test.rb)
+  - [#42](https://github.com/westonganger/spreadsheet_architect/pull/42) - Improve exceptions and messages regarding invalid ranges
+  - [#45](https://github.com/westonganger/spreadsheet_architect/pull/45) - For `to_xlsx`, dont add empty header row when `header: true`
+  - [#44](https://github.com/westonganger/spreadsheet_architect/pull/44) - Add support for hyperlinks in XLSX and ODS
+  - [#49](https://github.com/westonganger/spreadsheet_architect/pulls/49) - Extracted some ODS methods from `SpreadsheetArchitect::Utils` to `SpreadsheetArchitect::Utils::ODS`
 
 - **4.2.0** - May 27, 2021 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...v4.2.0)
   - Add option `:skip_defaults` which removes the defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
