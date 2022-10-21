@@ -1,5 +1,4 @@
 require 'axlsx'
-require 'axlsx_styler'
 
 require 'spreadsheet_architect/axlsx_string_width_patch'
 
@@ -146,7 +145,7 @@ module SpreadsheetArchitect
               SpreadsheetArchitect::Utils::XLSX.verify_range(x[:range], num_rows)
             end
 
-            sheet.add_border x[:range], (x[:border_styles] || x[:styles])
+            sheet.add_border x[:range], (x[:border_styles] || x[:styles] || Axlsx::Border::EDGES)
           end
         end
 
