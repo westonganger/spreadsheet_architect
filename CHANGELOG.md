@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **5.0.0 - Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...master)
-  - Update to caxlsx v3.3.0+ which now contains the axlsx_styler code, so we drop the dependency on axlsx_styler
+  - [#52](https://github.com/westonganger/spreadsheet_architect/pull/52) - Update to caxlsx v3.3.0+ which now contains the axlsx_styler code, so we drop the dependency on axlsx_styler
   - [#38](https://github.com/westonganger/spreadsheet_architect/pull/38) - **Breaking Change**  - Add `escape_formulas` option for xlsx spreadsheets. This is a breaking change because we default to `escape_formulas: true` whereas before there was no formula escaping at all. The reasoning for this breaking change is that creating spreadsheets where many of the fields contain direct user input are a large majority compared to use cases that involve formulas.
   - [#39](https://github.com/westonganger/spreadsheet_architect/pull/39) - Add option `use_zero_based_row_index: true` (Default `false`) which allows you to use zero-based row indexes instead of the default 1-based row indexes. Recomended to set this option for the whole project. The original reason it was designed to be 1-based is because spreadsheet row numbers literally start with 1. However this tends to be unituitive for the developer because columns use zero based indexes because they use letter-based notation instead.
   - [#40](https://github.com/westonganger/spreadsheet_architect/pull/40) - Improve argument handling for freeze option and add support for all Axlsx supported options for panes using the `:freeze` hash. See test case for example (./test/unit/xlsx_freeze_test.rb)
