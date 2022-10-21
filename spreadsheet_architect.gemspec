@@ -19,8 +19,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency 'caxlsx', ['>= 2.0.2', '<4']
-  s.add_runtime_dependency 'axlsx_styler', ['>= 1.0.0', '<2']
+  s.add_runtime_dependency 'caxlsx', ['>= 3.3.0', '<4']
   s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
   
   s.add_development_dependency 'rake'

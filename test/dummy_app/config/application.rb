@@ -2,9 +2,6 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-require 'axlsx'
-require 'axlsx_styler'
-
 Bundler.require
 
 require "spreadsheet_architect"
