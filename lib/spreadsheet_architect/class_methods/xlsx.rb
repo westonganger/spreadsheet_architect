@@ -13,6 +13,10 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
+      if options[:column_types] && !(options[:column_types].compact.reject{|x| x.is_a?(Proc) }.collect(&:to_sym) - SpreadsheetArchitect::XLSX_COLUMN_TYPES).empty?
+        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid XLSX values are #{SpreadsheetArchitect::XLSX_COLUMN_TYPES}")
+      end
+
       header_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:header_style])
       row_style = SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(options[:row_style])
 
@@ -76,21 +80,25 @@ module SpreadsheetArchitect
           styles = []
           hyperlink_cell_indexes = []
 
-          row_data.each_with_index do |x,i|
-            if (x.respond_to?(:empty) ? x.empty? : x.nil?)
+          row_data.each_with_index do |val,i|
+            if (val.respond_to?(:empty) ? val.empty? : val.nil?)
               types[i] = nil
               styles[i] = row_style_index
             else
               if options[:column_types]
                 provided_column_type = options[:column_types][i]
+
+                if provided_column_type.is_a?(Proc)
+                  provided_column_type = provided_column_type.call(val)
+                end
               end
 
               if provided_column_type == :hyperlink
                 hyperlink_cell_indexes << i
-                row_data[i] = x.to_s
+                row_data[i] = val.to_s
               end
 
-              types[i] = SpreadsheetArchitect::Utils::XLSX.get_type(x, provided_column_type)
+              types[i] = SpreadsheetArchitect::Utils::XLSX.get_type(val, provided_column_type)
 
               if [:date, :time].include?(types[i])
                 if types[i] == :date

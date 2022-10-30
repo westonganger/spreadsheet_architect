@@ -40,34 +40,81 @@ class OdsGeneralTest < ActiveSupport::TestCase
     save_file("ods/kitchen_sink.ods", file_data)
   end
 
-  describe "hyperlinks" do
-    test "shows the text and have the correct attributes" do
+  describe "column_types" do
+    test "validates provided types" do
+      assert_raise SpreadsheetArchitect::Exceptions::ArgumentError do
+        SpreadsheetArchitect.to_ods(
+          data: [], 
+          column_types: [""]
+        )
+      end
+
+      SpreadsheetArchitect.to_ods(
+        data: [], 
+        column_types: [:string, :float, :date, :time, :boolean, :hyperlink, nil, ->(x){ :foo }]
+      )
+    end
+
+    test "works with Proc types" do
       url = "https://github.com/westonganger/spreadsheet_architect"
 
       data = [
-        [1,2,3],
-        [1, url, "https://github.com/caxlsx/caxlsx"],
+        [1, 2],
+        [1, url],
       ]
 
-      ss = SpreadsheetArchitect.to_rodf_spreadsheet(data: data, column_types: [:string, :hyperlink, :string])
+      ss = SpreadsheetArchitect.to_rodf_spreadsheet(
+        data: data, 
+        column_types: [
+          :string, 
+          ->(x){ x.to_s.start_with?("http") ? :hyperlink : :string }
+        ]
+      )
 
       doc = parse_ods_spreadsheet(ss)
 
       cells = doc.xpath("//table:table-cell")
       hyperlinks = doc.xpath("//text:a")
 
-      assert_equal 6, cells.size
-      assert_equal 2, hyperlinks.size
+      assert_equal 4, cells.size
+      assert_equal 1, hyperlinks.size
 
-      cell = cells[1]
-      assert_equal "2", cell.text
-      assert_equal "2", cell.at_xpath(".//text:a").attributes["href"].value
-
-      cell = cells[4]
+      cell = cells[3]
       assert_equal url, cell.text
       assert_equal url, cell.at_xpath(".//text:a").attributes["href"].value
 
       save_file("ods/hyperlinks.ods", ss)
+    end
+
+    describe "hyperlinks" do
+      test "shows the text and have the correct attributes" do
+        url = "https://github.com/westonganger/spreadsheet_architect"
+
+        data = [
+          [1,2,3],
+          [1, url, "https://github.com/caxlsx/caxlsx"],
+        ]
+
+        ss = SpreadsheetArchitect.to_rodf_spreadsheet(data: data, column_types: [:string, :hyperlink, :string])
+
+        doc = parse_ods_spreadsheet(ss)
+
+        cells = doc.xpath("//table:table-cell")
+        hyperlinks = doc.xpath("//text:a")
+
+        assert_equal 6, cells.size
+        assert_equal 2, hyperlinks.size
+
+        cell = cells[1]
+        assert_equal "2", cell.text
+        assert_equal "2", cell.at_xpath(".//text:a").attributes["href"].value
+
+        cell = cells[4]
+        assert_equal url, cell.text
+        assert_equal url, cell.at_xpath(".//text:a").attributes["href"].value
+
+        save_file("ods/hyperlinks.ods", ss)
+      end
     end
   end
 

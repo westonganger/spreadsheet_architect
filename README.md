@@ -91,7 +91,7 @@ If you want to use a different method name then `spreadsheet_columns` you can pa
 Post.to_xlsx(instances: posts, spreadsheet_columns: :my_special_method)
 ```
 
-Alternatively, you can pass a Proc/lambda to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
+Alternatively, you can pass a Proc to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
 
 ```ruby
 Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
@@ -103,7 +103,8 @@ Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
     :published_at, # uses the method name as header title Einstance. 'Published At'
     ['# of Views', :number_of_views, :float],
     ['Rating', :rating],
-    ['Category/Tags', "#{instance.category.name} - #{instance.tags.collect(&:name).join(', ')}"]
+    ['Category/Tags', "#{instance.category.name} - #{instance.tags.collect(&:name).join(', ')}"],
+    ['URL', :url, (val.start_with?("http") ? :hyperlink : :string)],
   ]
 })
 ```
@@ -217,7 +218,7 @@ end
 |**conditional_row_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
 |**merges**<br>*Array*||Merge cells. [See this example for usage](./test/unit/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
 |**borders**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
-|**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, :hyperlink, nil = auto determine.|
+|**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. You may also pass a Proc which evaluates to any of the valid types, for example `->(cell_val){ cell_val.start_with?('http') ? :hyperlink : :string }`|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 |**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll.|
 |**freeze**<br>*Hash*||Make all specified row and/or column frozen/fixed so they do not scroll. See [example usage](./test/unit/xlsx_freeze_test.rb)|
@@ -239,7 +240,7 @@ Same options as `to_xlsx`
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
-|**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string |
+|**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string. You may also pass a Proc which evaluates to any of the valid types, for example `->(cell_val){ cell_val.start_with?('http') ? :hyperlink : :string }` |
 |**skip_defaults**<br>*Boolean*|`false`|Skip defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
 
 ## `to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)`

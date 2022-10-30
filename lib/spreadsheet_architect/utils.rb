@@ -144,10 +144,6 @@ module SpreadsheetArchitect
         end
       end
 
-      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::XLSX_COLUMN_TYPES).empty?
-        raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid XLSX values are #{SpreadsheetArchitect::XLSX_COLUMN_TYPES}")
-      end
-
       if options[:freeze]
         options[:freeze] = SpreadsheetArchitect::Utils.symbolize_keys(options[:freeze])
 

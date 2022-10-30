@@ -11,7 +11,7 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
-      if options[:column_types] && !(options[:column_types].compact.collect(&:to_sym) - SpreadsheetArchitect::ODS_COLUMN_TYPES).empty?
+      if options[:column_types] && !(options[:column_types].compact.reject{|x| x.is_a?(Proc) }.collect(&:to_sym) - SpreadsheetArchitect::ODS_COLUMN_TYPES).empty?
         raise SpreadsheetArchitect::Exceptions::ArgumentError.new("Invalid column type. Valid ODS values are #{SpreadsheetArchitect::ODS_COLUMN_TYPES}")
       end
 
@@ -55,6 +55,10 @@ module SpreadsheetArchitect
             row_data.each_with_index do |val, i|
               if options[:column_types]
                 provided_column_type = options[:column_types][i]
+
+                if provided_column_type.is_a?(Proc)
+                  provided_column_type = provided_column_type.call(val)
+                end
               end
 
               type = SpreadsheetArchitect::Utils::ODS.get_cell_type(val, provided_column_type) 

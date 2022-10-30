@@ -33,8 +33,6 @@ class XlsxGeneralTest < ActiveSupport::TestCase
       ],
     )
 
-    ### TODO Verify contents
-    
     save_file("xlsx/use_zero_based_row_index_test.xlsx", spreadsheet)
   end
 
@@ -118,36 +116,83 @@ class XlsxGeneralTest < ActiveSupport::TestCase
     save_file("xlsx/kitchen_sink.xlsx", file_data)
   end
 
-  describe "hyperlinks" do
-    test "shows the text and have the correct attributes" do
+  describe "column_types" do
+    test "validates provided types" do
+      assert_raise SpreadsheetArchitect::Exceptions::ArgumentError do
+        SpreadsheetArchitect.to_axlsx_package(
+          data: [], 
+          column_types: [""]
+        )
+      end
+
+      SpreadsheetArchitect.to_axlsx_package(
+        data: [], 
+        column_types: [:string, :integer, :float, :date, :time, :boolean, :hyperlink, nil, ->(x){ :foo }]
+      )
+    end
+
+    test "works with Proc types" do
       url = "https://github.com/westonganger/spreadsheet_architect"
 
       data = [
-        [1,2,3],
-        [1, url, "https://github.com/caxlsx/caxlsx"],
+        [1, 2],
+        [1, url],
       ]
 
-      p = SpreadsheetArchitect.to_axlsx_package(data: data, column_types: [:string, :hyperlink, :string])
+      p = SpreadsheetArchitect.to_axlsx_package(
+        data: data, 
+        column_types: [
+          :string, 
+          ->(x){ x.to_s.start_with?("http") ? :hyperlink : :string }
+        ]
+      )
 
       doc = parse_axlsx_package(p)
 
       hyperlinks = doc.css("hyperlinks hyperlink")
 
-      assert_equal 2, hyperlinks.size
-
-      ref = "B1"
-      assert_equal ref, hyperlinks[0].attr("ref")
-      cell = doc.at("c[r='#{ref}']")
-      assert_equal "2", cell.text
-      assert_equal "inlineStr", cell.attr("t")
+      assert_equal 1, hyperlinks.size
 
       ref = "B2"
-      assert_equal ref, hyperlinks[1].attr("ref")
+      assert_equal ref, hyperlinks[0].attr("ref")
       cell = doc.at("c[r='#{ref}']")
       assert_equal url, cell.text
       assert_equal "inlineStr", cell.attr("t")
 
       save_file("xlsx/hyperlinks.xlsx", p)
+    end
+
+    describe "hyperlinks" do
+      test "shows the text and have the correct attributes" do
+        url = "https://github.com/westonganger/spreadsheet_architect"
+
+        data = [
+          [1,2,3],
+          [1, url, "https://github.com/caxlsx/caxlsx"],
+        ]
+
+        p = SpreadsheetArchitect.to_axlsx_package(data: data, column_types: [:string, :hyperlink, :string])
+
+        doc = parse_axlsx_package(p)
+
+        hyperlinks = doc.css("hyperlinks hyperlink")
+
+        assert_equal 2, hyperlinks.size
+
+        ref = "B1"
+        assert_equal ref, hyperlinks[0].attr("ref")
+        cell = doc.at("c[r='#{ref}']")
+        assert_equal "2", cell.text
+        assert_equal "inlineStr", cell.attr("t")
+
+        ref = "B2"
+        assert_equal ref, hyperlinks[1].attr("ref")
+        cell = doc.at("c[r='#{ref}']")
+        assert_equal url, cell.text
+        assert_equal "inlineStr", cell.attr("t")
+
+        save_file("xlsx/hyperlinks.xlsx", p)
+      end
     end
   end
 

@@ -10,6 +10,7 @@ CHANGELOG
   - [#45](https://github.com/westonganger/spreadsheet_architect/pull/45) - For `to_xlsx`, dont add empty header row when `header: true`
   - [#44](https://github.com/westonganger/spreadsheet_architect/pull/44) - Add support for hyperlinks in XLSX and ODS
   - [#49](https://github.com/westonganger/spreadsheet_architect/pulls/49) - Extracted some ODS methods from `SpreadsheetArchitect::Utils` to `SpreadsheetArchitect::Utils::ODS`
+  - Add Proc support to `:column_types`
 
 - **4.2.0** - May 27, 2021 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.1.0...v4.2.0)
   - Add option `:skip_defaults` which removes the defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.
