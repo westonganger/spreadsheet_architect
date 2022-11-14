@@ -1,7 +1,5 @@
 require 'axlsx'
 
-require 'spreadsheet_architect/axlsx_string_width_patch'
-
 module SpreadsheetArchitect
   module ClassMethods
 
