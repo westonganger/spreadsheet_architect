@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
 
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
-  s.test_files  = Dir.glob("{test/**/*}")
   s.require_path = 'lib'
 
   s.required_ruby_version = '>= 2.3.0'
