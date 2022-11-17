@@ -257,7 +257,7 @@ module SpreadsheetArchitect
       freeze: Hash,
       headers: [TrueClass, FalseClass, Array],
       header_style: Hash,
-      instances: Array,
+      instances: [Array, Enumerator],
       merges: Array,
       range_styles: Array,
       skip_defaults: [TrueClass, FalseClass],
