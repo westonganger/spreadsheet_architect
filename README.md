@@ -171,7 +171,7 @@ class PostsController < ActionController::Base
       format.html
       format.xlsx { render xlsx: @posts.to_xlsx(headers: false) }
       format.ods { render ods: Post.to_ods(instances: @posts) }
-      format.csv{ render csv: @posts.to_csv(headers: false), file_name: 'articles' }
+      format.csv{ render csv: @posts.to_csv(headers: false), filename: 'articles' }
     end
   end
 end
