@@ -206,16 +206,17 @@ end
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**data**<br>*Nested Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.|
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
-|**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
+|**headers**<br>*Array / Nested Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](./docs/axlsx_style_reference.md)|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](./docs/axlsx_style_reference.md)|
 |**column_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
 |**range_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
-|**conditional_row_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
+|**conditional_row_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb).|
+|**conditional_column_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb).|
 |**merges**<br>*Array*||Merge cells. [See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
 |**borders**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. You may also pass a Proc which evaluates to any of the valid types, for example `->(cell_val){ cell_val.start_with?('http') ? :hyperlink : :string }`|
@@ -233,10 +234,10 @@ Same options as `to_xlsx`
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**data**<br>*Nested Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
-|**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
+|**headers**<br>*Array / Nested Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
@@ -250,10 +251,10 @@ Same options as `to_ods`
 
 |Option|Default|Notes|
 |---|---|---|
-|**data**<br>*2D Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.  |
+|**data**<br>*Nested Array*| |Cannot be used with the `:instances` option.<br><br>Tabular data for the non-header row cells.|
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
-|**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
+|**headers**<br>*Array / Nested Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row.|
 
 
 # Change class-wide default method options
@@ -278,6 +279,7 @@ class Post < ApplicationRecord
     column_styles: [],
     range_styles: [],
     conditional_row_styles: [],
+    conditional_column_styles: [],
     merges: [],
     borders: [],
     column_types: [],
@@ -299,6 +301,7 @@ SpreadsheetArchitect.default_options = {
   column_styles: [],
   range_styles: [],
   conditional_row_styles: [],
+  conditional_column_styles: [],
   merges: [],
   borders: [],
   column_types: [],

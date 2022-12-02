@@ -250,6 +250,7 @@ module SpreadsheetArchitect
       borders: Array,
       column_styles: Array,
       conditional_row_styles: Array,
+      conditional_column_styles: Array,
       column_widths: Array,
       column_types: Array,
       data: Array,
