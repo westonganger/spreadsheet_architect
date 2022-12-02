@@ -3,6 +3,7 @@ CHANGELOG
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...master)
   - [#53](https://github.com/westonganger/spreadsheet_architect/pull/53) - Remove legacy string_width patch for axlsx 3.1 and below
+  - [#54](https://github.com/westonganger/spreadsheet_architect/pull/54) - Fix typo in error message for `:conditional_row_styles`
 
 - **5.0.0** - Oct 30, 2022 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...v5.0.0)
   - [#52](https://github.com/westonganger/spreadsheet_architect/pull/52) - Update to caxlsx v3.3.0+ which now contains the axlsx_styler code, so we drop the dependency on axlsx_styler
