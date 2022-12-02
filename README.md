@@ -25,7 +25,7 @@ gem 'spreadsheet_architect'
 
 ### Tabular (Array) Data
 
-The simplest and preffered usage is to simply create the data array yourself.
+The simplest and preferred usage is to simply create the data array yourself.
 
 ```ruby
 headers = ['Col 1','Col 2','Col 3']
@@ -100,7 +100,7 @@ Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
     ['Content', instance.content.strip],
     ['Author', (instance.author.name if instance.author)],
     ['Published?', (instance.published ? 'Yes' : 'No')],
-    :published_at, # uses the method name as header title Einstance. 'Published At'
+    :published_at, # uses the method name as header title Ex. 'Published At'
     ['# of Views', :number_of_views, :float],
     ['Rating', :rating],
     ['Category/Tags', "#{instance.category.name} - #{instance.tags.collect(&:name).join(', ')}"],
@@ -213,18 +213,18 @@ end
 |**sheet_name**<br>*String*|`Sheet1`||
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](./docs/axlsx_style_reference.md)|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](./docs/axlsx_style_reference.md)|
-|**column_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
-|**range_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
-|**conditional_row_styles**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
-|**merges**<br>*Array*||Merge cells. [See this example for usage](./test/unit/kitchen_sink_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
-|**borders**<br>*Array*||[See this example for usage](./test/unit/kitchen_sink_test.rb)|
+|**column_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
+|**range_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
+|**conditional_row_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
+|**merges**<br>*Array*||Merge cells. [See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb). Warning merges cannot overlap eachother, if you attempt to do so Excel will claim your spreadsheet is corrupt and refuse to open your spreadsheet.|
+|**borders**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
 |**column_types**<br>*Array*||Valid types for XLSX are :string, :integer, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. You may also pass a Proc which evaluates to any of the valid types, for example `->(cell_val){ cell_val.start_with?('http') ? :hyperlink : :string }`|
 |**column_widths**<br>*Array*||Sometimes you may want explicit column widths. Use nil if you want a column to autofit again.|
 |**freeze_headers**<br>*Boolean*||Make all header rows frozen/fixed so they do not scroll.|
 |**freeze**<br>*Hash*||Make all specified row and/or column frozen/fixed so they do not scroll. See [example usage](./test/unit/xlsx_freeze_test.rb)|
 |**skip_defaults**<br>*Boolean*|`false`|Removes defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
 |**escape_formulas**<br>*Boolean* or *Array*|`true`|Pass a single boolean to apply to all cells, or an array of booleans to control column-by-column. Advisable to be set true when involved with untrusted user input. See [an example of the underlying functionality](https://github.com/caxlsx/caxlsx/blob/master/examples/escape_formula_example.md). NOTE: Header row cells are not escaped. |
-|**use_zero_based_row_index**<br>*Boolean*|`false`|Allows you to use zero-based row indexes when defining `range_styles`, `merges`, etc. Recomended to set this option for the whole project rather than per call. The original reason it was designed to be 1-based is because spreadsheet row numbers actually start with 1.|
+|**use_zero_based_row_index**<br>*Boolean*|`false`|Allows you to use zero-based row indexes when defining `range_styles`, `merges`, etc. Recommended to set this option for the whole project rather than per call. The original reason it was designed to be 1-based is because spreadsheet row numbers actually start with 1.|
 
 ## `to_axlsx_spreadsheet(options={}, axlsx_package_to_join=nil)`
 Same options as `to_xlsx`
@@ -241,7 +241,7 @@ Same options as `to_xlsx`
 |**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_size: 10, bold: true}`|Note: Currently ODS only supports these options|
 |**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_size: 10, bold: false}`|Styles for non-header rows. Currently ODS only supports these options|
 |**column_types**<br>*Array*||Valid types for ODS are :string, :float, :date, :time, :boolean, :hyperlink, nil = auto determine. Due to [RODF Issue #19](https://github.com/thiagoarrais/rodf/issues/19), :date/:time will be converted to :string. You may also pass a Proc which evaluates to any of the valid types, for example `->(cell_val){ cell_val.start_with?('http') ? :hyperlink : :string }` |
-|**skip_defaults**<br>*Boolean*|`false`|Skip defaults and default styles. Particularily useful for heavily customized spreadsheets where the default styles get in the way.|
+|**skip_defaults**<br>*Boolean*|`false`|Skip defaults and default styles. Particularly useful for heavily customized spreadsheets where the default styles get in the way.|
 
 ## `to_rodf_spreadsheet(options={}, spreadsheet_to_join=nil)`
 Same options as `to_ods`
@@ -307,7 +307,8 @@ SpreadsheetArchitect.default_options = {
 ```
 
 # Kitchen Sink Examples with Styling for XLSX and ODS
-See this example: [test/unit/kitchen_sink_test.rb](./test/unit/kitchen_sink_test.rb)
+
+See `test "kitchen sink"` for [XLSX](./test/unit/xlsx/general_test.rb) and [ODS](./test/unit/ods/general_test.rb)
 
 # Axlsx Style Reference
 
@@ -324,7 +325,7 @@ We use the `appraisal` gem for testing multiple versions of `axlsx`. Please use 
 1. `bundle exec appraisal install`
 2. `bundle exec appraisal rake test`
 
-At this time the spreadsheets generated by the test suite are manually inspected. After running the tests, the test output can be viewed at `tmp/#{alxsx_version}/*`
+At this time the spreadsheets generated by the test suite are manually inspected. After running the tests, the test output can be viewed in `tmp/`
 
 # Credits
 
