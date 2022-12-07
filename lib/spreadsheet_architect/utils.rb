@@ -252,7 +252,7 @@ module SpreadsheetArchitect
       conditional_row_styles: Array,
       column_widths: Array,
       column_types: Array,
-      data: Array,
+      data: [Array, Enumerator],
       freeze_headers: [TrueClass, FalseClass],
       freeze: Hash,
       headers: [TrueClass, FalseClass, Array],

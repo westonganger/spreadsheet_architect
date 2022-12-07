@@ -25,7 +25,15 @@ module SpreadsheetArchitect
       row_index = -1
 
       package.workbook.add_worksheet(name: options[:sheet_name]) do |sheet|
-        max_row_length = options[:data].empty? ? 0 : options[:data].max_by{|x| x.length}.length
+        options[:data] = options[:data].each if options[:data].is_a? Array
+
+        begin
+          if options[:data].peek
+            max_row_length = options[:data].max_by{|x| x.length}.length
+          end
+        rescue StopIteration
+          max_row_length = 0
+        end
 
         if options[:headers]
           header_style_index = package.workbook.styles.add_style(header_style)
@@ -55,7 +63,9 @@ module SpreadsheetArchitect
           end
         end
 
-        if options[:data].empty?
+        begin
+          options[:data].peek
+        rescue StopIteration
           break
         end
 
