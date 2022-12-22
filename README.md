@@ -2,7 +2,7 @@
 
 <a href="https://badge.fury.io/rb/spreadsheet_architect" target="_blank"><img height="21" style='border:0px;height:21px;' border='0' src="https://badge.fury.io/rb/spreadsheet_architect.svg" alt="Gem Version"></a>
 <a href='https://github.com/westonganger/spreadsheet_architect/actions' target='_blank'><img src="https://github.com/westonganger/spreadsheet_architect/workflows/Tests/badge.svg" style="max-width:100%;" height='21' style='border:0px;height:21px;' border='0' alt="CI Status"></a>
-<a href='https://rubygems.org/gems/spreadsheet_architect' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://ruby-gem-downloads-badge.herokuapp.com/spreadsheet_architect?label=rubygems&type=total&total_label=downloads&color=brightgreen' border='0' alt='RubyGems Downloads' /></a>
+<a href='https://rubygems.org/gems/spreadsheet_architect' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://img.shields.io/gem/dt/spreadsheet_architect?color=brightgreen&label=Rubygems%20Downloads' border='0' alt='RubyGems Downloads' /></a>
 
 Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets super easily from ActiveRecord relations, plain Ruby objects, or tabular data.
 
