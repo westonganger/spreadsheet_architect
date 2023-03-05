@@ -23,6 +23,7 @@ jobs:
           - ruby: 2.7
           - ruby: "3.0" ### must be quoted otherwise will be treated as "3" which resolves to latest 3.x version
           - ruby: 3.1
+          - ruby: 3.2
 
           ### RAILS VERSION TESTING
           - ruby: 2.6
