@@ -1,46 +1,43 @@
 name: Tests
-
 on:
   push:
-    branches:
-      - master
+    branches: ['master']
   pull_request:
-    branches:
-      - '*'
 
 jobs:
-  test_sqlite:
-    runs-on: ubuntu-20.04
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+
     strategy:
       fail-fast: false
       matrix:
         include:
-          ### TEST ALL RUBY VERSIONS, USE DEFAULT GEMFILE
-          - ruby: 2.3
-          - ruby: 2.4
-          - ruby: 2.5
-          - ruby: 2.6
-          - ruby: 2.7
-          - ruby: "3.0" ### must be quoted otherwise will be treated as "3" which resolves to latest 3.x version
-          - ruby: 3.1
-          - ruby: 3.2
-
-          ### RAILS VERSION TESTING
-          - ruby: 2.6
-            gemfile: gemfiles/rails_5.0.sqlite3.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/rails_5.1.sqlite3.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/rails_5.2.sqlite3.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/rails_6.0.sqlite3.gemfile
-          - ruby: 2.6
-            gemfile: gemfiles/rails_6.1.sqlite3.gemfile
+          ### TEST RUBY VERSIONS
+          - ruby: "2.5"
+          - ruby: "2.6"
+          - ruby: "2.7"
           - ruby: "3.0"
-            gemfile: gemfiles/rails_7.0.sqlite3.gemfile
-
-    env:
-      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
+          - ruby: "3.1"
+          - ruby: "3.2"
+          ### TEST RAILS VERSIONS
+          - ruby: "2.6"
+            env:
+              RAILS_VERSION: "5.2"
+          - ruby: "2.6"
+            env:
+              RAILS_VERSION: "6.0"
+          - ruby: "2.6"
+            env:
+              RAILS_VERSION: "6.1"
+          - ruby: "3.2"
+            env:
+              RAILS_VERSION: "7.0"
+          - ruby: "3.2"
+            env:
+              RAILS_VERSION: "7.1"
 
     steps:
     - uses: actions/checkout@v3
@@ -49,8 +46,9 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: "${{ matrix.ruby }}"
-        bundler-cache: true
+        bundler-cache: false ### not compatible with ENV-style Gemfile
 
-    - name: Run tests
+    - name: Run test
       run: |
-        bundle exec rake
+        bundle install
+        bundle exec rake test

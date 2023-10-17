@@ -8,27 +8,20 @@ Gem::Specification.new do |s|
   s.author	= "Weston Ganger"
   s.email       = 'weston@westonganger.com'
   s.homepage 	= 'https://github.com/westonganger/spreadsheet_architect'
-  
+
   s.summary     = "Spreadsheet Architect is a library that allows you to create XLSX, ODS, or CSV spreadsheets easily from ActiveRecord relations, Plain Ruby classes, or predefined data."
-  s.description = s.summary 
+  s.description = s.summary
   s.license     = 'MIT'
 
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.require_path = 'lib'
 
-  s.required_ruby_version = '>= 2.3.0'
-
   s.add_runtime_dependency 'caxlsx', ['>= 3.3.0', '<4']
   s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
-  
+
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'bundler'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'minitest-reporters'
-  s.add_development_dependency 'minitest-spec-rails'
-  s.add_development_dependency 'appraisal'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rails'
   s.add_development_dependency 'pry'
 
   if RUBY_VERSION.to_f >= 2.4
