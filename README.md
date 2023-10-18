@@ -35,7 +35,7 @@ SpreadsheetArchitect.to_ods(headers: headers, data: data)
 SpreadsheetArchitect.to_csv(headers: headers, data: data)
 ```
 
-Using this style will allow you to utilize any custom performance optimizations during your data generation process. This will come in handy when the spreadsheets get large and things start to get slow. One of my favourites for Rails is [light_record](https://github.com/Paxa/light_record)
+Using this style will allow you to utilize any custom performance optimizations during your data generation process. This will come in handy when the spreadsheets get large and any loss in performance starts to matter.
 
 ### Rails Relations or an Array of plain Ruby object instances
 
@@ -91,10 +91,10 @@ If you want to use a different method name then `spreadsheet_columns` you can pa
 Post.to_xlsx(instances: posts, spreadsheet_columns: :my_special_method)
 ```
 
-Alternatively, you can pass a Proc to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
+Alternatively, you can pass a proc to the `spreadsheet_columns` option. For those purists that really dont want to define any extra `spreadsheet_columns` instance method on your model, this option can help you work with that methodology.
 
 ```ruby
-Post.to_xlsx(instances: posts, spreadsheet_columns: Proc.new{|instance|
+Post.to_xlsx(instances: posts, spreadsheet_columns: ->(instance){
   [
     ['Title', :title],
     ['Content', instance.content.strip],
@@ -313,6 +313,10 @@ See `test "kitchen sink"` for [XLSX](./test/unit/xlsx/general_test.rb) and [ODS]
 # Axlsx Style Reference
 
 I have compiled a list of all available style options for axlsx here: [docs/axlsx_style_reference.md](./docs/axlsx_style_reference.md)
+
+# Tips for Reducing Memory Usage
+- Use the `:data` option instead of active record relations
+- Utilize the [`light_record`](https://github.com/Paxa/light_record) gem
 
 # Testing / Validating your Spreadsheets
 
