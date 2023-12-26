@@ -22,6 +22,7 @@ jobs:
           - ruby: "3.0"
           - ruby: "3.1"
           - ruby: "3.2"
+          - ruby: "3.3"
           ### TEST RAILS VERSIONS
           - ruby: "2.6"
             env:
@@ -32,10 +33,10 @@ jobs:
           - ruby: "2.6"
             env:
               RAILS_VERSION: "6.1"
-          - ruby: "3.2"
+          - ruby: "3.3"
             env:
               RAILS_VERSION: "7.0"
-          - ruby: "3.2"
+          - ruby: "3.3"
             env:
               RAILS_VERSION: "7.1"
 
