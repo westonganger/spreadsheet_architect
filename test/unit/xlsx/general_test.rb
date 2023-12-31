@@ -8,7 +8,7 @@ class XlsxGeneralTest < ActiveSupport::TestCase
         ['Latest Posts'],
         ['Title','Category','Author','Posted on','Posted At','Earnings']
       ],
-      data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now]},
+      data: 50.times.map{|i| [i, "foobar-#{i}", 5.4*i, true, Date.today, Time.now, rand(999,1000)]},
       header_style: {background_color: "000000", color: "FFFFFF", align: :center, font_size: 12, bold: true},
       row_style: {background_color: nil, color: "000000", align: :left, font_size: 12},
       sheet_name: 'Kitchen Sink',
@@ -39,6 +39,23 @@ class XlsxGeneralTest < ActiveSupport::TestCase
             row_index <= 10 || row_data[0].to_i == 15
           }, 
           styles: {align: :right}
+        },
+      ],
+
+      conditional_column_styles: [
+        {
+          column: 0,
+          styles: {bold: true},
+          if: Proc.new{|row_data, row_index|
+            row_index == 0 || row_data[0].to_i == 2
+          }, 
+        },
+        {
+          column: "G",
+          styles: {bold: true},
+          unless: Proc.new{|row_data, row_index|
+            row_data[7].to_i > 1000
+          }, 
         },
       ],
 

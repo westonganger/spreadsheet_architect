@@ -45,10 +45,19 @@ module SpreadsheetArchitect
             if options[:conditional_row_styles]
               conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, header_row)
 
-              unless conditional_styles_for_row.empty?
+              sheet.add_style(
+                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
+                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
+              )
+            end
+
+            if options[:conditional_column_styles]
+              conditional_styles_for_columns = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_columns(options[:conditional_column_styles], row_index, header_row)
+
+              conditional_styles_for_columns.each do |col_name, col_style|
                 sheet.add_style(
-                  "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
-                  SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
+                  "#{col_name}#{row_index+1}",
+                  SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(col_style)
                 )
               end
             end
@@ -124,10 +133,19 @@ module SpreadsheetArchitect
 
             conditional_styles_for_row = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_row(options[:conditional_row_styles], row_index, row_data)
 
-            unless conditional_styles_for_row.empty?
+            sheet.add_style(
+              "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
+              SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
+            )
+          end
+
+          if options[:conditional_column_styles]
+            conditional_styles_for_columns = SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_columns(options[:conditional_column_styles], row_index, row_data)
+
+            conditional_styles_for_columns.each do |col_index, col_style|
               sheet.add_style(
-                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES.first}#{row_index+1}:#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[max_row_length-1]}#{row_index+1}",
-                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(conditional_styles_for_row)
+                "#{SpreadsheetArchitect::Utils::XLSX::COL_NAMES[col_index]}#{row_index+1}",
+                SpreadsheetArchitect::Utils::XLSX.convert_styles_to_axlsx(col_style)
               )
             end
           end

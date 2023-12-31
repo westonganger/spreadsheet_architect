@@ -21,6 +21,26 @@ class SpreadsheetArchitectExceptionsTest < ActiveSupport::TestCase
     end
 
     assert_raise error do
+      conditional_column_styles = [{}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_column(conditional_column_styles, true, true)
+    end
+
+    assert_raise error do
+      conditional_column_styles = [{if: true, unless: true, styles: {}}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_column(conditional_column_styles, true, true)
+    end
+
+    assert_raise error do
+      conditional_column_styles = [{if: true, styles: false}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_column(conditional_column_styles, true, true)
+    end
+
+    assert_raise error do
+      conditional_column_styles = [{if: true, styles: {}, column: nil}]
+      SpreadsheetArchitect::Utils::XLSX.conditional_styles_for_column(conditional_column_styles, true, true)
+    end
+
+    assert_raise error do
       SpreadsheetArchitect::Utils.get_options({freeze: {rows: 1}, freeze_headers: true}, SpreadsheetArchitect)
     end
 

@@ -2,6 +2,9 @@ module SpreadsheetArchitect
   module Utils
     module XLSX
 
+      ### Limit of 16384 columns as per Excel limitations
+      COL_NAMES = Array('A'..'XFD').freeze
+
       def self.get_type(value, type=nil)
         if type && !type.empty?
           case type
@@ -196,7 +199,7 @@ module SpreadsheetArchitect
             conditions_met = !conditions_met
           end
 
-          if conditions_met
+          if conditions_met && !x[:styles].empty?
             merged_conditional_styles.merge!(x[:styles])
           end
         end
@@ -204,10 +207,37 @@ module SpreadsheetArchitect
         return merged_conditional_styles
       end
 
-      private
+      def self.conditional_styles_for_columns(conditional_column_styles, row_index, row_data)
+        array = []
 
-      ### Limit of 16384 columns as per Excel limitations
-      COL_NAMES = Array('A'..'XFD').freeze
+        conditional_column_styles.each do |x|
+          if x[:if] && x[:unless]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot pass both :if and :unless within the same :conditional_column_styles entry')
+          elsif !x[:if] && !x[:unless]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass either :if or :unless within the each :conditional_column_styles entry')
+          elsif !x[:styles]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass the :styles option within a :conditional_column_styles entry')
+          elsif !x[:column]
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass the :column option within a :conditional_column_styles entry')
+          end
+          
+          if x[:column].is_a?(Integer)
+            x[:column] = SpreadsheetArchitect::Utils::XLSX::COL_NAMES[x[:column]]
+          end
+
+          conditions_met = (x[:if] || x[:unless]).call(row_data, row_index)
+
+          if x[:unless]
+            conditions_met = !conditions_met
+          end
+
+          if conditions_met && !x[:styles].empty?
+            array << [x[:column], x[:styles]]
+          end
+        end
+
+        return array
+      end
 
     end
   end
