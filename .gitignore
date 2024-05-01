@@ -8,7 +8,7 @@ coverage/
 doc/
 pkg/
 spec/reports/
-test/dummy_app/**/*.sqlite3.db
+test/dummy_app/**/*.sqlite3*
 test/dummy_app/**/*.sqlite3
 test/dummy_app/**/*.csv
 test/dummy_app/**/*.ods

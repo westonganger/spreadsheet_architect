@@ -183,11 +183,11 @@ module SpreadsheetArchitect
 
         conditional_row_styles.each do |x|
           if x[:if] && x[:unless]
-            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot pass both :if and :unless within the same :conditonal_row_styles entry')
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Cannot pass both :if and :unless within the same :conditional_row_styles entry')
           elsif !x[:if] && !x[:unless]
-            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass either :if or :unless within the each :conditonal_row_styles entry')
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass either :if or :unless within the each :conditional_row_styles entry')
           elsif !x[:styles]
-            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass the :styles option within a :conditonal_row_styles entry')
+            raise SpreadsheetArchitect::Exceptions::ArgumentError.new('Must pass the :styles option within a :conditional_row_styles entry')
           end
 
           conditions_met = (x[:if] || x[:unless]).call(row_data, row_index)
