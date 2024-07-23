@@ -1,7 +1,10 @@
 CHANGELOG
 ---------
 
-- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...master)
+- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...master)
+  - Nothing yet
+
+- **v5.0.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...v5.0.1)
   - [#53](https://github.com/westonganger/spreadsheet_architect/pull/53) - Remove legacy string_width patch for axlsx 3.1 and below
   - [#57](https://github.com/westonganger/spreadsheet_architect/pull/57) - Fix typo in error message for `:conditional_row_styles`
 
@@ -26,7 +29,7 @@ CHANGELOG
   - Raise ArgumentError when invalid option names are given
 
 - **4.0.1** - Nov 20, 2020 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.0...v4.0.1)
-  - Fix bug with `headers: false` where a blank header row is still added 
+  - Fix bug with `headers: false` where a blank header row is still added
   - Fix Bug for older version of `caxlsx` v2.0.2
 
 - **4.0.0** - Mar 3, 2020 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.3.1...v4.0.0)
