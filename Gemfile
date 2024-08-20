@@ -10,6 +10,8 @@ def get_env(name)
 end
 
 gem "rails", get_env("RAILS_VERSION")
-gem "sqlite3"
 
-gem "minitest-spec-rails", git: "https://github.com/metaskills/minitest-spec-rails.git"
+db_gem = get_env("DB_GEM") || "sqlite3"
+gem db_gem, get_env("DB_GEM_VERSION")
+
+gem "minitest-spec-rails"
