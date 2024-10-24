@@ -7,13 +7,13 @@ module SpreadsheetArchitect
       opts = SpreadsheetArchitect::Utils.get_options(opts, self)
       options = SpreadsheetArchitect::Utils.get_cell_data(opts, self)
 
-      CSV.generate do |csv|
+      CSV.generate(**opts.fetch(:csv_generate_options, {})) do |csv|
         if options[:headers]
           options[:headers].each do |header_row|
             csv << header_row
           end
         end
-        
+
         options[:data].each do |row_data|
           csv << row_data
         end
