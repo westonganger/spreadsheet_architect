@@ -2,6 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...master)
+  - [#60](https://github.com/westonganger/spreadsheet_architect/pull/60) - Use frozen_string_literal: true
   - [#64](https://github.com/westonganger/spreadsheet_architect/pull/64) - Explicitly list `csv` gem as a dependency to better support Ruby 3.4
 
 - **v5.0.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...v5.0.1)
