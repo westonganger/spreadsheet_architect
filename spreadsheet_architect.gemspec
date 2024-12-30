@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'caxlsx', ['>= 3.3.0', '<4']
   s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
+  s.add_runtime_dependency 'csv'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
