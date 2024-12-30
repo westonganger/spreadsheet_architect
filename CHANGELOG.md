@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...master)
-  - Nothing yet
+  - [#64](https://github.com/westonganger/spreadsheet_architect/pull/64) - Explicitly list `csv` gem as a dependency to better support Ruby 3.4
 
 - **v5.0.1** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...v5.0.1)
   - [#53](https://github.com/westonganger/spreadsheet_architect/pull/53) - Remove legacy string_width patch for axlsx 3.1 and below
