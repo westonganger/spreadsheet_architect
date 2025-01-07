@@ -1,18 +1,10 @@
 ENV["RAILS_ENV"] = "test"
 
-require 'pry'
+require 'warning'
 
-begin
-  require 'warning'
-
-  Warning.ignore(
-    %r{mail/parsers/address_lists_parser}, ### Hide mail gem warnings
-  )
-rescue LoadError
-  # Do nothing
-end
-
-require 'pry'
+Warning.ignore(
+  %r{mail/parsers/address_lists_parser}, ### Hide mail gem warnings
+)
 
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
