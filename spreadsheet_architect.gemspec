@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.require_path = 'lib'
 
-  s.add_runtime_dependency 'caxlsx', ['>= 3.3.0', '<4']
-  s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
+  s.add_runtime_dependency 'caxlsx', '<= 4.0'
+  s.add_runtime_dependency 'rodf'
   s.add_runtime_dependency 'csv'
 
   s.add_development_dependency 'rake'
