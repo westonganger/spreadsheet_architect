@@ -44,9 +44,5 @@ module Dummy
     config.after_initialize do
       ActiveRecord::Migration.migrate(Rails.root.join("db/migrate/*").to_s)
     end
-
-    if config.respond_to?(:assertionless_tests_behavior)
-      config.assertionless_tests_behavior = :ignore
-    end
   end
 end
