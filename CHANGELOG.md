@@ -1,7 +1,10 @@
 CHANGELOG
 ---------
 
-- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...master)
+- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.1.0...master)
+  - Nothing yet
+
+- **v5.1.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...v5.1.0)
   - [#68](https://github.com/westonganger/spreadsheet_architect/pull/68) - Require `caxlsx` v4.0 or greater (to support frozen_string_literal) and remove version locking for `rodf`
   - [#64](https://github.com/westonganger/spreadsheet_architect/pull/64) - Explicitly list `csv` gem as a dependency to better support Ruby 3.4
 
