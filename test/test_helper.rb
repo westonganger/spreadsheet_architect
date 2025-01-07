@@ -6,6 +6,10 @@ Warning.ignore(
   %r{mail/parsers/address_lists_parser}, ### Hide mail gem warnings
 )
 
+Warning.ignore(
+  %r{Test is missing assertions:}
+)
+
 require File.expand_path("../dummy_app/config/environment.rb",  __FILE__)
 
 migration_path = Rails.root.join('db/migrate')
