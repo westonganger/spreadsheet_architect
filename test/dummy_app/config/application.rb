@@ -1,5 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
+require "logger" # Fix for Rails 7.0 and below, https://github.com/rails/rails/pull/54264
+
 require 'rails/all'
 
 Bundler.require
