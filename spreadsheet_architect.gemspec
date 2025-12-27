@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'csv'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest', '~> 5.0'
   s.add_development_dependency 'minitest-reporters'
   s.add_development_dependency 'warning'
 end

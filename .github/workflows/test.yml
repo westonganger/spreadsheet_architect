@@ -24,6 +24,8 @@ jobs:
           - ruby: "3.2"
           - ruby: "3.3"
           - ruby: "3.4"
+          - ruby: "4.0"
+
           ### TEST RAILS VERSIONS
           - ruby: "2.6"
             rails_version: "~> 5.2.0"
@@ -31,15 +33,17 @@ jobs:
             rails_version: "~> 6.0.0"
           - ruby: "2.6"
             rails_version: "~> 6.1.0"
-          - ruby: "3.3"
+          - ruby: "4.0"
             rails_version: "~> 7.0.0"
             db_gem_version: "~> 1.4" # fixes sqlite3 gem dependency issue
-          - ruby: "3.4"
+          - ruby: "4.0"
             rails_version: "~> 7.1.0"
-          - ruby: "3.4"
+          - ruby: "4.0"
             rails_version: "~> 7.2.0"
-          - ruby: "3.4"
+          - ruby: "4.0"
             rails_version: "~> 8.0.0"
+          - ruby: "4.0"
+            rails_version: "~> 8.1.0"
 
     steps:
     - uses: actions/checkout@v3
