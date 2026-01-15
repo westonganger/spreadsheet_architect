@@ -254,6 +254,7 @@ Same options as `to_ods`
 |**instances**<br>*Array*| |Cannot be used with the `:data` option.<br><br>Array of class/model instances to be used as row data. Cannot be used with :data option|
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
+|**csv_generate_options**<br>*Hash*|{}|Options passed down to `CSV.generate` method. See ["Options for generating"](https://ruby-doc.org/3.2.1/stdlibs/csv/CSV.html#class-CSV-label-Options+for+Generating) paragraph on the official doc for reference |
 
 
 # Change class-wide default method options
