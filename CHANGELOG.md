@@ -2,7 +2,7 @@ CHANGELOG
 ---------
 
 - **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.1.0...master)
-  - Nothing yet
+  - [#71](https://github.com/westonganger/spreadsheet_architect/pull/71) - Change gemspec to caxlsx >= 4.0. This was mistakenly restricted caxlsx to v4.0 and below.
 
 - **v5.1.0** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...v5.1.0)
   - [#68](https://github.com/westonganger/spreadsheet_architect/pull/68) - Require `caxlsx` v4.0 or greater (to support frozen_string_literal) and remove version locking for `rodf`
