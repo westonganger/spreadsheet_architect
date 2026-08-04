@@ -30,7 +30,7 @@ module SpreadsheetArchitect
 
       if !data
         if !options[:instances]
-          if is_ar_model?(klass) 
+          if is_ar_model?(klass)
             options[:instances] = klass.where(nil).to_a # triggers the relation call, not sure how this works but it does
           else
             raise SpreadsheetArchitect::Exceptions::NoDataError
@@ -266,6 +266,7 @@ module SpreadsheetArchitect
       spreadsheet_columns: [Proc, Symbol, String],
       escape_formulas: [TrueClass, FalseClass, Array],
       use_zero_based_row_index: [TrueClass, FalseClass],
+      csv_generate_options: Hash
     }.freeze
 
   end
