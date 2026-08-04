@@ -182,8 +182,8 @@ end
 ### XLSX
 
 ```ruby
-axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data})
-axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: headers, data: data}, axlsx_package)
+axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: sheet_1_headers, data: sheet_1_data})
+axlsx_package = SpreadsheetArchitect.to_axlsx_package({headers: sheet_2_headers, data: sheet_2_data}, axlsx_package)
 
 File.open('path/to/multi_sheet_file.xlsx', 'w+b') do |f|
   f.write axlsx_package.to_stream.read
@@ -192,8 +192,8 @@ end
 
 ### ODS
 ```ruby
-ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data})
-ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: headers, data: data}, ods_spreadsheet)
+ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: sheet_1_headers, data: sheet_1_data})
+ods_spreadsheet = SpreadsheetArchitect.to_rodf_spreadsheet({headers: sheet_2_headers, data: sheet_2_data}, ods_spreadsheet)
 
 File.open('path/to/multi_sheet_file.ods', 'w+b') do |f|
   f.write ods_spreadsheet.bytes
@@ -211,8 +211,8 @@ end
 |**spreadsheet_columns**<br>*Proc/Symbol/String*| Use this option to override or define the spreadsheet columns. Normally, if this option is not specified and are using the instances option/ActiveRecord relation, it uses the classes custom `spreadsheet_columns` method or any custom defaults defined.<br>If neither of those and is an ActiveRecord model, then it will falls back to the models `self.column_names` | Cannot be used with the `:data` option.<br><br>If a Proc value is passed it will be evaluated on the instance object.<br><br>If a Symbol or String value is passed then it will search the instance for a method name that matches and call it. |
 |**headers**<br>*Array / 2D Array*| |Data for the header row cells. If using on a class/relation, this defaults to the ones provided via `spreadsheet_columns`. Pass `false` to skip the header row. |
 |**sheet_name**<br>*String*|`Sheet1`||
-|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](./docs/axlsx_style_reference.md)|
-|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](./docs/axlsx_style_reference.md)|
+|**header_style**<br>*Hash*|`{background_color: "AAAAAA", color: "FFFFFF", align: :center, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false}`|See all available style options [here](https://github.com/caxlsx/caxlsx/blob/master/docs/style_reference.md)|
+|**row_style**<br>*Hash*|`{background_color: nil, color: "000000", align: :left, font_name: 'Arial', font_size: 10, bold: false, italic: false, underline: false, format_code: nil}`|Styles for non-header rows. See all available style options [here](https://github.com/caxlsx/caxlsx/blob/master/docs/style_reference.md)|
 |**column_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
 |**range_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb)|
 |**conditional_row_styles**<br>*Array*||[See the kitchen sink example for usage](./test/unit/xlsx/general_test.rb). The if/unless proc will called with the following args: `row_index`, `row_data`|
@@ -309,10 +309,6 @@ SpreadsheetArchitect.default_options = {
 # Kitchen Sink Examples with Styling for XLSX and ODS
 
 See `test "kitchen sink"` for [XLSX](./test/unit/xlsx/general_test.rb) and [ODS](./test/unit/ods/general_test.rb)
-
-# Axlsx Style Reference
-
-I have compiled a list of all available style options for axlsx here: [docs/axlsx_style_reference.md](./docs/axlsx_style_reference.md)
 
 # Tips for Reducing Memory Usage
 - Use the `:data` option instead of active record relations
