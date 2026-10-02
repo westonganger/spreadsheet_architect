@@ -39,6 +39,40 @@ class AllModelsTest < ActiveSupport::TestCase
 
     ['csv', 'ods', 'xlsx'].each do |format|
 
+      test ":instances with Enumerator #{klass} #{format}" do
+        set_path(klass)
+
+        method = "to_#{format}"
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+
+        enumerator = Enumerator.new do |list|
+          instances.each do |x|
+            list << x
+          end
+        end
+
+        data = which.send(method, instances: enumerator)
+
+        save_file("models/#{klass}/instances.#{format}", data)
+      end
+
+      test ":data with Enumerator #{klass} #{format}" do
+        set_path(klass)
+
+        method = "to_#{format}"
+        which = klass.respond_to?(method) ? klass : SpreadsheetArchitect
+
+        enumerator = Enumerator.new(@data.size) do |list|
+          @data.each do |x|
+            list << x
+          end
+        end
+
+        data = which.send(method, data: enumerator)
+
+        save_file("models/#{klass}/data.#{format}", data)
+      end
+
       test ":instances #{klass} #{format}" do
         set_path(klass)
 
