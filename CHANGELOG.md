@@ -1,9 +1,19 @@
 CHANGELOG
 ---------
 
-- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...master)
+- **Unreleased** - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.1.1...master)
+  - Nothing yet
+
+- **v5.1.1** - Apr 26, 2026 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.1.0...v5.1.1)
+  - [#71](https://github.com/westonganger/spreadsheet_architect/pull/71) - Change gemspec to caxlsx >= 4.0. This was mistakenly restricted caxlsx to v4.0 and below.
+
+- **v5.1.0** - Jan 7, 2025 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.1...v5.1.0)
+  - [#68](https://github.com/westonganger/spreadsheet_architect/pull/68) - Require `caxlsx` v4.0 or greater (to support frozen_string_literal) and remove version locking for `rodf`
+  - [#64](https://github.com/westonganger/spreadsheet_architect/pull/64) - Explicitly list `csv` gem as a dependency to better support Ruby 3.4
+
+- **v5.0.1** - July 23, 2024 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v5.0.0...v5.0.1)
   - [#53](https://github.com/westonganger/spreadsheet_architect/pull/53) - Remove legacy string_width patch for axlsx 3.1 and below
-  - [#54](https://github.com/westonganger/spreadsheet_architect/pull/54) - Fix typo in error message for `:conditional_row_styles`
+  - [#57](https://github.com/westonganger/spreadsheet_architect/pull/57) - Fix typo in error message for `:conditional_row_styles`
 
 - **5.0.0** - Oct 30, 2022 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.2.0...v5.0.0)
   - [#52](https://github.com/westonganger/spreadsheet_architect/pull/52) - Update to caxlsx v3.3.0+ which now contains the axlsx_styler code, so we drop the dependency on axlsx_styler
@@ -26,7 +36,7 @@ CHANGELOG
   - Raise ArgumentError when invalid option names are given
 
 - **4.0.1** - Nov 20, 2020 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v4.0.0...v4.0.1)
-  - Fix bug with `headers: false` where a blank header row is still added 
+  - Fix bug with `headers: false` where a blank header row is still added
   - Fix Bug for older version of `caxlsx` v2.0.2
 
 - **4.0.0** - Mar 3, 2020 - [View Diff](https://github.com/westonganger/spreadsheet_architect/compare/v3.3.1...v4.0.0)

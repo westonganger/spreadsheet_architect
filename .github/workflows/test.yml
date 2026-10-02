@@ -16,32 +16,43 @@ jobs:
       matrix:
         include:
           ### TEST RUBY VERSIONS
-          - ruby: "2.5"
           - ruby: "2.6"
           - ruby: "2.7"
           - ruby: "3.0"
+            db_gem_version: "~> 1.4" # fixes sqlite3 gem dependency issue
           - ruby: "3.1"
           - ruby: "3.2"
           - ruby: "3.3"
+          - ruby: "3.4"
+          - ruby: "4.0"
+
           ### TEST RAILS VERSIONS
           - ruby: "2.6"
-            env:
-              RAILS_VERSION: "5.2"
+            rails_version: "~> 5.2.0"
           - ruby: "2.6"
-            env:
-              RAILS_VERSION: "6.0"
+            rails_version: "~> 6.0.0"
           - ruby: "2.6"
-            env:
-              RAILS_VERSION: "6.1"
-          - ruby: "3.3"
-            env:
-              RAILS_VERSION: "7.0"
-          - ruby: "3.3"
-            env:
-              RAILS_VERSION: "7.1"
+            rails_version: "~> 6.1.0"
+          - ruby: "4.0"
+            rails_version: "~> 7.0.0"
+            db_gem_version: "~> 1.4" # fixes sqlite3 gem dependency issue
+          - ruby: "4.0"
+            rails_version: "~> 7.1.0"
+          - ruby: "4.0"
+            rails_version: "~> 7.2.0"
+          - ruby: "4.0"
+            rails_version: "~> 8.0.0"
+          - ruby: "4.0"
+            rails_version: "~> 8.1.0"
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set env variables
+      run: |
+        echo "RAILS_VERSION=${{ matrix.rails_version }}" >> "$GITHUB_ENV"
+        echo "DB_GEM=${{ matrix.db_gem }}" >> "$GITHUB_ENV"
+        echo "DB_GEM_VERSION=${{ matrix.db_gem_version }}" >> "$GITHUB_ENV"
 
     - name: Install ruby
       uses: ruby/setup-ruby@v1
@@ -52,4 +63,4 @@ jobs:
     - name: Run test
       run: |
         bundle install
-        bundle exec rake test
+        RUBYOPT='--enable-frozen-string-literal' bundle exec rake test

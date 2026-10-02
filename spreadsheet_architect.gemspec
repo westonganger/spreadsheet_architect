@@ -16,15 +16,12 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
   s.require_path = 'lib'
 
-  s.add_runtime_dependency 'caxlsx', ['>= 3.3.0', '<4']
-  s.add_runtime_dependency 'rodf', ['>= 1.0.0', '<2']
+  s.add_runtime_dependency 'caxlsx', '>= 4.0'
+  s.add_runtime_dependency 'rodf'
+  s.add_runtime_dependency 'csv'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest', '~> 5.0'
   s.add_development_dependency 'minitest-reporters'
-  s.add_development_dependency 'pry'
-
-  if RUBY_VERSION.to_f >= 2.4
-    s.add_development_dependency 'warning'
-  end
+  s.add_development_dependency 'warning'
 end

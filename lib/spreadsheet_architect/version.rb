@@ -1,3 +1,3 @@
 module SpreadsheetArchitect
-  VERSION = "5.0.0"
+  VERSION = "5.1.1".freeze
 end

@@ -1,5 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
+require "logger" # Fix for Rails 7.0 and below, https://github.com/rails/rails/pull/54264
+
 require 'rails/all'
 
 Bundler.require
@@ -43,14 +45,6 @@ module Dummy
 
     config.after_initialize do
       ActiveRecord::Migration.migrate(Rails.root.join("db/migrate/*").to_s)
-    end
-
-    if ActiveRecord.respond_to?(:gem_version)
-      gem_version = ActiveRecord.gem_version
-
-      if gem_version.to_s.start_with?("5.2.")
-        config.active_record.sqlite3.represent_boolean_as_integer = true
-      end
     end
   end
 end
